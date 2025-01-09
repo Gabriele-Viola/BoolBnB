@@ -61,8 +61,6 @@ function logIn(req, res) {
 	const password = req.body.password
 
 	const sql = `SELECT * FROM users WHERE email = ? `
-	// const sql = `SELECT * FROM users WHERE email = ? AND password = ?`
-
 
 	connection.query(sql, [email], (err, result) => {
 		if (err)
@@ -84,10 +82,39 @@ function logIn(req, res) {
 		})
 	})
 }
-
+// method registration to add a new user in the db
 function registration(req, res) {
 	const sql = `INSERT INTO users (name, surname, userName, password, email, phone, type) VALUES (?, ?, ?, ?, ?, ?, ?)`
 	const { name, surname, userName, password, email, phone, type } = req.body
+	//veryfing if name, surname and userName are at least 3 characters long
+	if (name.length < 3 || surname.length < 3 || userName.length < 3)
+		return res.status(400).json({
+			error: 'Name, surname and userName must be at least 3 characters long'
+		})
+	//verify correct password format
+	if (password.length < 8 || /[^a-zA-Z0-9]/.test(password))
+		return res.status(400).json({
+			error: 'Password must be at least 8 characters long and contain only letters and numbers'
+		})
+	//verify correct email format
+	//the email must have at least 1 character before the @, at least 1 charcter after @ and 2 characters after the last dot
+	if (!/^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email))
+		return res.status(400).json({
+			error: 'Email incorrect'
+		})
+	//verify correct phone format national or international
+	if (
+		(phone.length === 10 && !/^[0-9]{10}$/.test(phone)) ||
+		(phone.length !== 10 && !/^\+[0-9]{12,15}$/.test(phone))
+	)
+		return res.status(400).json({
+			error: 'Phone number incorrect'
+		})
+	// Verify if the type is UI or UP
+	if (type !== UI || type !== UP)
+		return res.status(400).json({
+			error: 'Type must be UI or UP'
+		})
 
 	connection.query(sql, [name, surname, userName, password, email, phone, type], (err, result) => {
 		if (err)
