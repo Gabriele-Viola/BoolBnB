@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const { index, show } = require('./controller/propertiesController')
+const { index, show, create } = require('./controller/propertiesController')
 const port = process.env.PORT
 const host = process.env.HOST
 
@@ -14,8 +14,9 @@ app.use(express.json())
 // })
 
 app.listen(port, () => {
-	console.log(`Server is running on ${host}:${port}`)
+    console.log(`Server is running on ${host}:${port}`)
 })
 
 app.get('/api', index)
 app.get('/api/:id', show)
+app.post('/api/:owner', create)
