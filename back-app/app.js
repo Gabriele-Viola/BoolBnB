@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const routerProp = require('./routers/router')
+const routers = require('./routers/router')
 const cors = require('cors')
 const { index, show, create } = require('./controller/propertiesController')
 const port = process.env.PORT
@@ -10,7 +10,7 @@ const host = process.env.HOST
 app.use(cors())
 
 app.use(express.json())
-app.use("/api", routerProp)
+app.use("/api", routers)
 
 // app.get("/", (req, res) => {
 //     res.send("Benvenuto")

@@ -54,9 +54,35 @@ function create(req, res) {
 		})
 	})
 }
+// method LogIn to check if the user is present in the db
+
+function logIn(req, res) {
+	const email = req.body.email
+	const password = req.body.password
+
+	const sql = `SELECT * FROM users WHERE email = ? AND password = ?`
+	// const sql = `SELECT * FROM users WHERE email = ? AND password = ?`
+
+
+	connection.query(sql, [email, password], (err, result) => {
+		if (err)
+			return res.status(500).json({
+				error: err
+			})
+		if (result.length === 0)
+			return res.status(404).json({
+				error: 'User not found'
+			})
+		const user = result[0]
+		res.status(200).json({
+			user
+		})
+	})
+}
 
 module.exports = {
 	index,
 	show,
-	create
+	create,
+	logIn
 }
