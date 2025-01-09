@@ -85,9 +85,26 @@ function logIn(req, res) {
 	})
 }
 
+function registration(req, res) {
+	const sql = `INSERT INTO users (name, surname, userName, password, email, phone, type) VALUES (?, ?, ?, ?, ?, ?, ?)`
+	const { name, surname, userName, password, email, phone, type } = req.body
+
+	connection.query(sql, [name, surname, userName, password, email, phone, type], (err, result) => {
+		if (err)
+			return res.status(500).json({
+				error: err
+			})
+		return res.status(201).json({
+			success: true
+		})
+	})
+}
+
+
 module.exports = {
 	index,
 	show,
 	create,
-	logIn
+	logIn,
+	registration
 }
