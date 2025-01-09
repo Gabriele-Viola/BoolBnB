@@ -60,20 +60,25 @@ function logIn(req, res) {
 	const email = req.body.email
 	const password = req.body.password
 
-	const sql = `SELECT * FROM users WHERE email = ? AND password = ?`
+	const sql = `SELECT * FROM users WHERE email = ? `
 	// const sql = `SELECT * FROM users WHERE email = ? AND password = ?`
 
 
-	connection.query(sql, [email, password], (err, result) => {
+	connection.query(sql, [email], (err, result) => {
 		if (err)
 			return res.status(500).json({
 				error: err
 			})
+		// verify if the user email is present in the db
 		if (result.length === 0)
 			return res.status(404).json({
-				error: 'User not found'
+				error: 'There is no user with this email'
 			})
+		//verify if the password is correct
+		if (result[0].password !== password)
+			return res.status(404).json({ error: 'Password is not correct' })
 		const user = result[0]
+		// return the user
 		res.status(200).json({
 			user
 		})
