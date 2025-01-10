@@ -59,13 +59,18 @@ function create(req, res) {
 function logIn(req, res) {
 	const email = req.body.email
 	const password = req.body.password
+	// verify if the email and the password are present
+	if (!email || !password)
+		return res.status(400).json({
+			error: 'Fill all camps correctly'
+		})
 
 	const sql = `SELECT * FROM users WHERE email = ? `
 
 	connection.query(sql, [email], (err, result) => {
 		if (err)
 			return res.status(500).json({
-				error: err
+				error: 'Something went wrong...'
 			})
 		// verify if the user email is present in the db
 		if (result.length === 0)
