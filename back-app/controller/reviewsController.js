@@ -1,8 +1,7 @@
 const connection = require("../db/connection.js");
 
-function reviewsIndex(req, res) {
+function reviewsShow(req, res) {
     const id = req.params.id_property
-    console.log("id_property:", id);
     const sql = `SELECT * FROM reviews WHERE id_property=?`
 
     connection.query(sql, [id], (err, result) => {
@@ -18,5 +17,5 @@ function reviewsIndex(req, res) {
 }
 
 module.exports = {
-    reviewsIndex
+    reviewsShow
 }
