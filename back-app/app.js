@@ -12,8 +12,9 @@ const loggerMiddleware = require('./middleware/loggerMiddleware')
 // Usa il middleware di CORS
 app.use(cors())
 
-// Middleware per il logging
-// Posizionato prima delle rotte per loggare ogni richiesta
+/* Middleware per il logging
+Posizionato prima delle rotte per loggare ogni richiesta
+*/
 app.use('/', loggerMiddleware)
 
 // Parsing dei JSON

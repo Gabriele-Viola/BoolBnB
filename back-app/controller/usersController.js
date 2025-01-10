@@ -28,6 +28,8 @@ function logIn(req, res) {
         const user = result[0]
         // return the user
         res.status(200).json({
+            status: 'success',
+            success: true,
             user
         })
     })
@@ -93,6 +95,7 @@ function registration(req, res) {
                     error: err
                 })
             return res.status(201).json({
+                status: 'success',
                 success: true
             })
         })
