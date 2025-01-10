@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
-const { index, show, create, logIn, registration } = require('../controller/propertiesController');
+const { index, show, create } = require('../controller/propertiesController');
+const { logIn, registration } = require('../controller/usersController');
 
 router.get('/properties', index)
 router.get('/properties/:id', show)
