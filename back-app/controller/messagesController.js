@@ -13,6 +13,9 @@ function sendMessage(req, res) {
 	// Query SQL per inserire il messaggio
 	const sql = `INSERT INTO messages (id_user, id_property, text_message) VALUES (?, ?, ?)`
 
+	// Impostiamo il Content-Type prima di eseguire la query
+	res.setHeader('Content-Type', 'application/json')
+
 	// Eseguiamo la query
 	connection.query(sql, [id_user, id_property, text_message], (err, result) => {
 		if (err) {
