@@ -3,6 +3,7 @@ const app = express()
 const routerProp = require('./routers/router')
 const cors = require('cors')
 const { index, show, create } = require('./controller/propertiesController')
+const { reviewsIndex } = require('./controller/reviewsController')
 const port = process.env.PORT
 const host = process.env.HOST
 
