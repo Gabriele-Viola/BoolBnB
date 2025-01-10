@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const routerProp = require('./routers/router')
+const routers = require('./routers/router')
 const cors = require('cors')
 const port = process.env.PORT
 const host = process.env.HOST
@@ -19,8 +19,11 @@ app.use('/', loggerMiddleware)
 // Parsing dei JSON
 app.use(express.json())
 
-// Routing
-app.use("/api", routerProp)
+app.use("/api", routers)
+
+
+
+
 
 // Gestione delle rotte non trovate (deve venire dopo le tue route)
 app.use(notFound)
