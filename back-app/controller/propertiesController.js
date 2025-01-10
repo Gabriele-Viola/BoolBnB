@@ -1,8 +1,8 @@
 const connection = require('../db/connection')
 
-//metodo index che restituisce tutti gli oggetti presenti nel db
+//metodo index che restituisce tutti gli oggetti presenti nel db in ordine decrescente di like
 function index(req, res) {
-	const sql = 'SELECT * FROM properties'
+	const sql = 'SELECT * FROM properties ORDER BY `like` DESC'
 
 	connection.query(sql, (err, result) => {
 		if (err) {
