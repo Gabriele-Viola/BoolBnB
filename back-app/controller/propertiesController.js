@@ -114,6 +114,7 @@ function registration(req, res) {
 			return res.status(400).json({
 				error: 'Password must be at least 8 characters long and contain only letters and numbers'
 			})
+
 		/*
 		verify correct email format
 		the email must have at least 1 character before the @, at least 1 charcter after @ and 2 characters after the last dot 
