@@ -51,6 +51,13 @@ function create(req, res) {
 	const owner = req.params.owner
 	const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, m2, address, email_owners, \`like\`, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
 	const { name, rooms, beds, bathrooms, m2, address, email_owners, like, image } = req.body
+
+	//verifica che i dati siano validi
+
+	if (beds < 1 || rooms < 1 || bathrooms < 1 || m2 < 1)
+		return res.status(400).json({
+			error: 'Invalid data'
+		})
 	connection.query(sql, [owner, name, rooms, beds, bathrooms, m2, address, email_owners, like, image], (err, result) => {
 		if (err)
 			return res.status(500).json({
