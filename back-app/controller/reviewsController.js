@@ -26,6 +26,10 @@ function reviewCreate(req, res) {
 
     const { text_review, nights } = req.body
     connection.query(sql, [idUser, idProperty, text_review, date, nights], (err, result) => {
+        if (!text_review || !nights)
+            return res.status(400).json({
+                error: "Some fields are missing!"
+            })
         if (err) {
             res.status(500).json({
                 err: "Something went wrong..."
