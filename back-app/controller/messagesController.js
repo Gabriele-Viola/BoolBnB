@@ -6,7 +6,7 @@ function sendMessage(req, res) {
 	if (!id_user || !id_property || !text_message) {
 		return res.status(400).json({
 			success: false,
-			error: 'Tutti i campi sono obbligatori'
+			error: 'All fields are required'
 		})
 	}
 
