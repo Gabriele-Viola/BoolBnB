@@ -9,7 +9,21 @@ function sendMessage(req, res) {
 			error: 'All fields are required'
 		})
 	}
+	// Controllo che gli ID siano numeri validi
+	if (!Number.isInteger(Number(id_user)) || !Number.isInteger(Number(id_property))) {
+		return res.status(400).json({
+			success: false,
+			error: 'ID must be a valid integer'
+		})
+	}
 
+	// Controllo lunghezza del messaggio
+	if (text_message.length < 20 || text_message.length > 500) {
+		return res.status(400).json({
+			success: false,
+			error: 'Message must be between 20 and 500 characters'
+		})
+	}
 	// Query SQL per inserire il messaggio
 	const sql = `INSERT INTO messages (id_user, id_property, text_message) VALUES (?, ?, ?)`
 
