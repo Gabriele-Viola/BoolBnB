@@ -10,7 +10,7 @@ const { sendMessage } = require('../controller/messagesController')
 
 router.get('/properties', index)
 router.get('/properties/:id', show)
-router.post('/:owner', create)
+router.post('/properties/:owner', create)
 
 router.get('/user/logIn', logIn)
 router.post('/user/registration', registration)

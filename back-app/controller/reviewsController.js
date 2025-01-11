@@ -25,18 +25,30 @@ function reviewCreate(req, res) {
     const date = new Date();
 
     const { text_review, nights } = req.body
+    if (!text_review || !nights)
+        return res.status(400).json({
+            error: "Some fields are missing!"
+        })
+    if (!Number(nights) || nights <= 0) {
+        return res.status(400).json({
+            error: "Nights must be a positive number!"
+        });
+    }
+    if (text_review.length < 10) {
+        return res.status(400).json({
+            error: "Your review must be longer..."
+        })
+    }
+
     connection.query(sql, [idUser, idProperty, text_review, date, nights], (err, result) => {
-        if (!text_review || !nights)
-            return res.status(400).json({
-                error: "Some fields are missing!"
-            })
         if (err) {
             res.status(500).json({
                 err: "Something went wrong..."
             })
         }
         res.status(200).json({
-            success: true
+            success: true,
+            message: "Review added successfully"
         })
     })
 }
