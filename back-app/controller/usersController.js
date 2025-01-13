@@ -36,13 +36,13 @@ function logIn(req, res) {
 }
 // method registration to add a new user in the db
 function registration(req, res) {
-    const insertSql = `INSERT INTO users (name, surname, userName, password, email, phone, type) VALUES (?, ?, ?, ?, ?, ?, ?)`
-    const checkSql = `SELECT * FROM users WHERE email = ? OR userName = ?`
+    const insertSql = `INSERT INTO users (name, surname, user_name, password, email, phone, type) VALUES (?, ?, ?, ?, ?, ?, ?)`
+    const checkSql = `SELECT * FROM users WHERE email = ? OR user_name = ?`
 
-    const { name, surname, userName, password, email, phone } = req.body
+    const { name, surname, user_name, password, email, phone } = req.body
     const type = req.body.type.toUpperCase()
-    // verify if the email or the userName are already in use
-    connection.query(checkSql, [email, userName], (err, result) => {
+    // verify if the email or the user_name are already in use
+    connection.query(checkSql, [email, user_name], (err, result) => {
         if (err)
             return res.status(500).json({
                 error: 'something went wrong...'
@@ -52,15 +52,15 @@ function registration(req, res) {
                 return res.status(400).json({
                     error: 'Email already in use'
                 })
-        if (result[0]?.userName === userName)
+        if (result[0]?.user_name === user_name)
             return res.status(400).json({
-                error: 'Username already in use'
+                error: 'User_name already in use'
             })
 
-        //veryfing if name, surname and userName are at least 3 characters long
-        if (name.length < 3 || surname.length < 3 || userName.length < 3)
+        //veryfing if name, surname and user_name are at least 3 characters long
+        if (name.length < 3 || surname.length < 3 || user_name.length < 3)
             return res.status(400).json({
-                error: 'Name, surname and userName must be at least 3 characters long'
+                error: 'Name, surname and user_name must be at least 3 characters long'
             })
         //verify correct password format
         if (password.length < 8 || /[^a-zA-Z0-9]/.test(password))
@@ -90,7 +90,7 @@ function registration(req, res) {
                 error: 'Type must be UI or UP'
             })
 
-        connection.query(insertSql, [name, surname, userName, password, email, phone, type], (err, result) => {
+        connection.query(insertSql, [name, surname, user_name, password, email, phone, type], (err, result) => {
             if (err)
                 return res.status(500).json({
                     error: 'something went wrong...'
