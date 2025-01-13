@@ -63,14 +63,14 @@ export default function PropertyCard() {
 										<p className="card-text">{property.address}</p>
 										<button
 											onClick={() => handleLike(property.id)}
-											className="position-absolute bottom-0 end-0 p-2  bg-opacity-75 border-0">
+											className="position-absolute bottom-0 end-0 p-2  bg-opacity-75 border-0 rounded">
 											❤️ {property.like}
 										</button>
 									</div>
 									<img
 										src={property.image || 'https://placehold.co/300x250/EEE/31343C'}
 										alt={property.name}
-										className="card-img-top p-0"
+										className="card-img-bottom p-0"
 										// mostra un'immagine di placeholder se l'immagine non è disponibile
 										onError={(e) => (e.target.src = 'https://placehold.co/300x250/EEE/31343C')}
 										// Responsive image
