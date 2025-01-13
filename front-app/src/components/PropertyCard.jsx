@@ -27,12 +27,19 @@ export default function PropertyCard() {
 		fetchData()
 	}, [])
 
+	// Funzione che gestisce il click sul pulsante "like"
 	function handleLike(propertyId) {
+		// Aggiorna lo stato delle proprietà usando setProperties
 		setProperties(
+			// Mappa attraverso l'array delle proprietà
 			properties.map((property) => {
+				// Se l'id della proprietà corrente corrisponde a quello cliccato
 				if (property.id === propertyId) {
+					// Restituisce un nuovo oggetto con tutte le proprietà esistenti
+					// ma incrementa il contatore dei like di 1
 					return { ...property, like: property.like + 1 }
 				}
+				// Se non è la proprietà cliccata, la restituisce invariata
 				return property
 			})
 		)
