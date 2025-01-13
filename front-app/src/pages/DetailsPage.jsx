@@ -1,18 +1,19 @@
-import { data, Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 
 export default function DetailsPage() {
 
-	//const { id } = useParams()
-	//console.log(id)
+	const { id } = useParams()
 	const [property, setProperty] = useState({})
 	const [services, setServices] = useState([])
 	const [reviews, setReviews] = useState([])
+	const [nameUser, setNameUser] = useState("")
+	const [nights, setNights] = useState("")
+	const [review, setReview] = useState("")
 
-	const [formReview, setFormReview] = useState({ name: "", nights: "", review: "" })
 
-	const urlShow = "http://localhost:3000/api/properties/1"
-	const urlreviews = "http://localhost:3000/api/1/reviews"
+	const urlShow = `http://localhost:3000/api/properties/${id}`
+	const urlreviews = `http://localhost:3000/api/${id}/reviews`
 
 	useEffect(() => {
 
@@ -32,14 +33,14 @@ export default function DetailsPage() {
 
 
 
-	}, [reviews])
+	}, [id])
 
 	function HandleSubReview(e) {
 		e.preventDefault()
 		const userName = e.target.name.value
 
 
-		const urlPostReview = `http://localhost:3000/api/1/${userName}/add-review`
+		const urlPostReview = `http://localhost:3000/api/${id}/${userName}/add-review`
 		const formReview = {
 			id_property: '1',
 			name: userName,
@@ -60,6 +61,9 @@ export default function DetailsPage() {
 			}).catch(err => {
 				console.error(err)
 			})
+		setNameUser("")
+		setNights("")
+		setReview("")
 
 
 	}
@@ -136,11 +140,11 @@ export default function DetailsPage() {
 						</div>)}
 					<form onSubmit={HandleSubReview}>
 						<label htmlFor="name" className="form-label">Name</label>
-						<input type="text" id='name' name='name' className="form-control" />
+						<input type="text" id='name' name='name' value={nameUser} onChange={(e) => setNameUser(e.target.value)} className="form-control" />
 						<label htmlFor="nights" className="form-label">Nights</label>
-						<input type="number" id="nights" name="nights" className="form-control" />
+						<input type="number" id="nights" name="nights" value={nights} onChange={(e) => setNights(e.target.value)} className="form-control" />
 						<label htmlFor="review" className="form-label">Your review</label>
-						<textarea className="form-control" name="review" id="review"></textarea>
+						<textarea className="form-control" name="review" id="review" value={review} onChange={(e) => setReview(e.target.value)}></textarea>
 						<button className="btn btn-primary" type="submit"><i className="bi bi-send-fill"></i> Send</button>
 					</form>
 
