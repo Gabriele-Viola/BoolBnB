@@ -1,41 +1,41 @@
 ## BoolBnB
 # users table
-- id: int no null AI PK
-- name:  varchar(50) no null
-- surname: varchar(200) no null
-- userName: varchar(150) no null
-- password: varchar(150) no null
-- email:    varchar(150) no null
-- phone: varchar(20) no null
-- type: char(2) no null
+- id: int no null AI PK unsigned unique
+- name:  varchar(255) no null
+- surname: varchar(255) no null
+- user_name: varchar(255) no null
+- password: varchar(255) no null
+- email:    varchar(255) no null
+- phone: varchar(255) no null
+- type: varchar(255) no null
 
 # properties table
-- id: int no null AI PK
+- id: int no null AI PK unsigned unique
 - id_user: int no null FK
-- name: varchar(50) no null
-- rooms: tinyint no null
-- beds: tinyint no null
-- bathrooms: tinyint no null
-- m^2: smallint no null
-- address: varchar(200) no null
-- email_owners: varchar(150) no null
-- like: smallint no null
-- image: varchar(100) null
+- name: varchar(255) no null
+- rooms: tinyint no null unsigned
+- beds: tinyint no null unsigned
+- bathrooms: tinyint no null unsigned
+- mq: smallint no null unsigned
+- address: varchar(255) no null
+- email_owners: varchar(255) no null
+- like: int no null unsigned
+- image: varchar(255) null
 
 
 # reviews table
-- id: int no null AI PK
-- id_user: int no null FK
+- id: int no null AI PK unsigned unique
 - id_property: int no null FK
-- text_review: text(500) no null
+- name: varchar(255) no null
+- text_review: text(1000) no null
 - date_review: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 - nights: tinyint no null
 
 # messages table
-- id: int no null AI PK
-- id_user: int no null FK
+- id: int no null AI PK unsigned unique
 - id_property: int no null FK
-- text_message: text(500) no null
+- email: varchar(255) no null
+- text_message: text(1000) no null
 - date_message: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
 # properties_services table
@@ -43,5 +43,5 @@
 - id_property: int no null FK
 
 # services table
-- id: int no null AI PK
-- name: varchar(50) no null FK
+- id: int no null AI PK unsigned unique
+- name: varchar(255) no null FK
