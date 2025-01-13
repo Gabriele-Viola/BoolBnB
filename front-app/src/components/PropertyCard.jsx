@@ -4,7 +4,7 @@ export default function PropertyCard() {
 	const [properties, setProperties] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
-	const [likes, setLikes] = useState(0)
+
 	const url = 'http://localhost:3000/api/properties'
 
 	// Fetch data dall'API con async/await per migliorare la leggibilità del codice
