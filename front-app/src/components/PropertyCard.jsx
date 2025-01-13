@@ -29,24 +29,18 @@ export default function PropertyCard() {
 	}, [])
 
 	// Funzione che gestisce il click sul pulsante "like"
-	const handleLikeIncrement = async () => {
-		setLoading(true)
+	const handleLikeIncrement = async (propertyId) => {
 		try {
-			// Chiamata API per incrementare il lik
-			const response = await fetch(`http://localhost:3000/api/like/${property.id}`, {
+			const response = await fetch(`http://localhost:3000/api/like/${propertyId}`, {
 				method: 'PUT'
 			})
 
-			if (!response.ok) {
-				throw new Error('Error incrementing like')
+			if (response.ok) {
+				// Ricarica tutti i dati dopo l'aggiornamento del like
+				fetchData()
 			}
-
-			const data = await response.json()
-			setLikes(data.like)
 		} catch (err) {
-			setError(err.message)
-		} finally {
-			setLoading(false)
+			console.error('Errore:', err)
 		}
 	}
 	// mostriamo un messaggio di caricamento se loading è true
