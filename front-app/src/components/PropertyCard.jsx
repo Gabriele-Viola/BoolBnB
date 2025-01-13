@@ -27,6 +27,16 @@ export default function PropertyCard() {
 		fetchData()
 	}, [])
 
+	function handleLike(propertyId) {
+		setProperties(
+			properties.map((property) => {
+				if (property.id === propertyId) {
+					return { ...property, like: property.like + 1 }
+				}
+				return property
+			})
+		)
+	}
 	// mostriamo un messaggio di caricamento se loading è true
 	if (loading) return <p>Loading...</p>
 
@@ -44,7 +54,11 @@ export default function PropertyCard() {
 									<div className="card-body">
 										<h3 className="card-title ">{property.name}</h3>
 										<p className="card-text">{property.address}</p>
-										<span className="text-muted position-absolute bottom-0 end-0">❤️ {property.like}</span>
+										<button
+											onClick={() => handleLike(property.id)}
+											className="position-absolute bottom-0 end-0 p-2  bg-opacity-75 border-0">
+											❤️ {property.like}
+										</button>
 									</div>
 									<img
 										src={property.image || 'https://placehold.co/300x250/EEE/31343C'}
