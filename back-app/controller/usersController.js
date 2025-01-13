@@ -39,12 +39,13 @@ function registration(req, res) {
     const insertSql = `INSERT INTO users (name, surname, userName, password, email, phone, type) VALUES (?, ?, ?, ?, ?, ?, ?)`
     const checkSql = `SELECT * FROM users WHERE email = ? OR userName = ?`
 
-    const { name, surname, userName, password, email, phone, type } = req.body
+    const { name, surname, userName, password, email, phone } = req.body
+    const type = req.body.type.toUpperCase()
     // verify if the email or the userName are already in use
     connection.query(checkSql, [email, userName], (err, result) => {
         if (err)
             return res.status(500).json({
-                error: err
+                error: 'something went wrong...'
             })
         if (result.length > 0)
             if (result[0]?.email === email)
@@ -92,7 +93,7 @@ function registration(req, res) {
         connection.query(insertSql, [name, surname, userName, password, email, phone, type], (err, result) => {
             if (err)
                 return res.status(500).json({
-                    error: err
+                    error: 'something went wrong...'
                 })
             return res.status(201).json({
                 status: 'success',

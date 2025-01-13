@@ -7,7 +7,7 @@ function index(req, res) {
 	connection.query(sql, (err, result) => {
 		if (err) {
 			return res.status(500).json({
-				error: err
+				error: 'something went wrong...'
 			})
 		}
 		res.status(200).json({
@@ -31,7 +31,7 @@ function show(req, res) {
 	connection.query(sql, [id], (err, result) => {
 		if (err)
 			return res.status(500).json({
-				error: err
+				error: 'error server side'
 			})
 		if (result.length === 0)
 			return res.status(404).json({
@@ -62,7 +62,6 @@ function create(req, res) {
 		if (err)
 			return res.status(500).json({
 				error: "Something went wrong...",
-				err: err
 			})
 		return res.status(201).json({
 			success: true

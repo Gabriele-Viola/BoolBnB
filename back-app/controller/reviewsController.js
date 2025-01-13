@@ -8,7 +8,7 @@ function reviewsShow(req, res) {
     connection.query(sql, [id], (err, result) => {
         if (err) {
             return res.status(500).json({
-                error: err
+                error: 'Something went wrong... '
             })
         }
         res.status(200).json({
