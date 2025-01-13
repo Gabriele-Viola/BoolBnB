@@ -1,10 +1,9 @@
-import { data, Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 
 export default function DetailsPage() {
 
-	//const { id } = useParams()
-	//console.log(id)
+	const { id } = useParams()
 	const [property, setProperty] = useState({})
 	const [services, setServices] = useState([])
 	const [reviews, setReviews] = useState([])
@@ -13,8 +12,8 @@ export default function DetailsPage() {
 	const [review, setReview] = useState("")
 
 
-	const urlShow = "http://localhost:3000/api/properties/1"
-	const urlreviews = "http://localhost:3000/api/1/reviews"
+	const urlShow = `http://localhost:3000/api/properties/${id}`
+	const urlreviews = `http://localhost:3000/api/${id}/reviews`
 
 	useEffect(() => {
 
@@ -34,14 +33,14 @@ export default function DetailsPage() {
 
 
 
-	}, [reviews])
+	}, [id])
 
 	function HandleSubReview(e) {
 		e.preventDefault()
 		const userName = e.target.name.value
 
 
-		const urlPostReview = `http://localhost:3000/api/1/${userName}/add-review`
+		const urlPostReview = `http://localhost:3000/api/${id}/${userName}/add-review`
 		const formReview = {
 			id_property: '1',
 			name: userName,
