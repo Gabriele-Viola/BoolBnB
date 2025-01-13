@@ -58,20 +58,39 @@ function create(req, res) {
 		return res.status(400).json({
 			error: 'Invalid data'
 		})
-	connection.query(sql, [owner, name, rooms, beds, bathrooms, m2, address, email_owners, like, image], (err, result) => {
+	connection.query(
+		sql,
+		[owner, name, rooms, beds, bathrooms, m2, address, email_owners, like, image],
+		(err, result) => {
+			if (err)
+				return res.status(500).json({
+					error: 'Something went wrong...'
+				})
+			return res.status(201).json({
+				success: true
+			})
+		}
+	)
+}
+
+function likeUpdate(req, res) {
+	const id = req.params.id
+	const sql = `UPDATE properties SET \`like\` = \`like\` + 1 WHERE id = ?`
+	connection.query(sql, [id], (err, result) => {
 		if (err)
 			return res.status(500).json({
-				error: "Something went wrong...",
+				error: 'Something went wrong...'
 			})
-		return res.status(201).json({
-			success: true
+		return res.status(200).json({
+			success: true,
+			message: 'Like updated'
 		})
 	})
 }
 
-
 module.exports = {
 	index,
 	show,
-	create
+	create,
+	likeUpdate
 }

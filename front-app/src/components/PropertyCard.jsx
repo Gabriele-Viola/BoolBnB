@@ -4,6 +4,7 @@ export default function PropertyCard() {
 	const [properties, setProperties] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
+	const [likes, setLikes] = useState(0)
 	const url = 'http://localhost:3000/api/properties'
 
 	// Fetch data dall'API con async/await per migliorare la leggibilità del codice
@@ -28,21 +29,25 @@ export default function PropertyCard() {
 	}, [])
 
 	// Funzione che gestisce il click sul pulsante "like"
-	function handleLike(propertyId) {
-		// Aggiorna lo stato delle proprietà usando setProperties
-		setProperties(
-			// Mappa attraverso l'array delle proprietà
-			properties.map((property) => {
-				// Se l'id della proprietà corrente corrisponde a quello cliccato
-				if (property.id === propertyId) {
-					// Restituisce un nuovo oggetto con tutte le proprietà esistenti
-					// ma incrementa il contatore dei like di 1
-					return { ...property, like: property.like + 1 }
-				}
-				// Se non è la proprietà cliccata, la restituisce invariata
-				return property
+	const handleLikeIncrement = async () => {
+		setLoading(true)
+		try {
+			// Chiamata API per incrementare il lik
+			const response = await fetch(`http://localhost:3000/api/like/${property.id}`, {
+				method: 'PUT'
 			})
-		)
+
+			if (!response.ok) {
+				throw new Error('Error incrementing like')
+			}
+
+			const data = await response.json()
+			setLikes(data.like)
+		} catch (err) {
+			setError(err.message)
+		} finally {
+			setLoading(false)
+		}
 	}
 	// mostriamo un messaggio di caricamento se loading è true
 	if (loading) return <p>Loading...</p>
@@ -62,7 +67,7 @@ export default function PropertyCard() {
 										<h3 className="card-title ">{property.name}</h3>
 										<p className="card-text">{property.address}</p>
 										<button
-											onClick={() => handleLike(property.id)}
+											onClick={() => handleLikeIncrement(property.id)}
 											className="position-absolute bottom-0 end-0 p-2  bg-opacity-75 border-0 rounded">
 											❤️ {property.like}
 										</button>
