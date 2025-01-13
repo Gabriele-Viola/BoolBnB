@@ -33,7 +33,7 @@ function sendMessage(req, res) {
 			return res.status(500).json({
 				success: false,
 				error: 'Error sending message',
-				details: err
+				details: 'something went wrong...'
 			})
 		}
 		return res.status(201).json({
