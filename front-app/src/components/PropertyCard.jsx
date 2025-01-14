@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function PropertyCard() {
 	const [properties, setProperties] = useState([])
@@ -56,16 +57,22 @@ export default function PropertyCard() {
 					{properties.length > 0 ? (
 						properties.map((property) => (
 							<div className="col-12 col-md-6 col-lg-4" key={property.id}>
+
 								<div className="card h-100">
+
 									<div className="card-body">
 										<h3 className="card-title ">{property.name}</h3>
 										<p className="card-text">{property.address}</p>
 										<button
 											onClick={() => handleLikeIncrement(property.id)}
-											className="position-absolute bottom-0 end-0 p-2  bg-opacity-75 border-0 rounded">
-											❤️ {property.like}
+											className="position-absolute bottom-0 end-0 p-2 bg-white bg-opacity-25 custom-blur  border-0 rounded">
+											<span style={{ fontSize: '1.2rem' }}>❤️ {property.like}</span>
 										</button>
+										<Link to={`/properties/${property.id}`} className="text-decoration-none text-dark">
+											<button className="btn btn-primary">Details</button>
+										</Link>
 									</div>
+
 									<img
 										src={property.image || 'https://placehold.co/300x250/EEE/31343C'}
 										alt={property.name}
