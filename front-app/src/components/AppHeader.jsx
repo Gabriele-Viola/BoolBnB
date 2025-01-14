@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 
 export default function AppHeader() {
 	return (
-		<header className="bg-primary text-white py-4 shadow-sm fixed-top">
+		<header className=" text-white py-4 shadow-sm fixed-top" style={{ backgroundColor: '#29B6F6' }}>
 			<div className="container d-flex justify-content-between align-items-center">
 				<div className="d-flex align-items-center">
 					<NavLink to="/" className="text-white text-decoration-none">
