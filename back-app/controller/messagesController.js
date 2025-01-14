@@ -18,10 +18,10 @@ function sendMessage(req, res) {
 		})
 	}
 	// Controllo lunghezza del messaggio
-	if (text_message.length < 20 || text_message.length > 500) {
+	if (text_message.length < 10 || text_message.length > 500) {
 		return res.status(400).json({
 			success: false,
-			error: 'Message must be between 20 and 500 characters'
+			error: 'Message must be between 10 and 500 characters'
 		})
 	}
 	// Query SQL per inserire il messaggio
