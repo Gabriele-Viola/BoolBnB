@@ -57,7 +57,9 @@ export default function PropertyCard() {
 					{properties.length > 0 ? (
 						properties.map((property) => (
 							<div className="col-12 col-md-6 col-lg-4" key={property.id}>
-								<div className="card">
+
+								<div className="card h-100">
+
 									<div className="card-body">
 										<h3 className="card-title ">{property.name}</h3>
 										<p className="card-text">{property.address}</p>
