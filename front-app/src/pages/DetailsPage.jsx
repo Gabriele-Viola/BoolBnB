@@ -20,6 +20,16 @@ export default function DetailsPage() {
 	const urlShow = `http://localhost:3000/api/properties/${id}`
 	const urlreviews = `http://localhost:3000/api/${id}/reviews`
 
+	function fetchReviews() {
+		fetch(urlreviews)
+			.then((res) => res.json())
+			.then((data) => {
+				setReviews(data.reviews)
+			})
+			.catch((err) => {
+				console.error(err)
+			})
+	}
 	useEffect(() => {
 		fetch(urlShow)
 			.then((res) => res.json())
@@ -29,12 +39,8 @@ export default function DetailsPage() {
 			})
 			.catch((err) => console.error(err))
 
-		fetch(urlreviews)
-			.then((res) => res.json())
-			.then((data) => {
-				setReviews(data.reviews)
-			})
-	}, [id, reviews])
+		fetchReviews()
+	}, [id])
 
 	function HandleSubReview(e) {
 		e.preventDefault()
@@ -59,6 +65,7 @@ export default function DetailsPage() {
 			.then((data) => {
 				console.log(data)
 				setFeedback('Your review has been sent!')
+				fetchReviews()
 				setTimeout(() => {
 					setFeedback('')
 				}, 3000)
