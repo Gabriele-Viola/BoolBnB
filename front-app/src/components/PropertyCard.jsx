@@ -63,8 +63,8 @@ export default function PropertyCard() {
 										<p className="card-text">{property.address}</p>
 										<button
 											onClick={() => handleLikeIncrement(property.id)}
-											className="position-absolute bottom-0 end-0 p-2  bg-opacity-75 border-0 rounded">
-											❤️ {property.like}
+											className="position-absolute bottom-0 end-0 p-2 bg-white bg-opacity-25 custom-blur  border-0 rounded">
+											<span style={{ fontSize: '1.2rem' }}>❤️ {property.like}</span>
 										</button>
 										<Link to={`/properties/${property.id}`} className="text-decoration-none text-dark">
 											<button className="btn btn-primary">Details</button>
