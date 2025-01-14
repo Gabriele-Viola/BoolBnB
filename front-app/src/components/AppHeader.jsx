@@ -2,11 +2,11 @@ import { NavLink } from 'react-router-dom'
 
 export default function AppHeader() {
 	return (
-		<header className=" text-white py-4 shadow-sm fixed-top" style={{ backgroundColor: '#29B6F6' }}>
+		<header className=" text-white py-1 shadow-sm fixed-top" style={{ backgroundColor: '#29B6F6' }}>
 			<div className="container d-flex justify-content-between align-items-center">
 				<div className="d-flex align-items-center">
 					<NavLink to="/" className="text-white text-decoration-none">
-						<h1 className="mb-0 fs-3">BoolB&B</h1>
+						<img className='logo' src="/logo.png" alt="" />
 					</NavLink>
 				</div>
 
