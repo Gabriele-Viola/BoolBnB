@@ -19,8 +19,8 @@ function reviewsShow(req, res) {
 
 // Metodo per aggiungere una recensione
 function reviewCreate(req, res) {
-    const sql = `INSERT INTO reviews (id_user, id_property, text_review, date_review, nights) VALUES (?, ?, ?, ?, ?)`
-    const idUser = req.params.id_user;
+    const sql = `INSERT INTO reviews (id_property, name, text_review, nights, date_review) VALUES (?, ?, ?, ?, ?)`
+    const idName = req.params.name;
     const idProperty = req.params.id_property;
     const date = new Date();
 
@@ -40,7 +40,7 @@ function reviewCreate(req, res) {
         })
     }
 
-    connection.query(sql, [idUser, idProperty, text_review, date, nights], (err, result) => {
+    connection.query(sql, [idProperty, idName, text_review, nights, date], (err, result) => {
         if (err) {
             res.status(500).json({
                 err: "Something went wrong..."
