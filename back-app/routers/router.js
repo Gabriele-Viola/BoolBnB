@@ -16,6 +16,6 @@ router.post('/user/registration', registration)
 router.post('/message/send', sendMessage)
 
 router.get('/:id_property/reviews', reviewsShow)
-router.post('/:id_property/:id_user/add-review', reviewCreate)
+router.post('/:id_property/:name/add-review', reviewCreate)
 
 module.exports = router
