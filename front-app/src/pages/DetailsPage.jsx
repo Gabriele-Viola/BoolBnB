@@ -1,6 +1,9 @@
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
-import PropertiesCard from "../components/PropertiesCard"
+import DetailsCard from "../components/DetailsCard"
+import ReviewsCard from "../components/ReviewsCard"
+import FormAddReview from "../components/FormAddReview"
+import FormSendMessage from "../components/FormSendMessage"
 
 export default function DetailsPage() {
 
@@ -95,62 +98,34 @@ export default function DetailsPage() {
 		setTextUser("")
 	}
 
+	function HandleinputToggle(item) {
+		document.getElementById(item).classList.toggle('d-none')
+	}
+
 	return (
 		<div>
-			<div className="container">
+			<div className="container position-relative">
 				<div className="row my-4 align-items-center">
 					<div className="col-6">
 						<h1>Property details</h1>
 					</div>
 					<div className="col-6 text-end">
-						<button type="button" className="btn btn-primary">Send Message</button>
+						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage')}>Send Message</button>
 					</div>
 				</div>
 			</div>
 			<div className="container">
 
-				<PropertiesCard property={property} services={services} />
+				<DetailsCard property={property} services={services} />
 				<div className="reviews mt-5">
 					<h3>Reviews</h3>
-					{reviews.map(review =>
-						<div className="card my-3" key={review.id}>
-							<div className="card-body">
-								<div className="fs-5">{review.text_review}</div>
-								<div><span className="text-muted">Nights: </span>{review.nights}</div>
-								<span className="text-muted">By: </span>
-								{review.name === "" ? <span>Guest</span> : <span>{review.name}</span>}
-								<div><span className="text-muted">Date review: </span>{review.date_review.slice(0, 10)}</div>
-							</div>
-						</div>)}
-
-
-					<div className="mt-5 p-3 border border-primary-subtle rounded">
-						<h3 className="mb-2 text-center">Leave your review</h3>
-						<form className="newReview" onSubmit={HandleSubReview}>
-							<label htmlFor="name" className="form-label">Name</label>
-							<input type="text" id='name' name='name' value={nameUser} onChange={(e) => setNameUser(e.target.value)} className="form-control mb-3" placeholder="Your name" />
-							<label htmlFor="nights" className="form-label">Nights</label>
-							<input type="number" id="nights" name="nights" value={nights} onChange={(e) => setNights(e.target.value)} className="form-control mb-3" placeholder="Number of nights spent in the property" />
-							<label htmlFor="review" className="form-label">Your review</label>
-							<textarea className="form-control mb-3" name="review" id="review" value={review} onChange={(e) => setReview(e.target.value)} placeholder="Type your review"></textarea>
-							<button className="btn btn-primary" type="submit"><i className="bi bi-send-fill"></i> Send</button>
-						</form>
-					</div>
-
-					<div className="mt-5 p-3 border border-primary-subtle rounded">
-						<h3 className="mb-2 text-center">Send your message</h3>
-						<form className="newMessage" onSubmit={HandleSubMessage}>
-							<label htmlFor="email" className="form-label">Your email</label>
-							<input type="email" id='email' name='email' value={emailUser} onChange={(e) => setEmailUser(e.target.value)} className="form-control mb-3" placeholder="Your email address" />
-							<label htmlFor="message" className="form-label">Your message</label>
-							<textarea className="form-control mb-3" name="message" id="message" value={textUser} onChange={(e) => setTextUser(e.target.value)} placeholder="Your message"></textarea>
-							<button className="btn btn-primary" type="submit"><i className="bi bi-send-fill"></i> Send</button>
-						</form>
-					</div>
+					<ReviewsCard reviews={reviews} />
+					<FormAddReview HandleSubReview={HandleSubReview} nameUser={nameUser} setNameUser={setNameUser} nights={nights} setNights={setNights} review={review} setReview={setReview} />
 
 
 				</div>
 			</div>
+			<FormSendMessage HandleinputToggle={HandleinputToggle} HandleSubMessage={HandleSubMessage} emailUser={emailUser} setEmailUser={setEmailUser} textUser={textUser} setTextUser={setTextUser} />
 		</div>
 	)
 }

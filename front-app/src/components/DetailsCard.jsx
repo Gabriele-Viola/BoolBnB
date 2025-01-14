@@ -1,4 +1,4 @@
-export default function PropertiesCard({ property, services }) {
+export default function DetailsCard({ property, services }) {
     return (
         <>
             <div className="card">
