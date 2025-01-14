@@ -87,15 +87,15 @@ export default function DetailsPage() {
 	return (
 		<div>
 			<div className="container">
-				<div className="row my-4 align-items-center justify-content-between">
-					<div className="col-4">
+				<div className="row my-4 align-items-center">
+					<div className="col-6">
 						<h1>Property details</h1>
 					</div>
-					<div className="col-4">
+					<div className="col-3">
 						<button type="button" className="btn btn-primary">Send Message</button>
 					</div>
-					<div className="col-4">
-						<button type="button" className="btn btn-primary">Leave your review</button>
+					<div className="col-3">
+						<button type="button" className="btn btn-primary justify-self-end">Leave your review</button>
 					</div>
 				</div>
 			</div>
@@ -159,23 +159,30 @@ export default function DetailsPage() {
 								<div><span className="text-muted">Date review: </span>{review.date_review.slice(0, 10)}</div>
 							</div>
 						</div>)}
-					<form className="newReview" onSubmit={HandleSubReview}>
-						<label htmlFor="name" className="form-label">Name</label>
-						<input type="text" id='name' name='name' className="form-control" placeholder="Your name" />
-						<label htmlFor="nights" className="form-label">Nights</label>
-						<input type="number" id="nights" name="nights" className="form-control" placeholder="Number of nights spent in the property" />
-						<label htmlFor="review" className="form-label">Your review</label>
-						<textarea className="form-control" name="review" id="review" placeholder="Type your review"></textarea>
-						<button className="btn btn-primary" type="submit"><i className="bi bi-send-fill"></i> Send</button>
-					</form>
 
-					<form className="newMessage" onSubmit={HandleSubMessage}>
-						<label htmlFor="email" className="form-label">Your email</label>
-						<input type="email" id='email' name='email' className="form-control" placeholder="Your email address" />
-						<label htmlFor="message" className="form-label">Your message</label>
-						<textarea className="form-control" name="message" id="message" placeholder="Your message"></textarea>
-						<button className="btn btn-primary" type="submit"><i className="bi bi-send-fill"></i> Send</button>
-					</form>
+					<div className="mt-5 p-3 border border-primary-subtle rounded">
+						<h3 className="mb-2 text-center">Leave your review</h3>
+						<form className="newReview" onSubmit={HandleSubReview}>
+							<label htmlFor="name" className="form-label">Name</label>
+							<input type="text" id='name' name='name' className="form-control mb-3" placeholder="Your name" />
+							<label htmlFor="nights" className="form-label">Nights</label>
+							<input type="number" id="nights" name="nights" className="form-control mb-3" placeholder="Number of nights spent in the property" />
+							<label htmlFor="review" className="form-label">Your review</label>
+							<textarea className="form-control mb-3" name="review" id="review" placeholder="Type your review"></textarea>
+							<button className="btn btn-primary" type="submit"><i className="bi bi-send-fill"></i> Send</button>
+						</form>
+					</div>
+
+					<div className="mt-5 p-3 border border-primary-subtle rounded">
+						<h3 className="mb-2 text-center">Send your message</h3>
+						<form className="newMessage" onSubmit={HandleSubMessage}>
+							<label htmlFor="email" className="form-label">Your email</label>
+							<input type="email" id='email' name='email' className="form-control mb-3" placeholder="Your email address" />
+							<label htmlFor="message" className="form-label">Your message</label>
+							<textarea className="form-control mb-3" name="message" id="message" placeholder="Your message"></textarea>
+							<button className="btn btn-primary" type="submit"><i className="bi bi-send-fill"></i> Send</button>
+						</form>
+					</div>
 
 				</div>
 			</div>
