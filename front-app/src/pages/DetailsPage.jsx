@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
+import PropertiesCard from "../components/PropertiesCard"
 
 export default function DetailsPage() {
 
@@ -10,6 +11,8 @@ export default function DetailsPage() {
 	const [nameUser, setNameUser] = useState("")
 	const [nights, setNights] = useState("")
 	const [review, setReview] = useState("")
+	const [emailUser, setEmailUser] = useState("")
+	const [textUser, setTextUser] = useState("")
 
 
 	const urlShow = `http://localhost:3000/api/properties/${id}`
@@ -39,7 +42,7 @@ export default function DetailsPage() {
 		const urlPostReview = `http://localhost:3000/api/${id}/${userName}/add-review`
 
 		const formReview = {
-			id_property: '1',
+			id_property: id,
 			name: userName,
 			text_review: e.target.review.value,
 			nights: e.target.nights.value
@@ -58,7 +61,7 @@ export default function DetailsPage() {
 			}).catch(err => {
 				console.error(err)
 			})
-setNameUser("")
+		setNameUser("")
 		setNights("")
 		setReview("")
 	}
@@ -70,7 +73,7 @@ setNameUser("")
 		const urlPostMessage = "http://localhost:3000/api/message/send"
 
 		const formMessage = {
-			id_property: '1',
+			id_property: id,
 			email: e.target.email.value,
 			text_message: e.target.message.value
 		}
@@ -88,6 +91,8 @@ setNameUser("")
 			}).catch(err => {
 				console.error(err)
 			})
+		setEmailUser("")
+		setTextUser("")
 	}
 
 	return (
@@ -97,62 +102,14 @@ setNameUser("")
 					<div className="col-6">
 						<h1>Property details</h1>
 					</div>
-					<div className="col-3">
+					<div className="col-6 text-end">
 						<button type="button" className="btn btn-primary">Send Message</button>
-					</div>
-					<div className="col-3">
-						<button type="button" className="btn btn-primary justify-self-end">Leave your review</button>
 					</div>
 				</div>
 			</div>
 			<div className="container">
-				<div className="card">
-					<div className="card-img-top"></div>
-					<div className="card-body">
-						<div className="card-title mb-2 text-center">
-							<h2>{property.name}</h2>
-						</div>
-						<div>
-							<h4>
-								Property Features:
-							</h4>
-							<div className="row mt-2 g-3">
-								<div className="col-4">
-									<strong>Rooms: </strong>
-									<span>{property.rooms}</span>
-								</div>
-								<div className="col-4">
-									<strong>Beds: </strong>
-									<span>{property.beds}</span>
-								</div>
-								<div className="col-4">
-									<strong>Bathrooms: </strong>
-									<span>{property.bathrooms}</span>
-								</div>
-								<div className="col-4">
-									<i className="bi bi-rulers"> </i>
-									{property.mq}
-								</div>
-								<div className="col-4">
-									<i className="bi bi-geo-alt"> </i>
-									{property.address}
-								</div>
-								<div className="col-4">
-									<i className="bi bi-envelope"> </i>
-									{property.email_owners}
-								</div>
-								<div className="col-4">
-									<i className="bi bi-heart"> </i>
-									{property.like}
-								</div>
-								<div className="col-4">
-									<i className="bi bi-tools"> </i>
-									{services.join(", ")}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+
+				<PropertiesCard property={property} services={services} />
 				<div className="reviews mt-5">
 					<h3>Reviews</h3>
 					{reviews.map(review =>
@@ -184,9 +141,9 @@ setNameUser("")
 						<h3 className="mb-2 text-center">Send your message</h3>
 						<form className="newMessage" onSubmit={HandleSubMessage}>
 							<label htmlFor="email" className="form-label">Your email</label>
-							<input type="email" id='email' name='email' className="form-control mb-3" placeholder="Your email address" />
+							<input type="email" id='email' name='email' value={emailUser} onChange={(e) => setEmailUser(e.target.value)} className="form-control mb-3" placeholder="Your email address" />
 							<label htmlFor="message" className="form-label">Your message</label>
-							<textarea className="form-control mb-3" name="message" id="message" placeholder="Your message"></textarea>
+							<textarea className="form-control mb-3" name="message" id="message" value={textUser} onChange={(e) => setTextUser(e.target.value)} placeholder="Your message"></textarea>
 							<button className="btn btn-primary" type="submit"><i className="bi bi-send-fill"></i> Send</button>
 						</form>
 					</div>
