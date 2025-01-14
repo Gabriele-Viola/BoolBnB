@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function PropertyCard() {
 	const [properties, setProperties] = useState([])
@@ -56,7 +57,7 @@ export default function PropertyCard() {
 					{properties.length > 0 ? (
 						properties.map((property) => (
 							<div className="col-12 col-md-6 col-lg-4" key={property.id}>
-								<div className="card ">
+								<div className="card">
 									<div className="card-body">
 										<h3 className="card-title ">{property.name}</h3>
 										<p className="card-text">{property.address}</p>
@@ -65,7 +66,11 @@ export default function PropertyCard() {
 											className="position-absolute bottom-0 end-0 p-2  bg-opacity-75 border-0 rounded">
 											❤️ {property.like}
 										</button>
+										<Link to={`/properties/${property.id}`} className="text-decoration-none text-dark">
+											<button className="btn btn-primary">Details</button>
+										</Link>
 									</div>
+
 									<img
 										src={property.image || 'https://placehold.co/300x250/EEE/31343C'}
 										alt={property.name}
