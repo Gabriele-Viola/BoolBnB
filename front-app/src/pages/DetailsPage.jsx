@@ -119,10 +119,11 @@ export default function DetailsPage() {
 				<DetailsCard property={property} services={services} />
 				<div className="reviews mt-5">
 					<h3>Reviews</h3>
-					<ReviewsCard reviews={reviews} />
+					<div className="row g-3">
+						<ReviewsCard reviews={reviews} />
+					</div>
+
 					<FormAddReview HandleSubReview={HandleSubReview} nameUser={nameUser} setNameUser={setNameUser} nights={nights} setNights={setNights} review={review} setReview={setReview} />
-
-
 				</div>
 			</div>
 			<FormSendMessage HandleinputToggle={HandleinputToggle} HandleSubMessage={HandleSubMessage} emailUser={emailUser} setEmailUser={setEmailUser} textUser={textUser} setTextUser={setTextUser} />
