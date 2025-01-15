@@ -14,7 +14,7 @@ function App() {
 					<Route element={<LayoutDef />}>
 						<Route index element={<Homepage />} />
 						<Route path="/properties/:id" element={<DetailsPage />} />
-						<Route path="/properties/:owner" element={<AddPropertiesPage />} />
+						<Route path="/add/properties/:owner" element={<AddPropertiesPage />} />
 						<Route path="/about" element={<About />} />
 						<Route path="/contact" element={<Contact />} />
 					</Route>
