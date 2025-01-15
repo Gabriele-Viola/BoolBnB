@@ -23,7 +23,7 @@ export default function Homepage() {
 				</div>
 				<div className='d-flex justify-content-end'>
 					{/* <Link to={url}><button className='btn btn-primary'>Aggiungi</button></Link> */}
-					{user?.id && <span>Accesso effettuato come: <h3>{user.user_name}</h3></span>}
+					{/* {user?.id && <span>Accesso effettuato come: <h3>{user.user_name}</h3></span>} */}
 				</div>
 			</div>
 			<PropertyCard />

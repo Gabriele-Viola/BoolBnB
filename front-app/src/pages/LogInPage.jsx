@@ -2,9 +2,10 @@ import { Link } from "react-router-dom"
 import { useGlobalContext } from "../Context/GlobalContext"
 import { useState } from "react"
 export default function LogInPage() {
+    const [errorLog, setErrorLog] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const { user, setUser, error, setError } = useGlobalContext()
+    const { user, setUser } = useGlobalContext()
     const urlLogIn = "http://localhost:3000/api/user/logIn"
 
     function HandleUser(e) {
@@ -25,10 +26,10 @@ export default function LogInPage() {
             .then(data => {
                 if (data?.user) {
                     setUser(data.user)
-                    setError(null)
+                    setErrorLog(null)
 
                 } else {
-                    setError(data?.error)
+                    setErrorLog(data?.error)
                 }
             }).catch(err => console.error(err))
 
@@ -41,7 +42,7 @@ export default function LogInPage() {
                 <div className="w-25">
                     <h2 className="mb-4">Effettua il log in:</h2>
                     <form onSubmit={HandleUser} >
-                        {error && <p>{error}</p>}
+                        {errorLog && <p>{errorLog}</p>}
                         <label htmlFor="email">E-mail</label>
                         <input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control mb-3" />
                         <label htmlFor="password">Password</label>
