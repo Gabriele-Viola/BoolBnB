@@ -1,4 +1,18 @@
 const connection = require('../db/connection')
+const jwt = require('jsonwebtoken')
+const secretKey = process.env.CRYPTOKEY
+
+//funtion to decrypt token
+function decrypt(id) {
+	try {
+		const decoded = jwt.verify(id, secretKey)
+		return decoded.id
+	} catch (err) {
+		console.error('Errore nella decodifica dell\'id', err.message)
+		return null
+	}
+}
+
 
 //metodo index che restituisce tutti gli oggetti presenti nel db in ordine decrescente di like
 function index(req, res) {
@@ -19,7 +33,7 @@ function index(req, res) {
 
 //metodo show che restituisce l'appartamento selezionato
 function show(req, res) {
-	const id = req.params.id
+
 	const sql = `SELECT properties.*, 
         			JSON_ARRAYAGG(services.name) AS services
 					FROM properties
@@ -48,7 +62,10 @@ function show(req, res) {
 
 // metodo create per aggiungere nuovo appartamento
 function create(req, res) {
-	const owner = req.params.owner
+	const tokenOwner = req.params.owner
+
+	const owner = decrypt(tokenOwner)
+
 	const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
 	const { name, rooms, beds, bathrooms, mq, address, email_owners, like, image } = req.body
 
@@ -82,7 +99,8 @@ function create(req, res) {
 }
 
 function likeUpdate(req, res) {
-	const id = req.params.id
+	const token = req.params.id
+	const id = decrypt(token)
 	const sql = `UPDATE properties SET \`like\` = \`like\` + 1 WHERE id = ?`
 	connection.query(sql, [id], (err, result) => {
 		if (err)
