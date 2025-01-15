@@ -14,6 +14,7 @@ export default function AddPropertiesPage() {
 		image: null
 	}
 
+
 	// Stati principali del componente
 	const [formData, setFormData] = useState(initialFormData) // Gestisce i dati del form
 	const [selectedFile, setSelectedFile] = useState(null) // Gestisce il file dell'immagine selezionata
@@ -60,11 +61,13 @@ export default function AddPropertiesPage() {
 		} else {
 			// Aggiorna lo stato del form per gli altri campi
 			setFormData((prev) => ({
+
 				...prev,
 				[name]: value
 			}))
 		}
 	}
+
 
 	// Gestisce l'invio del form
 	function handleFormSubmit(e) {
@@ -91,10 +94,12 @@ export default function AddPropertiesPage() {
 
 		// Chiamata API per salvare i dati
 		fetch('http://localhost:3000/api/properties/1', {
+
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(dataToSend)
 		})
+
 			.then((res) => res.json())
 			.then((response) => {
 				setSuccessMessage('Proprietà inserita con successo!')
@@ -118,9 +123,12 @@ export default function AddPropertiesPage() {
 		console.log(properties)
 	}
 
+
+
 	//id, id_user, name, rooms(int), beds(int), bathrooms(int), mq(int), address, email_owners, like(int), image
 
 	return (
+
 		<div className="container py-3">
 			{successMessage && <div className="alert alert-success">{successMessage}</div>}
 
@@ -173,129 +181,66 @@ export default function AddPropertiesPage() {
 				</div>
 			)}
 
-			<form className="my-3 rounded p-4" onSubmit={handleFormSubmit}>
-				<div className="form-group col-md-6 ">
-					<div className="form-group mb-3">
-						<label htmlFor="name">Name Property</label>
-						<input
-							className="form-control"
-							type="text"
-							id="name"
-							name="name"
-							placeholder="Name property"
-							value={formData.name}
-							onChange={handleFormField}
-						/>
-					</div>
+		<div className="container d-flex justify-content-center py-3">
+			<div className="mt-3 p-3 border border-primary-subtle rounded w-50">
+				<h3 className="mb-2 text-center">Aggiungi la tua proprietà</h3>
 
-					<div className="row mb-3">
-						<div className="form-group col-md-6 ">
-							<label htmlFor="formFile" className="form-label">
-								Add photo:{' '}
-							</label>
-							<br />
-							<label className="btn" htmlFor="formFile">
-								Choose File
-							</label>
-							<input
-								className="form-control d-none"
-								type="file"
-								id="image"
-								name="image"
-								accept="image/*"
-								onChange={handleFormField}
-							/>{' '}
-							{/* accept="image/*" ACCEPT ONLY IMG! */}
-							{selectedFile && <img src={selectedFile} alt="cover image" className="img-fluid rounded" />}
+
+				<form className="my-3 rounded p-4" >  {/*onSubmit={}*/}
+					<div className="form-group col-md-6 ">
+
+						<div className="form-group mb-3">
+							<label htmlFor="name">Nome Proprietà:</label>
+							<input className="form-control" type="text" id="name" name="name" placeholder="Inserisci il nome della proprietà" value={formData.name} onChange={handleFormField} />
+						</div>
+
+						<div className='row mb-3'>
+							<div className='form-group col-md-6 '>
+								<label htmlFor="formFile" className='form-label'>Scegli una foto: </label><br />
+								<label className="btn" htmlFor="formFile">Scegli un file</label>
+								<input className="form-control d-none" type="file" id="image" name="image" accept="image/*" onChange={handleFormField} />  {/* accept="image/*" ACCEPT ONLY IMG! */}
+								{selectedFile && <img src={selectedFile} alt='cover image' className='img-fluid rounded' />}
+							</div>
+						</div>
+
+						<div className="mb-3">
+							<label htmlFor="rooms">Numero stanze:</label>
+							<input type="number" className="form-control" id="rooms" name="rooms" min="0" max="100" value={formData.rooms} onChange={handleFormField} />
+						</div>
+						<div className="mb-3">
+							<label htmlFor="beds">Numero letti:</label>
+							<input type="number" className="form-control" id="beds" name="beds" min="0" max="100" value={formData.beds} onChange={handleFormField} />
+						</div>
+						<div className="mb-3">
+							<label htmlFor="bathrooms">Numero bagni:</label>
+							<input type="number" className="form-control" id="bathrooms" name="bathrooms" min="0" max="100" value={formData.bathrooms} onChange={handleFormField} />
+						</div>
+						<div className="mb-3">
+							<label htmlFor="mq">Superficie in mq:</label>
+							<input type="number" className="form-control" id="mq" name="mq" min="0" max="10000" value={formData.mq} onChange={handleFormField} />
+						</div>
+
+						<div className='form-group mb-3'>
+							<label className="" htmlFor="address">Indirizzo proprietà:</label>
+							<input className='form-control' type="text" id="address" name="address" placeholder="Inserisci l'indirizzo" value={formData.address} onChange={handleFormField} /> {/* required value= */}
+						</div>
+						<div className='form-group mb-3'>
+							<label className="" htmlFor="email_owners">Email proprietario:</label>
+							<input className='form-control' type="text" id="email_owners" name="email_owners" placeholder="Inserisci la tua email" value={formData.email_owners} onChange={handleFormField} /> {/* required value= */}
+						</div>
+
+						<div className='form-group col-md-8 mt-4 text-center'>
+							<button className='btn btn-DarkRose w-100 mb-3' type='submit' id='formSubmit' name='submit'>
+								<span className='d-flex align-items-center justify-content-center gap-2'>
+									<button className="btn btn-primary">Salva <i className="bi bi-cloud-arrow-up" /></button>
+								</span>
+							</button>
+							<button type="button" className="btn btn-primary" onClick={showProperties}>Anteprima</button>  {/*x debug see all filteredMangs*/}
 						</div>
 					</div>
+				</form>
+			</div>
 
-					<div>
-						<label htmlFor="rooms">Rooms</label>
-						<input
-							type="number"
-							id="rooms"
-							name="rooms"
-							min="0"
-							max="100"
-							value={formData.rooms}
-							onChange={handleFormField}
-						/>
-					</div>
-					<div>
-						<label htmlFor="beds">Beds</label>
-						<input
-							type="number"
-							id="beds"
-							name="beds"
-							min="0"
-							max="100"
-							value={formData.beds}
-							onChange={handleFormField}
-						/>
-					</div>
-					<div>
-						<label htmlFor="bathrooms">Bathrooms</label>
-						<input
-							type="number"
-							id="bathrooms"
-							name="bathrooms"
-							min="0"
-							max="100"
-							value={formData.bathrooms}
-							onChange={handleFormField}
-						/>
-					</div>
-					<div>
-						<label htmlFor="mq">Mq</label>
-						<input type="number" id="mq" name="mq" min="0" max="10000" value={formData.mq} onChange={handleFormField} />
-					</div>
-
-					<div className="form-group mb-3">
-						<label className="" htmlFor="address">
-							Address
-						</label>
-						<input
-							className="form-control"
-							type="text"
-							id="address"
-							name="address"
-							placeholder="Address"
-							value={formData.address}
-							onChange={handleFormField}
-						/>{' '}
-						{/* required value= */}
-					</div>
-					<div className="form-group mb-3">
-						<label className="" htmlFor="email_owners">
-							Email owners
-						</label>
-						<input
-							className="form-control"
-							type="text"
-							id="email_owners"
-							name="email_owners"
-							placeholder="Email owners"
-							value={formData.email_owners}
-							onChange={handleFormField}
-						/>{' '}
-						{/* required value= */}
-					</div>
-
-					<div className="form-group col-md-8 mt-4 mx-auto">
-						<button className="btn btn-DarkRose w-100" type="submit" id="formSubmit" name="submit">
-							<span className="d-flex align-items-center justify-content-center gap-2">
-								<span>SAVE</span>
-								<i className="bi bi-cloud-arrow-up" />
-							</span>
-						</button>
-						<button type="button" onClick={showProperties}>
-							show properties
-						</button>{' '}
-						{/*x debug see all filteredMangs*/}
-					</div>
-				</div>
-			</form>
 		</div>
 	)
 }
