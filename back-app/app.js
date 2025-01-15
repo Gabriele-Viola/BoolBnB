@@ -23,9 +23,6 @@ app.use(express.json())
 app.use("/api", routers)
 
 
-
-
-
 // Gestione delle rotte non trovate (deve venire dopo le tue route)
 app.use(notFound)
 
