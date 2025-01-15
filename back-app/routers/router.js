@@ -10,7 +10,7 @@ router.get('/properties/:id', show)
 router.post('/properties/:owner', create)
 router.put('/like/:id', likeUpdate)
 
-router.get('/user/logIn', logIn)
+router.post('/user/logIn', logIn)
 router.post('/user/registration', registration)
 
 router.post('/message/send', sendMessage)
