@@ -17,7 +17,6 @@ export default function AddPropertiesPage() {
 		image: null
 	}
 
-
 	// Stati principali del componente
 	const [formData, setFormData] = useState(initialFormData) // Gestisce i dati del form
 	const [selectedFile, setSelectedFile] = useState(null) // Gestisce il file dell'immagine selezionata
@@ -64,21 +63,48 @@ export default function AddPropertiesPage() {
 		} else {
 			// Aggiorna lo stato del form per gli altri campi
 			setFormData((prev) => ({
-
 				...prev,
 				[name]: value
 			}))
 		}
 	}
 
-
 	// Gestisce l'invio del form
 	function handleFormSubmit(e) {
 		e.preventDefault()
 
 		// Validazione dei campi obbligatori
-		if (!formData.name || !formData.address) {
+		if (
+			!formData.name ||
+			!formData.address ||
+			!formData.rooms ||
+			!formData.beds ||
+			!formData.bathrooms ||
+			!formData.mq
+		) {
 			alert('Per favore compila tutti i campi obbligatori')
+			return
+		}
+		if (
+			formData.rooms < 1 ||
+			formData.rooms > 100 ||
+			formData.beds < 1 ||
+			formData.beds > 100 ||
+			formData.bathrooms < 1 ||
+			formData.bathrooms > 100 ||
+			formData.mq < 1 ||
+			formData.mq > 1000
+		) {
+			alert('Per favore inserisci dei dati validi')
+			return
+		}
+		if (
+			formData.name.length < 3 ||
+			formData.name.length > 100 ||
+			formData.address.length < 3 ||
+			formData.address.length > 100
+		) {
+			alert('Per favore inserisci dei dati validi')
 			return
 		}
 
@@ -97,12 +123,10 @@ export default function AddPropertiesPage() {
 
 		// Chiamata API per salvare i dati
 		fetch('http://localhost:3000/api/properties/1', {
-
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(dataToSend)
 		})
-
 			.then((res) => res.json())
 			.then((response) => {
 				setSuccessMessage('Proprietà inserita con successo!')
@@ -126,12 +150,9 @@ export default function AddPropertiesPage() {
 		console.log(properties)
 	}
 
-
-
 	//id, id_user, name, rooms(int), beds(int), bathrooms(int), mq(int), address, email_owners, like(int), image
 
 	return (
-
 		<div className="container py-3">
 			{successMessage && <div className="alert alert-success">{successMessage}</div>}
 
@@ -189,7 +210,6 @@ export default function AddPropertiesPage() {
 					<h3 className="mb-2 text-center">Aggiungi la tua proprietà</h3>
 					<form className="my-3 rounded p-4" onSubmit={handleFormSubmit}>
 						<div className="form-group col-md-6 ">
-
 							<div className="form-group mb-3">
 								<label htmlFor="name">Nome Proprietà:</label>
 								<input
@@ -199,88 +219,110 @@ export default function AddPropertiesPage() {
 									name="name"
 									placeholder="Inserisci il nome della proprietà"
 									required
-									minLength={3}
-									maxLength={100}
-									value={formData.name} onChange={handleFormField} />
+									value={formData.name}
+									onChange={handleFormField}
+								/>
 							</div>
 
-							<div className='row mb-3'>
-								<div className='form-group col-md-6 '>
-									<label htmlFor="formFile" className='form-label'>Scegli una foto: </label><br />
-									<label className="btn" htmlFor="formFile">Scegli un file</label>
-									<input className="form-control d-none" type="file" id="image" name="image" accept="image/*" onChange={handleFormField} />  {/* accept="image/*" ACCEPT ONLY IMG! */}
-									{selectedFile && <img src={selectedFile} alt='cover image' className='img-fluid rounded' />}
+							<div className="row mb-3">
+								<div className="form-group col-md-6 ">
+									<label htmlFor="formFile" className="form-label">
+										Scegli una foto:{' '}
+									</label>
+									<br />
+									<label className="btn" htmlFor="formFile">
+										Scegli un file
+									</label>
+									<input
+										className="form-control d-none"
+										type="file"
+										id="image"
+										name="image"
+										accept="image/*"
+										onChange={handleFormField}
+									/>{' '}
+									{/* accept="image/*" ACCEPT ONLY IMG! */}
+									{selectedFile && <img src={selectedFile} alt="cover image" className="img-fluid rounded" />}
 								</div>
 							</div>
 
 							<div className="mb-3">
 								<label htmlFor="rooms">Numero stanze:</label>
-								<input type="number"
+								<input
+									type="number"
 									className="form-control"
 									id="rooms"
 									name="rooms"
 									required
-									min={1}
-									max={100}
-									value={formData.rooms} onChange={handleFormField} />
+									value={formData.rooms}
+									onChange={handleFormField}
+								/>
 							</div>
 							<div className="mb-3">
 								<label htmlFor="beds">Numero letti:</label>
-								<input type="number"
+								<input
+									type="number"
 									className="form-control"
-									id="beds" name="beds"
+									id="beds"
+									name="beds"
 									required
-									min={1}
-									max={100}
-									value={formData.beds} onChange={handleFormField} />
+									value={formData.beds}
+									onChange={handleFormField}
+								/>
 							</div>
 							<div className="mb-3">
 								<label htmlFor="bathrooms">Numero bagni:</label>
-								<input type="number"
+								<input
+									type="number"
 									className="form-control"
 									id="bathrooms"
 									name="bathrooms"
 									required
-									min={1}
-									max={100}
-									value={formData.bathrooms} onChange={handleFormField} />
+									value={formData.bathrooms}
+									onChange={handleFormField}
+								/>
 							</div>
 							<div className="mb-3">
 								<label htmlFor="mq">Superficie in mq:</label>
-								<input type="number"
+								<input
+									type="number"
 									className="form-control"
 									id="mq"
 									name="mq"
 									required
-									min={1}
-									max={1000}
-									value={formData.mq} onChange={handleFormField} />
+									value={formData.mq}
+									onChange={handleFormField}
+								/>
 							</div>
 
-							<div className='form-group mb-3'>
-								<label className="" htmlFor="address">Indirizzo proprietà:</label>
+							<div className="form-group mb-3">
+								<label className="" htmlFor="address">
+									Indirizzo proprietà:
+								</label>
 								<input
-									className='form-control'
+									className="form-control"
 									type="text"
 									id="address"
 									name="address"
 									required
-									minLength={5}
-									maxLength={100}
 									placeholder="Inserisci l'indirizzo"
-									value={formData.address} onChange={handleFormField} /> {/* required value= */}
+									value={formData.address}
+									onChange={handleFormField}
+								/>{' '}
+								{/* required value= */}
 							</div>
-							<div className='form-group col-md-8 mt-4 text-center'>
-								<button className='btn btn-DarkRose w-100 mb-3' type='submit' id='formSubmit' name='submit'>
-									<span className='d-flex align-items-center justify-content-center gap-2'>
-										<button className="btn btn-primary">Salva <i className="bi bi-cloud-arrow-up" /></button>
+							<div className="form-group col-md-8 mt-4 text-center">
+								<button className="btn btn-DarkRose w-100 mb-3" type="submit" id="formSubmit" name="submit">
+									<span className="d-flex align-items-center justify-content-center gap-2">
+										<button className="btn btn-primary">
+											Salva <i className="bi bi-cloud-arrow-up" />
+										</button>
 									</span>
 								</button>
 							</div>
 						</div>
 					</form>
 				</div>
-
 			</div>
 		</div>
 	)
