@@ -1,28 +1,35 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react";
 
-const GlobalContext = createContext()
+const GlobalContext = createContext();
 
 function GlobalContextProvider({ children }) {
-    const [user, setUser] = useState('Guest')
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const [user, setUser] = useState('Guest');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Recuperare  user
-
+    // Recupera l'utente da localStorage
     useEffect(() => {
-        const user = localStorage.getItem('user')
-        if (user) {
-            setUser(user)
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(storedUser);
         }
-    }, [])
+        setLoading(false); // Imposta loading su false una volta che i dati sono stati caricati
+    }, []);
 
+    // Salva l'utente in localStorage quando cambia
     useEffect(() => {
-        if (user) {
-            localStorage.setItem('user', user)
+        if (user && user !== 'Guest') {
+            localStorage.setItem('user', user);
         } else {
-            localStorage.removeItem('user')
+            localStorage.removeItem('user');
         }
-    }, [user])
+    }, [user]);
+
+    // Funzione per il logout
+    const logout = () => {
+        setUser('Guest');  // Resetta l'utente a "Guest"
+        localStorage.removeItem('user');  // Rimuove l'utente da localStorage
+    };
 
     const values = {
         user,
@@ -30,20 +37,19 @@ function GlobalContextProvider({ children }) {
         loading,
         setLoading,
         error,
-        setError
-    }
+        setError,
+        logout // Aggiungi logout nel contesto
+    };
 
     return (
         <GlobalContext.Provider value={values}>
             {children}
         </GlobalContext.Provider>
-    )
-
+    );
 }
+
 function useGlobalContext() {
-    return useContext(GlobalContext)
+    return useContext(GlobalContext);
 }
-export { GlobalContextProvider, useGlobalContext }
 
-
-
+export { GlobalContextProvider, useGlobalContext };

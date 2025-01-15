@@ -1,35 +1,25 @@
-import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import PropertyCard from '../components/PropertyCard'
-
-import { useGlobalContext } from '../Context/GlobalContext'
-
-
+import { Link } from 'react-router-dom';
+import { useGlobalContext } from '../Context/GlobalContext';
+import PropertyCard from '../components/PropertyCard';
 
 export default function Homepage() {
-	const [url, setUrl] = useState("/login")
-	const { user } = useGlobalContext()
-	useEffect(() => {
-
-		if (user !== 'Guest') {
-			setUrl(`/add/properties/${user.id}`)
-		}
-	}, [user])
+	const { user } = useGlobalContext(); // Ottieni il contesto globale per verificare se l'utente è loggato
 
 	return (
 		<>
-
 			<div className="container py-3">
-				<div className='d-flex justify-content-end mb-3'>
-					<Link to={url} className="btn btn-primary mb-3">
-					Aggiungi Proprietà
-				</Link>
-				</div>
-				<div className='d-flex justify-content-end'>
-					 {user?.id && <span>Accesso effettuato come: <h3>{user.user_name}</h3></span>} 
-				</div>
+				{/* Contenitore per il pulsante "Aggiungi Proprietà" se l'utente è loggato */}
+				{user !== 'Guest' && user?.id && (
+					<div className="mb-3">
+						<Link to={`/add/properties/${user.id}`} className="btn btn-primary">
+							Aggiungi una nuova proprietà
+						</Link>
+					</div>
+				)}
+
+				{/* Mostra le proprietà */}
+				<PropertyCard />
 			</div>
-			<PropertyCard />
 		</>
-	)
+	);
 }
