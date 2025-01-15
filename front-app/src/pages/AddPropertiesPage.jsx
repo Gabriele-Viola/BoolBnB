@@ -5,11 +5,15 @@ import { useGlobalContext } from '../Context/GlobalContext'
 export default function AddPropertiesPage() {
 	const { owner } = useParams()
 	const { user, logged, setLogged } = useGlobalContext()
-	if (owner == user.id) {
-		setLogged(true)
-	} else {
-		setLogged(false)
-	}
+	useEffect(() => {
+		if (owner && user.id) {
+			if (owner === user.id) {
+				setLogged(true)
+			} else {
+				setLogged(false)
+			}
+		}
+	}, [owner, user.id, setLogged])
 
 
 
@@ -283,13 +287,10 @@ export default function AddPropertiesPage() {
 											placeholder="Inserisci l'indirizzo"
 											value={formData.address} onChange={handleFormField} /> {/* required value= */}
 									</div>
-									<div className='form-group col-md-8 mt-4 text-center'>
-										<button className='btn btn-DarkRose w-100 mb-3' type='submit' id='formSubmit' name='submit'>
-											<span className='d-flex align-items-center justify-content-center gap-2'>
-												<button className="btn btn-primary">Salva <i className="bi bi-cloud-arrow-up" /></button>
-											</span>
-										</button>
-									</div>
+
+									<button className='btn btn-primary w-100 mb-3' type='submit' id='formSubmit' name='submit'><span>Salva</span> <i className="bi bi-cloud-arrow-up" />
+									</button>
+
 								</div>
 							</form> : <h5 className='bg-danger text-warning'>Non puoi farlo!</h5>
 						}
