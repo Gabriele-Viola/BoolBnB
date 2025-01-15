@@ -7,6 +7,11 @@ const { sendMessage } = require('../controller/messagesController')
 
 router.get('/properties', index)
 router.get('/properties/:id', show)
+
+
+//const { upload } = PostController; // Import Multer configurated
+//router.post('/', upload.single('file'), PostController.store);   //x upload also file with Multer
+
 router.post('/properties/:owner', create)
 router.put('/like/:id', likeUpdate)
 
@@ -19,3 +24,7 @@ router.get('/:id_property/reviews', reviewsShow)
 router.post('/:id_property/:name/add-review', reviewCreate)
 
 module.exports = router
+
+
+
+

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import PropertyCard from '../components/PropertyCard'
 
+
+
 export default function AddPropertiesPage() {
 	const initialFormData = {
 		name : '',
@@ -54,7 +56,7 @@ export default function AddPropertiesPage() {
 	function handleFormSubmit(e){
 		e.preventDefault();
 		const formDataToSend = new FormData();
-		formDataToSend.append('id',  );  //TO GET
+		//formDataToSend.append('id',  );  //TO GET 
 		formDataToSend.append('id_user',  );   //TO GET
 		formDataToSend.append('name', formData.name);
 		formDataToSend.append('rooms', formData.rooms);
@@ -85,6 +87,9 @@ export default function AddPropertiesPage() {
 	}	
 
 	function showProperties(){console.log(properties);}
+
+	
+
 
 	//id, id_user, name, rooms(int), beds(int), bathrooms(int), mq(int), address, email_owners, like(int), image
 
