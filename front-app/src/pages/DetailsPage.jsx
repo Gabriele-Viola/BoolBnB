@@ -18,6 +18,7 @@ export default function DetailsPage() {
 	const [textUser, setTextUser] = useState('');
 	const [feedback, setFeedback] = useState('');
 
+
 	const urlShow = `http://localhost:3000/api/properties/${id}`;
 	const urlreviews = `http://localhost:3000/api/${id}/reviews`;
 
@@ -75,10 +76,10 @@ export default function DetailsPage() {
 			const data = await res.json();
 			console.log(data);
 
-			setFeedback('Your review has been sent!');
+			setFeedback(data?.message);
 
-			// Aggiungi la recensione localmente senza fare una nuova richiesta
-			setReviews((prevReviews) => [...prevReviews, formReview]);
+
+			setReviews(data.reviews);
 
 			setTimeout(() => {
 				setFeedback('');
@@ -132,6 +133,7 @@ export default function DetailsPage() {
 	if (loading) {
 		return <div>Loading...</div>;
 	}
+
 
 	return (
 		<div>

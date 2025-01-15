@@ -10,7 +10,7 @@ export default function FormSendMessage({
 		<div
 			id="newMessage"
 			className="d-none vw-100 vh-100 d-flex justify-content-center align-items-center position-fixed top-0 start-0 bg-secondary bg-opacity-75 ">
-			<div className="mt-5 rounded bg-primary w-50 p-4 shadow position-relative">
+			<div className="mt-5 rounded w-50 p-4 shadow position-relative" style={{ backgroundColor: '#29B6F6' }}>
 				<button
 					className="text-light position-absolute end-0 top-0 m-4 fs-3 btn"
 					onClick={() => HandleinputToggle('newMessage')}>
@@ -44,7 +44,7 @@ export default function FormSendMessage({
 						value={textUser}
 						onChange={(e) => setTextUser(e.target.value)}
 						placeholder="Inserisci il tuo messaggio"></textarea>
-					<button className="btn btn-light text-primary" type="submit">
+					<button className="btn btn-light" style={{ color: '#29B6F6' }} type="submit">
 						<i className="bi bi-send-fill"></i> Invia!
 					</button>
 				</form>

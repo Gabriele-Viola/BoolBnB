@@ -196,7 +196,7 @@ export default function AddPropertiesPage() {
 				)}
 
 				<div className="container d-flex justify-content-center py-3">
-					<div className="mt-3 p-3 border border-primary-subtle rounded w-50">
+					<div className="mt-3 p-3 border border-primary-subtle rounded w-50 shadow">
 						<h3 className="mb-2 text-center">Aggiungi la tua proprietà</h3>
 						{logged ?
 

@@ -42,12 +42,16 @@ export default function AppHeader() {
 
 						{/* Mostra il nome dell'utente e il pulsante di logout se l'utente è loggato */}
 						{user !== 'Guest' ? (
-							<li className="d-flex align-items-center">
-								<span className="text-white fs-6 me-1">Benvenuto, {user.user_name}</span>
-								<button onClick={handleLogout} className="btn btn-danger btn-sm fs-6">
-									Logout
-								</button>
-							</li>
+							<>
+								<li>
+									<span className="text-white fs-6 me-1">USER: {user.user_name}</span>
+								</li>
+								<li>
+									<button onClick={handleLogout} className="btn btn-danger btn-sm fs-6">
+										Logout
+									</button>
+								</li>
+							</>
 						) : (
 							<li>
 								<Link to="/login" className="btn btn-success btn-sm fs-6">
