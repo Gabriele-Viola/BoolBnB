@@ -1,60 +1,25 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import PropertyCard from '../components/PropertyCard';
 import { useGlobalContext } from '../Context/GlobalContext';
+import PropertyCard from '../components/PropertyCard';
 
 export default function Homepage() {
-	const [url, setUrl] = useState("/login");
-	const { user, logout } = useGlobalContext(); // Ottieni il contesto globale e la funzione logout
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-	useEffect(() => {
-		if (user !== 'Guest') {
-			setUrl(`/add/properties/${user.id}`);
-			setIsLoggedIn(true); // Se l'utente è loggato, aggiorna lo stato
-		} else {
-			setIsLoggedIn(false); // Se l'utente non è loggato, aggiorna lo stato
-		}
-	}, [user]);
-
-	// Funzione per gestire il logout
-	const handleLogout = () => {
-		logout(); // Chiama la funzione logout dal contesto globale
-		setIsLoggedIn(false); // Aggiorna lo stato a non loggato
-	};
+	const { user } = useGlobalContext(); // Ottieni il contesto globale per verificare se l'utente è loggato
 
 	return (
 		<>
 			<div className="container py-3">
-				{/* Contenitore dei due pulsanti allineati sulla stessa riga */}
-				<div className='d-flex justify-content-between mb-3'>
-					{/* Pulsante "Aggiungi Proprietà" */}
-					<Link to={url} className="btn btn-primary mb-3">
-						Aggiungi Proprietà
-					</Link>
-
-					{/* Pulsante Login/Logout allineato a sinistra */}
-					<div>
-						{isLoggedIn ? (
-							<button onClick={handleLogout} className="btn btn-danger">
-								Logout
-							</button>
-						) : (
-							<Link to="/login" className="btn btn-success">
-								Login
-							</Link>
-						)}
+				{/* Contenitore per il pulsante "Aggiungi Proprietà" se l'utente è loggato */}
+				{user !== 'Guest' && user?.id && (
+					<div className="mb-3">
+						<Link to={`/add/properties/${user.id}`} className="btn btn-primary">
+							Aggiungi una nuova proprietà
+						</Link>
 					</div>
-				</div>
+				)}
 
-				{/* Mostra informazioni sull'utente loggato */}
-				<div className='d-flex justify-content-end'>
-					{user?.id && <span>Accesso effettuato come: <h3>{user.user_name}</h3></span>}
-				</div>
+				{/* Mostra le proprietà */}
+				<PropertyCard />
 			</div>
-
-			{/* Mostra le proprietà */}
-			<PropertyCard />
 		</>
 	);
 }
