@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import PropertyCard from '../components/PropertyCard'
+import { useGlobalContext } from '../Context/GlobalContext'
 
 export default function AddPropertiesPage() {
 	const { id } = useParams()
+	const { user } = useGlobalContext()
 	// Oggetto che contiene i valori iniziali del form
 	const initialFormData = {
 		name: '',
@@ -76,7 +78,7 @@ export default function AddPropertiesPage() {
 		e.preventDefault()
 
 		// Validazione dei campi obbligatori
-		if (!formData.name || !formData.address || !formData.email_owners) {
+		if (!formData.name || !formData.address) {
 			alert('Per favore compila tutti i campi obbligatori')
 			return
 		}
@@ -90,7 +92,7 @@ export default function AddPropertiesPage() {
 			bathrooms: Number(formData.bathrooms) || 0,
 			mq: Number(formData.mq) || 0,
 			address: formData.address,
-			email_owners: formData.email_owners,
+			email_owners: user.email,
 			image: formData.image || 'https://placehold.co/300x250/EEE/31343C'
 		}
 
@@ -226,11 +228,6 @@ export default function AddPropertiesPage() {
 								<label className="" htmlFor="address">Indirizzo proprietà:</label>
 								<input className='form-control' type="text" id="address" name="address" placeholder="Inserisci l'indirizzo" value={formData.address} onChange={handleFormField} /> {/* required value= */}
 							</div>
-							<div className='form-group mb-3'>
-								<label className="" htmlFor="email_owners">Email proprietario:</label>
-								<input className='form-control' type="text" id="email_owners" name="email_owners" placeholder="Inserisci la tua email" value={formData.email_owners} onChange={handleFormField} /> {/* required value= */}
-							</div>
-
 							<div className='form-group col-md-8 mt-4 text-center'>
 								<button className='btn btn-DarkRose w-100 mb-3' type='submit' id='formSubmit' name='submit'>
 									<span className='d-flex align-items-center justify-content-center gap-2'>
