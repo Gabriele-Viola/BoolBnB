@@ -63,6 +63,7 @@ function show(req, res) {
 // metodo create per aggiungere nuovo appartamento
 function create(req, res) {
 	const tokenOwner = req.params.owner
+
 	const owner = decrypt(tokenOwner)
 
 	const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
@@ -80,8 +81,7 @@ function create(req, res) {
 		(err, result) => {
 			if (err)
 				return res.status(500).json({
-					error: 'Something went wrong...',
-					err: err
+					error: 'Something went wrong...'
 				})
 			return res.status(201).json({
 				success: true
