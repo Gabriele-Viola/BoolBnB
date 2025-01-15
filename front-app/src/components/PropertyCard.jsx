@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useGlobalContext } from '../Context/GlobalContext'
-const { error, setError, loading, setLoading } = useGlobalContext()
 
 export default function PropertyCard() {
+	const { error, setError, loading, setLoading } = useGlobalContext()
 	const [properties, setProperties] = useState([])
 
 	const urlIndex = 'http://localhost:3000/api/properties'

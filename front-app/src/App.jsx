@@ -7,6 +7,7 @@ import AddPropertiesPage from './pages/AddPropertiesPage.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import { GlobalContextProvider } from './Context/GlobalContext.jsx'
+import LogInPage from './pages/LogInPage.jsx'
 function App() {
 	return (
 		<>
@@ -20,6 +21,8 @@ function App() {
 							<Route path="/add/properties/:owner" element={<AddPropertiesPage />} />
 							<Route path="/about" element={<About />} />
 							<Route path="/contact" element={<Contact />} />
+							<Route path="/login" element={<LogInPage />} />
+							<Route path="*" element={<h1>Not Found</h1>} />
 						</Route>
 					</Routes>
 				</BrowserRouter>
