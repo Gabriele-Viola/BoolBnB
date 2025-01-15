@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import PropertyCard from '../components/PropertyCard'
 
 export default function AddPropertiesPage() {
+	const { id } = useParams()
 	// Oggetto che contiene i valori iniziali del form
 	const initialFormData = {
 		name: '',
@@ -81,7 +83,7 @@ export default function AddPropertiesPage() {
 
 		// Prepara i dati da inviare al server convertendo i valori numerici
 		const dataToSend = {
-			id_user: 1,
+			id_user: id,
 			name: formData.name,
 			rooms: Number(formData.rooms) || 0,
 			beds: Number(formData.beds) || 0,
@@ -181,66 +183,67 @@ export default function AddPropertiesPage() {
 				</div>
 			)}
 
-		<div className="container d-flex justify-content-center py-3">
-			<div className="mt-3 p-3 border border-primary-subtle rounded w-50">
-				<h3 className="mb-2 text-center">Aggiungi la tua proprietà</h3>
+			<div className="container d-flex justify-content-center py-3">
+				<div className="mt-3 p-3 border border-primary-subtle rounded w-50">
+					<h3 className="mb-2 text-center">Aggiungi la tua proprietà</h3>
 
 
-				<form className="my-3 rounded p-4" >  {/*onSubmit={}*/}
-					<div className="form-group col-md-6 ">
+					<form className="my-3 rounded p-4" onSubmit={handleFormSubmit}>
+						<div className="form-group col-md-6 ">
 
-						<div className="form-group mb-3">
-							<label htmlFor="name">Nome Proprietà:</label>
-							<input className="form-control" type="text" id="name" name="name" placeholder="Inserisci il nome della proprietà" value={formData.name} onChange={handleFormField} />
-						</div>
+							<div className="form-group mb-3">
+								<label htmlFor="name">Nome Proprietà:</label>
+								<input className="form-control" type="text" id="name" name="name" placeholder="Inserisci il nome della proprietà" value={formData.name} onChange={handleFormField} />
+							</div>
 
-						<div className='row mb-3'>
-							<div className='form-group col-md-6 '>
-								<label htmlFor="formFile" className='form-label'>Scegli una foto: </label><br />
-								<label className="btn" htmlFor="formFile">Scegli un file</label>
-								<input className="form-control d-none" type="file" id="image" name="image" accept="image/*" onChange={handleFormField} />  {/* accept="image/*" ACCEPT ONLY IMG! */}
-								{selectedFile && <img src={selectedFile} alt='cover image' className='img-fluid rounded' />}
+							<div className='row mb-3'>
+								<div className='form-group col-md-6 '>
+									<label htmlFor="formFile" className='form-label'>Scegli una foto: </label><br />
+									<label className="btn" htmlFor="formFile">Scegli un file</label>
+									<input className="form-control d-none" type="file" id="image" name="image" accept="image/*" onChange={handleFormField} />  {/* accept="image/*" ACCEPT ONLY IMG! */}
+									{selectedFile && <img src={selectedFile} alt='cover image' className='img-fluid rounded' />}
+								</div>
+							</div>
+
+							<div className="mb-3">
+								<label htmlFor="rooms">Numero stanze:</label>
+								<input type="number" className="form-control" id="rooms" name="rooms" min="0" max="100" value={formData.rooms} onChange={handleFormField} />
+							</div>
+							<div className="mb-3">
+								<label htmlFor="beds">Numero letti:</label>
+								<input type="number" className="form-control" id="beds" name="beds" min="0" max="100" value={formData.beds} onChange={handleFormField} />
+							</div>
+							<div className="mb-3">
+								<label htmlFor="bathrooms">Numero bagni:</label>
+								<input type="number" className="form-control" id="bathrooms" name="bathrooms" min="0" max="100" value={formData.bathrooms} onChange={handleFormField} />
+							</div>
+							<div className="mb-3">
+								<label htmlFor="mq">Superficie in mq:</label>
+								<input type="number" className="form-control" id="mq" name="mq" min="0" max="10000" value={formData.mq} onChange={handleFormField} />
+							</div>
+
+							<div className='form-group mb-3'>
+								<label className="" htmlFor="address">Indirizzo proprietà:</label>
+								<input className='form-control' type="text" id="address" name="address" placeholder="Inserisci l'indirizzo" value={formData.address} onChange={handleFormField} /> {/* required value= */}
+							</div>
+							<div className='form-group mb-3'>
+								<label className="" htmlFor="email_owners">Email proprietario:</label>
+								<input className='form-control' type="text" id="email_owners" name="email_owners" placeholder="Inserisci la tua email" value={formData.email_owners} onChange={handleFormField} /> {/* required value= */}
+							</div>
+
+							<div className='form-group col-md-8 mt-4 text-center'>
+								<button className='btn btn-DarkRose w-100 mb-3' type='submit' id='formSubmit' name='submit'>
+									<span className='d-flex align-items-center justify-content-center gap-2'>
+										<button className="btn btn-primary">Salva <i className="bi bi-cloud-arrow-up" /></button>
+									</span>
+								</button>
+								<button type="button" className="btn btn-primary" onClick={showProperties}>Anteprima</button>  {/*x debug see all filteredMangs*/}
 							</div>
 						</div>
+					</form>
+				</div>
 
-						<div className="mb-3">
-							<label htmlFor="rooms">Numero stanze:</label>
-							<input type="number" className="form-control" id="rooms" name="rooms" min="0" max="100" value={formData.rooms} onChange={handleFormField} />
-						</div>
-						<div className="mb-3">
-							<label htmlFor="beds">Numero letti:</label>
-							<input type="number" className="form-control" id="beds" name="beds" min="0" max="100" value={formData.beds} onChange={handleFormField} />
-						</div>
-						<div className="mb-3">
-							<label htmlFor="bathrooms">Numero bagni:</label>
-							<input type="number" className="form-control" id="bathrooms" name="bathrooms" min="0" max="100" value={formData.bathrooms} onChange={handleFormField} />
-						</div>
-						<div className="mb-3">
-							<label htmlFor="mq">Superficie in mq:</label>
-							<input type="number" className="form-control" id="mq" name="mq" min="0" max="10000" value={formData.mq} onChange={handleFormField} />
-						</div>
-
-						<div className='form-group mb-3'>
-							<label className="" htmlFor="address">Indirizzo proprietà:</label>
-							<input className='form-control' type="text" id="address" name="address" placeholder="Inserisci l'indirizzo" value={formData.address} onChange={handleFormField} /> {/* required value= */}
-						</div>
-						<div className='form-group mb-3'>
-							<label className="" htmlFor="email_owners">Email proprietario:</label>
-							<input className='form-control' type="text" id="email_owners" name="email_owners" placeholder="Inserisci la tua email" value={formData.email_owners} onChange={handleFormField} /> {/* required value= */}
-						</div>
-
-						<div className='form-group col-md-8 mt-4 text-center'>
-							<button className='btn btn-DarkRose w-100 mb-3' type='submit' id='formSubmit' name='submit'>
-								<span className='d-flex align-items-center justify-content-center gap-2'>
-									<button className="btn btn-primary">Salva <i className="bi bi-cloud-arrow-up" /></button>
-								</span>
-							</button>
-							<button type="button" className="btn btn-primary" onClick={showProperties}>Anteprima</button>  {/*x debug see all filteredMangs*/}
-						</div>
-					</div>
-				</form>
 			</div>
-
 		</div>
 	)
 }
