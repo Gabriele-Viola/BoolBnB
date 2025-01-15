@@ -20,6 +20,8 @@ export default function AddPropertiesPage() {
 	const [properties, setProperties] = useState([]) // Contiene tutte le proprietà
 	const [filteredProperties, setFilteredProperties] = useState(properties) // Proprietà filtrate
 	const [successMessage, setSuccessMessage] = useState('') // Messaggio di successo dopo il salvataggio
+	const [showCard, setShowCard] = useState(false) // Aggiungi questo nuovo stato per tracciare quando mostrare la card
+	const [savedData, setSavedData] = useState(null) // Aggiungi questo nuovo stato per i dati salvati
 
 	// Funzione per recuperare i dati delle proprietà dal server
 	function fetchData(url = 'http://localhost:3000/api/properties') {
@@ -94,23 +96,16 @@ export default function AddPropertiesPage() {
 			body: JSON.stringify(dataToSend)
 		})
 			.then((res) => res.json())
-			.then(() => {
-				// Creiamo un messaggio più dettagliato
-				const detailedMessage = `
-					Proprietà inserita con successo!
-					Nome: ${dataToSend.name}
-					Indirizzo: ${dataToSend.address}
-					Stanze: ${dataToSend.rooms}
-					Letti: ${dataToSend.beds}
-					Bagni: ${dataToSend.bathrooms}
-					Metri quadri: ${dataToSend.mq}
-					Email proprietario: ${dataToSend.email_owners}
-				`
-				setSuccessMessage(detailedMessage)
+			.then((response) => {
+				setSuccessMessage('Proprietà inserita con successo!')
+				setSavedData(dataToSend) // Salva i dati inviati
+				setShowCard(true)
+
+				// Reset del form
 				setFormData(initialFormData)
 				setSelectedFile(null)
 
-				// Rimuovi il messaggio dopo 5 secondi (ho aumentato il tempo per permettere la lettura)
+				// Rimuovi solo il messaggio di successo dopo 5 secondi
 				setTimeout(() => {
 					setSuccessMessage('')
 				}, 5000)
@@ -127,11 +122,57 @@ export default function AddPropertiesPage() {
 
 	return (
 		<div className="container py-3">
-			{successMessage && (
-				<div className="alert alert-success" style={{ whiteSpace: 'pre-line' }}>
-					{successMessage}
+			{successMessage && <div className="alert alert-success">{successMessage}</div>}
+
+			{/* La card usa savedData invece di formData */}
+			{showCard && savedData && (
+				<div className="card overflow-hidden mb-4">
+					<div className="row">
+						<div className="col-4">
+							<img
+								src={selectedFile ? URL.createObjectURL(selectedFile) : 'https://placehold.co/300x250/EEE/31343C'}
+								alt={savedData.name}
+								style={{ maxWidth: '100%', height: 'auto' }}
+							/>
+						</div>
+						<div className="col-8">
+							<div className="card-title my-2">
+								<h2>{savedData.name}</h2>
+							</div>
+							<div className="mt-5">
+								<h3>Property Features:</h3>
+								<div className="row mt-2 g-3">
+									<div className="col-4">
+										<strong>Rooms: </strong>
+										<span>{savedData.rooms}</span>
+									</div>
+									<div className="col-4">
+										<strong>Beds: </strong>
+										<span>{savedData.beds}</span>
+									</div>
+									<div className="col-4">
+										<strong>Bathrooms: </strong>
+										<span>{savedData.bathrooms}</span>
+									</div>
+									<div className="col-4">
+										<i className="bi bi-rulers"> </i>
+										{savedData.mq}
+									</div>
+									<div className="col-4">
+										<i className="bi bi-geo-alt"> </i>
+										{savedData.address}
+									</div>
+									<div className="col-4">
+										<i className="bi bi-envelope"> </i>
+										{savedData.email_owners}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			)}
+
 			<form className="my-3 rounded p-4" onSubmit={handleFormSubmit}>
 				<div className="form-group col-md-6 ">
 					<div className="form-group mb-3">
