@@ -53,11 +53,19 @@ function create(req, res) {
 	const { name, rooms, beds, bathrooms, mq, address, email_owners, like, image } = req.body
 
 	//verifica che i dati siano validi
-
-	if (beds < 1 || rooms < 1 || bathrooms < 1 || mq < 1)
+	if (!name || !rooms || !beds || !bathrooms || !mq || !address)
+		return res.status(400).json({
+			error: 'Missing data'
+		})
+	if (beds < 1 || beds > 100 || rooms < 1 || rooms > 100 || bathrooms < 1 || bathrooms > 100 || mq < 1 || mq > 10000)
 		return res.status(400).json({
 			error: 'Invalid data'
 		})
+	if (name.length < 3 || name.length > 100 || address.length < 3 || address.length > 100)
+		return res.status(400).json({
+			error: 'Length error name or address'
+		})
+
 	connection.query(
 		sql,
 		[owner, name, rooms, beds, bathrooms, mq, address, email_owners, like, image],
