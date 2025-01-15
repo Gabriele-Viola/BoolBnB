@@ -76,14 +76,14 @@ export default function PropertyCard() {
 											<span style={{ fontSize: '1.2rem' }}>❤️ {property.like}</span>
 										</button>
 										<Link to={`/properties/${property.id}`} className="text-decoration-none text-dark">
-											<button className="btn btn-primary">Details</button>
+											<button className="btn btn-primary">Dettagli</button>
 										</Link>
 									</div>
 								</div>
 							</div>
 						))
 					) : (
-						<p>No properties available</p>
+						<p>Nessuna proprietà disponibile!</p>
 					)}
 				</div>
 			</div>

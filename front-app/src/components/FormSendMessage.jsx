@@ -16,10 +16,10 @@ export default function FormSendMessage({
 					onClick={() => HandleinputToggle('newMessage')}>
 					<i className="bi bi-x-circle"></i>
 				</button>
-				<h3 className="mb-4 text-light">Send your message</h3>
+				<h3 className="mb-4 text-light">Invia un messaggio</h3>
 				<form className="newMessage" onSubmit={HandleSubMessage}>
 					<label htmlFor="email" className="form-label text-light">
-						Your email
+						La tua email
 					</label>
 					<input
 						type="email"
@@ -29,10 +29,10 @@ export default function FormSendMessage({
 						value={emailUser}
 						onChange={(e) => setEmailUser(e.target.value)}
 						className="form-control mb-3"
-						placeholder="Your email address"
+						placeholder="Inserisci il tuo indirizzo email"
 					/>
 					<label htmlFor="message" className="form-label text-light">
-						Your message
+						Messaggio:
 					</label>
 					<textarea
 						rows="5"
@@ -43,9 +43,9 @@ export default function FormSendMessage({
 						id="message"
 						value={textUser}
 						onChange={(e) => setTextUser(e.target.value)}
-						placeholder="Your message"></textarea>
+						placeholder="Inserisci il tuo messaggio"></textarea>
 					<button className="btn btn-light text-primary" type="submit">
-						<i className="bi bi-send-fill"></i> Send
+						<i className="bi bi-send-fill"></i> Invia!
 					</button>
 				</form>
 			</div>

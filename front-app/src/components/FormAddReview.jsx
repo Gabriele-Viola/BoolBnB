@@ -9,10 +9,10 @@ export default function FormAddReview({
 }) {
 	return (
 		<div className="mt-3 p-3 border border-primary-subtle rounded">
-			<h3 className="mb-2 text-center">Leave your review</h3>
+			<h3 className="mb-2 text-center">Lascia una recensione</h3>
 			<form className="newReview" onSubmit={HandleSubReview}>
 				<label htmlFor="name" className="form-label">
-					Name
+					Nome
 				</label>
 				<input
 					type="text"
@@ -23,10 +23,10 @@ export default function FormAddReview({
 					value={nameUser}
 					onChange={(e) => setNameUser(e.target.value)}
 					className="form-control mb-3"
-					placeholder="Your name"
+					placeholder="Inserisci il tuo nome"
 				/>
 				<label htmlFor="nights" className="form-label">
-					Nights
+					Notti
 				</label>
 				<input
 					type="number"
@@ -37,10 +37,10 @@ export default function FormAddReview({
 					value={nights}
 					onChange={(e) => setNights(e.target.value)}
 					className="form-control mb-3"
-					placeholder="Number of nights spent in the property"
+					placeholder="Per quante notti hai soggiornato"
 				/>
 				<label htmlFor="review" className="form-label">
-					Your review
+					La tua recensione:
 				</label>
 				<textarea
 					className="form-control mb-3"
@@ -50,9 +50,9 @@ export default function FormAddReview({
 					minLength={10}
 					value={review}
 					onChange={(e) => setReview(e.target.value)}
-					placeholder="Type your review"></textarea>
+					placeholder="Inserisci la tua recensione"></textarea>
 				<button className="btn btn-primary" type="submit">
-					<i className="bi bi-send-fill"></i> Send
+					<i className="bi bi-send-fill"></i> Invia!
 				</button>
 			</form>
 		</div>

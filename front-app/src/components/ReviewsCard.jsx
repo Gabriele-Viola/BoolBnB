@@ -5,10 +5,10 @@ export default function ReviewsCard({ reviews }) {
                 <div className="card h-100 my-3" >
                     <div className="card-body">
                         <div className="fs-5">{review.text_review}</div>
-                        <div><span className="text-muted">Nights: </span>{review.nights}</div>
-                        <span className="text-muted">By: </span>
+                        <div><span className="text-muted">Notti: </span>{review.nights}</div>
+                        <span className="text-muted">Lasciata da: </span>
                         {review.name === "" ? <span>Guest</span> : <span>{review.name}</span>}
-                        <div><span className="text-muted">Date review: </span>{review.date_review.slice(0, 10)}</div>
+                        <div><span className="text-muted">Data recensione: </span>{review.date_review.slice(0, 10)}</div>
                     </div>
                 </div>
             </div>)

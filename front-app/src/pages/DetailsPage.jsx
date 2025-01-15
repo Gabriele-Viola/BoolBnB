@@ -117,11 +117,11 @@ export default function DetailsPage() {
 			<div className="container position-relative">
 				<div className="row my-4 align-items-center">
 					<div className="col-6">
-						<h1>Property details</h1>
+						<h1>Dettagli della proprietà</h1>
 					</div>
 					<div className="col-6 text-end">
 						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage')}>
-							Send Message
+							Invia un messaggio
 						</button>
 					</div>
 				</div>
@@ -129,7 +129,7 @@ export default function DetailsPage() {
 			<div className="container">
 				<DetailsCard property={property} services={services} />
 				<div className="reviews mt-5">
-					<h3>Reviews</h3>
+					<h3>Recensioni</h3>
 					<div className="row g-3">
 						<ReviewsCard reviews={reviews} />
 						<div>{feedback && <div className="alert alert-success mt-3">{feedback}</div>}</div>

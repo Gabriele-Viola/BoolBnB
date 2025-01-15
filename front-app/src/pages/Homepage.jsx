@@ -16,8 +16,16 @@ export default function Homepage() {
 
 	return (
 		<>
-			<Link to={url}>Aggiungi</Link>
-			{user?.id && <h3>{user.user_name}</h3>}
+			<div className="container">
+				<div className='d-flex justify-content-end mb-3'>
+					<Link to={url}><button className='btn btn-primary'>Aggiungi</button></Link>
+					{/* {user?.id && <span>Accesso effettuato come: <h3>{user.user_name}</h3></span>} */}
+				</div>
+				<div className='d-flex justify-content-end'>
+					{/* <Link to={url}><button className='btn btn-primary'>Aggiungi</button></Link> */}
+					{user?.id && <span>Accesso effettuato come: <h3>{user.user_name}</h3></span>}
+				</div>
+			</div>
 			<PropertyCard />
 		</>
 	)
