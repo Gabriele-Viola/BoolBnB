@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import PropertyCard from '../components/PropertyCard'
 
 export default function AddPropertiesPage() {
+	// Oggetto che contiene i valori iniziali del form
 	const initialFormData = {
 		name: '',
 		rooms: 0,
@@ -12,12 +13,15 @@ export default function AddPropertiesPage() {
 		email_owners: '',
 		image: null
 	}
-	const [formData, setFormData] = useState(initialFormData)
-	const [selectedFile, setSelectedFile] = useState(null)
-	const [properties, setProperties] = useState([])
-	const [filteredProperties, setFilteredProperties] = useState(properties)
-	const [successMessage, setSuccessMessage] = useState('')
 
+	// Stati principali del componente
+	const [formData, setFormData] = useState(initialFormData) // Gestisce i dati del form
+	const [selectedFile, setSelectedFile] = useState(null) // Gestisce il file dell'immagine selezionata
+	const [properties, setProperties] = useState([]) // Contiene tutte le proprietà
+	const [filteredProperties, setFilteredProperties] = useState(properties) // Proprietà filtrate
+	const [successMessage, setSuccessMessage] = useState('') // Messaggio di successo dopo il salvataggio
+
+	// Funzione per recuperare i dati delle proprietà dal server
 	function fetchData(url = 'http://localhost:3000/api/properties') {
 		fetch(url)
 			.then((res) => res.json())
@@ -35,36 +39,42 @@ export default function AddPropertiesPage() {
 		setFilteredProperties(properties)
 	}, [properties])
 
+	// Gestisce i cambiamenti nei campi del form
 	function handleFormField(e) {
 		const { name, type, value, checked } = e.target
+
+		// Gestione speciale per il caricamento delle immagini
 		if (name == 'image' && e.target.files.length > 0) {
 			const fileSelected = e.target.files[0]
 			if (fileSelected instanceof File) {
 				const fileSelectedUrl = URL.createObjectURL(fileSelected)
 				setFormData((prev) => ({
 					...prev,
-					image: fileSelected //TEST IF UPLOAD NEW IMAGE
+					image: fileSelected // Salva l'immagine nel form
 				}))
 				console.log('type of imagine: ', typeof formData.image)
 				setSelectedFile(fileSelected)
 			}
 		} else {
+			// Aggiorna lo stato del form per gli altri campi
 			setFormData((prev) => ({
 				...prev,
 				[name]: value
 			}))
 		}
 	}
+
+	// Gestisce l'invio del form
 	function handleFormSubmit(e) {
 		e.preventDefault()
 
-		// Verifica campi obbligatori
+		// Validazione dei campi obbligatori
 		if (!formData.name || !formData.address || !formData.email_owners) {
 			alert('Per favore compila tutti i campi obbligatori')
 			return
 		}
 
-		// Dati da inviare
+		// Prepara i dati da inviare al server convertendo i valori numerici
 		const dataToSend = {
 			id_user: 1,
 			name: formData.name,
@@ -77,6 +87,7 @@ export default function AddPropertiesPage() {
 			image: formData.image || 'https://placehold.co/300x250/EEE/31343C'
 		}
 
+		// Chiamata API per salvare i dati
 		fetch('http://localhost:3000/api/properties/1', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
