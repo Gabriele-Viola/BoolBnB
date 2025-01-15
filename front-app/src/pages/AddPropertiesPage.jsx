@@ -77,7 +77,6 @@ export default function AddPropertiesPage() {
 			image: formData.image || 'https://placehold.co/300x250/EEE/31343C'
 		}
 
-		// Invio dati
 		fetch('http://localhost:3000/api/properties/1', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -85,13 +84,25 @@ export default function AddPropertiesPage() {
 		})
 			.then((res) => res.json())
 			.then(() => {
+				// Creiamo un messaggio più dettagliato
+				const detailedMessage = `
+					Proprietà inserita con successo!
+					Nome: ${dataToSend.name}
+					Indirizzo: ${dataToSend.address}
+					Stanze: ${dataToSend.rooms}
+					Letti: ${dataToSend.beds}
+					Bagni: ${dataToSend.bathrooms}
+					Metri quadri: ${dataToSend.mq}
+					Email proprietario: ${dataToSend.email_owners}
+				`
+				setSuccessMessage(detailedMessage)
 				setFormData(initialFormData)
 				setSelectedFile(null)
-				setSuccessMessage('Proprietà inserita con successo!')
-				// Rimuovi il messaggio dopo 3 secondi
+
+				// Rimuovi il messaggio dopo 5 secondi (ho aumentato il tempo per permettere la lettura)
 				setTimeout(() => {
 					setSuccessMessage('')
-				}, 3000)
+				}, 5000)
 				fetchData()
 			})
 			.catch((error) => alert('Errore durante il salvataggio'))
@@ -106,7 +117,7 @@ export default function AddPropertiesPage() {
 	return (
 		<div className="container py-3">
 			{successMessage && (
-				<div className="alert alert-success text-center" role="alert">
+				<div className="alert alert-success" style={{ whiteSpace: 'pre-line' }}>
 					{successMessage}
 				</div>
 			)}
