@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 import PropertyCard from '../components/PropertyCard'
 
 export default function AddPropertiesPage() {
+	// Oggetto che contiene i valori iniziali del form
 	const initialFormData = {
 		name: '',
 		rooms: 0,
@@ -12,83 +13,174 @@ export default function AddPropertiesPage() {
 		email_owners: '',
 		image: null
 	}
-	const [formData, setFormData] = useState(initialFormData);
-	const [selectedFile, setSelectedFile] = useState(null);
-	const [properties, setProperties] = useState([]);
-	const [filteredProperties, setFilteredProperties] = useState(properties);
 
-	function fetchData(url = 'hhttp://localhost:3001/something') {
+
+	// Stati principali del componente
+	const [formData, setFormData] = useState(initialFormData) // Gestisce i dati del form
+	const [selectedFile, setSelectedFile] = useState(null) // Gestisce il file dell'immagine selezionata
+	const [properties, setProperties] = useState([]) // Contiene tutte le proprietà
+	const [filteredProperties, setFilteredProperties] = useState(properties) // Proprietà filtrate
+	const [successMessage, setSuccessMessage] = useState('') // Messaggio di successo dopo il salvataggio
+	const [showCard, setShowCard] = useState(false) // Aggiungi questo nuovo stato per tracciare quando mostrare la card
+	const [savedData, setSavedData] = useState(null) // Aggiungi questo nuovo stato per i dati salvati
+
+	// Funzione per recuperare i dati delle proprietà dal server
+	function fetchData(url = 'http://localhost:3000/api/properties') {
 		fetch(url)
-			.then(res => res.json)
-			.then(response => { setProperties(response.data) })
-			.catch(error => { console.log('Error fetching data: ', err) })
+			.then((res) => res.json())
+			.then((response) => {
+				setProperties(response.data)
+			})
+			.catch((error) => {
+				console.log('Error fetching data: ', error)
+			})
 	}
 	useEffect(() => {
-		fetchData();
-	}, []);
+		fetchData()
+	}, [])
 	useEffect(() => {
-		setFilteredProperties(properties);
+		setFilteredProperties(properties)
 	}, [properties])
 
+	// Gestisce i cambiamenti nei campi del form
 	function handleFormField(e) {
-		const { name, type, value, checked } = e.target;
+		const { name, type, value, checked } = e.target
+
+		// Gestione speciale per il caricamento delle immagini
 		if (name == 'image' && e.target.files.length > 0) {
-			const fileSelected = e.target.files[0];
+			const fileSelected = e.target.files[0]
 			if (fileSelected instanceof File) {
-				const fileSelectedUrl = URL.createObjectURL(fileSelected);
+				const fileSelectedUrl = URL.createObjectURL(fileSelected)
 				setFormData((prev) => ({
 					...prev,
-					image: fileSelected,  //TEST IF UPLOAD NEW IMAGE
-				}));
-				console.log('type of imagine: ', typeof formData.image);
-				setSelectedFile(fileSelected);
+					image: fileSelected // Salva l'immagine nel form
+				}))
+				console.log('type of imagine: ', typeof formData.image)
+				setSelectedFile(fileSelected)
 			}
-		}
-		else {
-			setFormData(prev => ({
+		} else {
+			// Aggiorna lo stato del form per gli altri campi
+			setFormData((prev) => ({
+
 				...prev,
 				[name]: value
 			}))
 		}
 	}
-	function handleFormSubmit(e) {
-		e.preventDefault();
-		const formDataToSend = new FormData();
-		formDataToSend.append('id',);  //TO GET
-		formDataToSend.append('id_user',);   //TO GET
-		formDataToSend.append('name', formData.name);
-		formDataToSend.append('rooms', formData.rooms);
-		formDataToSend.append('beds', formData.beds);
-		formDataToSend.append('bathrooms', formData.bathrooms);
-		formDataToSend.append('mq', formData.mq);
-		formDataToSend.append('address', formData.address);
-		formDataToSend.append('email_owners', formData.email_owners);
-		if (formData.image && formData.image instanceof File) {
-			formDataToSend.append('image', formData.image);
-		} else { console.log('image type: ', typeof formData.image); }
 
-		for (let pair of formDataToSend.entries()) {
-			console.log(`${pair[0]} :`, pair[1]);
+
+	// Gestisce l'invio del form
+	function handleFormSubmit(e) {
+		e.preventDefault()
+
+		// Validazione dei campi obbligatori
+		if (!formData.name || !formData.address || !formData.email_owners) {
+			alert('Per favore compila tutti i campi obbligatori')
+			return
 		}
-		fetch('http://localhost:3001/something', {
+
+		// Prepara i dati da inviare al server convertendo i valori numerici
+		const dataToSend = {
+			id_user: 1,
+			name: formData.name,
+			rooms: Number(formData.rooms) || 0,
+			beds: Number(formData.beds) || 0,
+			bathrooms: Number(formData.bathrooms) || 0,
+			mq: Number(formData.mq) || 0,
+			address: formData.address,
+			email_owners: formData.email_owners,
+			image: formData.image || 'https://placehold.co/300x250/EEE/31343C'
+		}
+
+		// Chiamata API per salvare i dati
+		fetch('http://localhost:3000/api/properties/1', {
+
 			method: 'POST',
-			body: formDataToSend,  //WITH JSON FORMAT DON'T SEND IMAGE FILES
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(dataToSend)
 		})
-			.then(res => res.json())
-			.then(response => {
-				console.log('success', response);
-				setProperties(response.data);
+
+			.then((res) => res.json())
+			.then((response) => {
+				setSuccessMessage('Proprietà inserita con successo!')
+				setSavedData(dataToSend) // Salva i dati inviati
+				setShowCard(true)
+
+				// Reset del form
+				setFormData(initialFormData)
+				setSelectedFile(null)
+
+				// Rimuovi solo il messaggio di successo dopo 5 secondi
+				setTimeout(() => {
+					setSuccessMessage('')
+				}, 5000)
+				fetchData()
 			})
-			.catch(err => console.log('Error fetching data POST: ', err));
-		setFormData(initialFormData);
-		setSelectedFile(null);
+			.catch((error) => alert('Errore durante il salvataggio'))
 	}
 
-	function showProperties() { console.log(properties); }
+	function showProperties() {
+		console.log(properties)
+	}
+
+
 
 	//id, id_user, name, rooms(int), beds(int), bathrooms(int), mq(int), address, email_owners, like(int), image
 
 	return (
+
+		<div className="container py-3">
+			{successMessage && <div className="alert alert-success">{successMessage}</div>}
+
+			{/* La card usa savedData invece di formData */}
+			{showCard && savedData && (
+				<div className="card overflow-hidden mb-4">
+					<div className="row">
+						<div className="col-4">
+							<img
+								src={selectedFile ? URL.createObjectURL(selectedFile) : 'https://placehold.co/300x250/EEE/31343C'}
+								alt={savedData.name}
+								style={{ maxWidth: '100%', height: 'auto' }}
+							/>
+						</div>
+						<div className="col-8">
+							<div className="card-title my-2">
+								<h2>{savedData.name}</h2>
+							</div>
+							<div className="mt-5">
+								<h3>Property Features:</h3>
+								<div className="row mt-2 g-3">
+									<div className="col-4">
+										<strong>Rooms: </strong>
+										<span>{savedData.rooms}</span>
+									</div>
+									<div className="col-4">
+										<strong>Beds: </strong>
+										<span>{savedData.beds}</span>
+									</div>
+									<div className="col-4">
+										<strong>Bathrooms: </strong>
+										<span>{savedData.bathrooms}</span>
+									</div>
+									<div className="col-4">
+										<i className="bi bi-rulers"> </i>
+										{savedData.mq}
+									</div>
+									<div className="col-4">
+										<i className="bi bi-geo-alt"> </i>
+										{savedData.address}
+									</div>
+									<div className="col-4">
+										<i className="bi bi-envelope"> </i>
+										{savedData.email_owners}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
+
 		<div className="container d-flex justify-content-center py-3">
 			<div className="mt-3 p-3 border border-primary-subtle rounded w-50">
 				<h3 className="mb-2 text-center">Aggiungi la tua proprietà</h3>
@@ -134,7 +226,7 @@ export default function AddPropertiesPage() {
 						</div>
 						<div className='form-group mb-3'>
 							<label className="" htmlFor="email_owners">Email proprietario:</label>
-							<input className='form-control' type="text" id="email_owners" name="email_owners" placeholder="Inserisci la tua email" value={formData.address} onChange={handleFormField} /> {/* required value= */}
+							<input className='form-control' type="text" id="email_owners" name="email_owners" placeholder="Inserisci la tua email" value={formData.email_owners} onChange={handleFormField} /> {/* required value= */}
 						</div>
 
 						<div className='form-group col-md-8 mt-4 text-center'>
@@ -147,11 +239,8 @@ export default function AddPropertiesPage() {
 						</div>
 					</div>
 				</form>
-
-				<section className="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-4 g-3 mb-3">
-					{filteredProperties.map((item, index) => <PropertyCard key={item.id} data={item} />)}
-				</section>
 			</div>
+
 		</div>
 	)
 }

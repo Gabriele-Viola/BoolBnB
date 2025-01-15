@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import PropertyCard from '../components/PropertyCard'
+
 import { useGlobalContext } from '../Context/GlobalContext'
+
 
 
 export default function Homepage() {
@@ -16,14 +18,15 @@ export default function Homepage() {
 
 	return (
 		<>
-			<div className="container">
+
+			<div className="container py-3">
 				<div className='d-flex justify-content-end mb-3'>
-					<Link to={url}><button className='btn btn-primary'>Aggiungi</button></Link>
-					{/* {user?.id && <span>Accesso effettuato come: <h3>{user.user_name}</h3></span>} */}
+					<Link to={url} className="btn btn-primary mb-3">
+					Aggiungi Proprietà
+				</Link>
 				</div>
 				<div className='d-flex justify-content-end'>
-					{/* <Link to={url}><button className='btn btn-primary'>Aggiungi</button></Link> */}
-					{/* {user?.id && <span>Accesso effettuato come: <h3>{user.user_name}</h3></span>} */}
+					 {user?.id && <span>Accesso effettuato come: <h3>{user.user_name}</h3></span>} 
 				</div>
 			</div>
 			<PropertyCard />

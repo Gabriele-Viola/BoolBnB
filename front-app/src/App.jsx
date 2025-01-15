@@ -11,6 +11,8 @@ import LogInPage from './pages/LogInPage.jsx'
 function App() {
 	return (
 		<>
+
+
 			<GlobalContextProvider>
 
 				<BrowserRouter>
@@ -27,6 +29,7 @@ function App() {
 					</Routes>
 				</BrowserRouter>
 			</GlobalContextProvider>
+
 		</>
 	)
 }
