@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useGlobalContext } from '../Context/GlobalContext'
+const { error, setError, loading, setLoading } = useGlobalContext()
 
 export default function PropertyCard() {
 	const [properties, setProperties] = useState([])
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState(null)
 
-	const url = 'http://localhost:3000/api/properties'
+	const urlIndex = 'http://localhost:3000/api/properties'
 
 	// Fetch data dall'API con async/await per migliorare la leggibilità del codice
 	async function fetchData() {
 		try {
-			const response = await fetch(url)
+			const response = await fetch(urlIndex)
 			if (!response.ok) {
 				throw new Error('Failed to fetch properties')
 			}
