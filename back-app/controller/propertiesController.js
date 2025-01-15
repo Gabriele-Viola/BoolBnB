@@ -33,7 +33,7 @@ function index(req, res) {
 
 //metodo show che restituisce l'appartamento selezionato
 function show(req, res) {
-
+	const id = req.params.id
 	const sql = `SELECT properties.*, 
         			JSON_ARRAYAGG(services.name) AS services
 					FROM properties
@@ -99,8 +99,7 @@ function create(req, res) {
 }
 
 function likeUpdate(req, res) {
-	const token = req.params.id
-	const id = decrypt(token)
+	const id = req.params.id
 	const sql = `UPDATE properties SET \`like\` = \`like\` + 1 WHERE id = ?`
 	connection.query(sql, [id], (err, result) => {
 		if (err)
