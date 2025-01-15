@@ -1,35 +1,40 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react"
 
-const GlobalContext = createContext();
+const GlobalContext = createContext()
 
 function GlobalContextProvider({ children }) {
-    const [user, setUser] = useState('Guest');
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [user, setUser] = useState('Guest')
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [logged, setLogged] = useState(false)
 
-    // Recupera l'utente da localStorage
+    // Recuperare  user
+
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            setUser(storedUser);
+        const user = localStorage.getItem('user')
+        const logIn = localStorage.getItem('logged')
+        if (user) {
+            setUser(user)
         }
-        setLoading(false); // Imposta loading su false una volta che i dati sono stati caricati
-    }, []);
+        if (logged) {
+            setLogged(logged)
+        }
+    }, [])
 
-    // Salva l'utente in localStorage quando cambia
     useEffect(() => {
-        if (user && user !== 'Guest') {
-            localStorage.setItem('user', user);
+        if (user) {
+            localStorage.setItem('user', user)
         } else {
-            localStorage.removeItem('user');
+            localStorage.removeItem('user')
         }
-    }, [user]);
+        if (logged) {
+            localStorage.setItem('logged', logged)
+        } else {
+            localStorage.removeItem('logged')
+        }
+    }, [user, logged])
 
-    // Funzione per il logout
-    const logout = () => {
-        setUser('Guest');  // Resetta l'utente a "Guest"
-        localStorage.removeItem('user');  // Rimuove l'utente da localStorage
-    };
+
 
     const values = {
         user,
@@ -38,18 +43,21 @@ function GlobalContextProvider({ children }) {
         setLoading,
         error,
         setError,
-        logout // Aggiungi logout nel contesto
-    };
+        logged,
+        setLogged
+    }
 
     return (
         <GlobalContext.Provider value={values}>
             {children}
         </GlobalContext.Provider>
-    );
-}
+    )
 
+}
 function useGlobalContext() {
-    return useContext(GlobalContext);
+    return useContext(GlobalContext)
 }
+export { GlobalContextProvider, useGlobalContext }
 
-export { GlobalContextProvider, useGlobalContext };
+
+

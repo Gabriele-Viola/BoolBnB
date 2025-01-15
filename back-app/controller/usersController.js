@@ -38,11 +38,11 @@ function logIn(req, res) {
         // verify if the user email is present in the db
         if (result.length === 0)
             return res.status(404).json({
-                error: 'There is no user with this email'
+                error: 'Nessun utente registrato con questa mail'
             })
         //verify if the password is correct
         if (result[0].password !== password)
-            return res.status(404).json({ error: 'Password is not correct' })
+            return res.status(404).json({ error: 'Password errata' })
         const user = result[0]
         // const id = encryptid(user.id)
         const tokenId = encryptid(user.id)

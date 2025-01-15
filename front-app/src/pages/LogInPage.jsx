@@ -45,7 +45,7 @@ export default function LogInPage() {
                 <div className="w-25">
                     <h2 className="mb-4">Effettua il log in:</h2>
                     <form onSubmit={HandleUser}>
-                        {errorLog && <p>{errorLog}</p>}
+                        {errorLog && <div className="bg-danger p-2 mb-2 text-light rounded text-center">{errorLog}</div>}
                         <label htmlFor="email">E-mail</label>
                         <input
                             type="email"

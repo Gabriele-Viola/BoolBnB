@@ -2,12 +2,13 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../Context/GlobalContext'; // Assicurati di avere il context
 
 export default function AppHeader() {
-	const { user, setUser } = useGlobalContext(); // Usa il context per recuperare l'utente loggato
+	const { user, setUser, setLogged } = useGlobalContext(); // Usa il context per recuperare l'utente loggato
 	const navigate = useNavigate(); // Per fare il redirect
 
 	// Funzione di logout
 	const handleLogout = () => {
 		setUser('Guest'); // Resetta l'utente nel contesto
+		setLogged(false)
 		localStorage.removeItem('user'); // Rimuovi l'utente dal localStorage
 		navigate('/'); // Redirigi alla homepage
 	};
@@ -41,12 +42,16 @@ export default function AppHeader() {
 
 						{/* Mostra il nome dell'utente e il pulsante di logout se l'utente è loggato */}
 						{user !== 'Guest' ? (
-							<li className="d-flex align-items-center">
-								<span className="text-white fs-6 me-1">Benvenuto, {user.user_name}</span>
-								<button onClick={handleLogout} className="btn btn-danger btn-sm fs-6">
-									Logout
-								</button>
-							</li>
+							<>
+								<li>
+									<span className="text-white fs-6 me-1">USER: {user.user_name}</span>
+								</li>
+								<li>
+									<button onClick={handleLogout} className="btn btn-danger btn-sm fs-6">
+										Logout
+									</button>
+								</li>
+							</>
 						) : (
 							<li>
 								<Link to="/login" className="btn btn-success btn-sm fs-6">

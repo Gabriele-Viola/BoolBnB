@@ -56,8 +56,8 @@ export default function PropertyCard() {
 				<div className="row g-3">
 					{properties.length > 0 ? (
 						properties.map((property) => (
-							<div className="col-12 col-md-6 col-lg-4" key={property.id}>
-								<div className="card h-100">
+							<div className="col-12 col-md-6 col-lg-4" key={property?.id}>
+								<div className="card h-100 shadow">
 									<img
 										src={property.image || 'https://placehold.co/300x250/EEE/31343C'}
 										alt={property.name}
