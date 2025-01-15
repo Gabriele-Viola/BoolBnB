@@ -4,8 +4,10 @@ import PropertyCard from '../components/PropertyCard'
 import { useGlobalContext } from '../Context/GlobalContext'
 
 export default function AddPropertiesPage() {
-	const { id } = useParams()
+	const { owner } = useParams()
 	const { user } = useGlobalContext()
+
+
 	// Oggetto che contiene i valori iniziali del form
 	const initialFormData = {
 		name: '',
@@ -85,7 +87,7 @@ export default function AddPropertiesPage() {
 
 		// Prepara i dati da inviare al server convertendo i valori numerici
 		const dataToSend = {
-			id_user: id,
+			id_user: owner,
 			name: formData.name,
 			rooms: Number(formData.rooms) || 0,
 			beds: Number(formData.beds) || 0,
@@ -97,7 +99,7 @@ export default function AddPropertiesPage() {
 		}
 
 		// Chiamata API per salvare i dati
-		fetch('http://localhost:3000/api/properties/1', {
+		fetch(`http://localhost:3000/api/properties/${owner}`, {
 
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
