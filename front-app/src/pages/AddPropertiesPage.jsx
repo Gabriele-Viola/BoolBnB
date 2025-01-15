@@ -4,7 +4,14 @@ import { useGlobalContext } from '../Context/GlobalContext'
 
 export default function AddPropertiesPage() {
 	const { owner } = useParams()
-	const { user } = useGlobalContext()
+	const { user, logged, setLogged } = useGlobalContext()
+	if (owner == user.id) {
+		setLogged(true)
+	} else {
+		setLogged(false)
+	}
+
+
 
 
 	// Oggetto che contiene i valori iniziali del form
@@ -134,156 +141,164 @@ export default function AddPropertiesPage() {
 
 	return (
 
-		<div className="container py-3">
-			{successMessage && <div className="alert alert-success">{successMessage}</div>}
+		<>
 
-			{/* La card usa savedData invece di formData */}
-			{showCard && savedData && (
-				<div className="card overflow-hidden mb-4">
-					<div className="row">
-						<div className="col-4">
-							<img
-								src={selectedFile ? URL.createObjectURL(selectedFile) : 'https://placehold.co/300x250/EEE/31343C'}
-								alt={savedData.name}
-								style={{ maxWidth: '100%', height: 'auto' }}
-							/>
-						</div>
-						<div className="col-8">
-							<div className="card-title my-2">
-								<h2>{savedData.name}</h2>
+			<div className="container py-3">
+				{successMessage && <div className="alert alert-success">{successMessage}</div>}
+
+				{/* La card usa savedData invece di formData */}
+				{showCard && savedData && (
+					<div className="card overflow-hidden mb-4">
+						<div className="row">
+							<div className="col-4">
+								<img
+									src={selectedFile ? URL.createObjectURL(selectedFile) : 'https://placehold.co/300x250/EEE/31343C'}
+									alt={savedData.name}
+									style={{ maxWidth: '100%', height: 'auto' }}
+								/>
 							</div>
-							<div className="mt-5">
-								<h3>Caratteristiche della proprietà:</h3>
-								<div className="row mt-2 g-3">
-									<div className="col-4">
-										<strong>Stanze: </strong>
-										<span>{savedData.rooms}</span>
-									</div>
-									<div className="col-4">
-										<strong>Letti: </strong>
-										<span>{savedData.beds}</span>
-									</div>
-									<div className="col-4">
-										<strong>Bagni: </strong>
-										<span>{savedData.bathrooms}</span>
-									</div>
-									<div className="col-4">
-										<i className="bi bi-rulers"> </i>
-										{savedData.mq}
-									</div>
-									<div className="col-4">
-										<i className="bi bi-geo-alt"> </i>
-										{savedData.address}
-									</div>
-									<div className="col-4">
-										<i className="bi bi-envelope"> </i>
-										{savedData.email_owners}
+							<div className="col-8">
+								<div className="card-title my-2">
+									<h2>{savedData.name}</h2>
+								</div>
+								<div className="mt-5">
+									<h3>Caratteristiche della proprietà:</h3>
+									<div className="row mt-2 g-3">
+										<div className="col-4">
+											<strong>Stanze: </strong>
+											<span>{savedData.rooms}</span>
+										</div>
+										<div className="col-4">
+											<strong>Letti: </strong>
+											<span>{savedData.beds}</span>
+										</div>
+										<div className="col-4">
+											<strong>Bagni: </strong>
+											<span>{savedData.bathrooms}</span>
+										</div>
+										<div className="col-4">
+											<i className="bi bi-rulers"> </i>
+											{savedData.mq}
+										</div>
+										<div className="col-4">
+											<i className="bi bi-geo-alt"> </i>
+											{savedData.address}
+										</div>
+										<div className="col-4">
+											<i className="bi bi-envelope"> </i>
+											{savedData.email_owners}
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			)}
+				)}
 
-			<div className="container d-flex justify-content-center py-3">
-				<div className="mt-3 p-3 border border-primary-subtle rounded w-50">
-					<h3 className="mb-2 text-center">Aggiungi la tua proprietà</h3>
-					<form className="my-3 rounded p-4" onSubmit={handleFormSubmit}>
-						<div className="form-group col-md-6 ">
+				<div className="container d-flex justify-content-center py-3">
+					<div className="mt-3 p-3 border border-primary-subtle rounded w-50">
+						<h3 className="mb-2 text-center">Aggiungi la tua proprietà</h3>
+						{logged ?
 
-							<div className="form-group mb-3">
-								<label htmlFor="name">Nome Proprietà:</label>
-								<input
-									className="form-control"
-									type="text"
-									id="name"
-									name="name"
-									placeholder="Inserisci il nome della proprietà"
-									required
-									minLength={3}
-									maxLength={100}
-									value={formData.name} onChange={handleFormField} />
-							</div>
+							<form className="my-3 rounded p-4" onSubmit={handleFormSubmit}>
+								<div className="form-group col-md-6 ">
 
-							<div className='row mb-3'>
-								<div className='form-group col-md-6 '>
-									<label htmlFor="formFile" className='form-label'>Scegli una foto: </label><br />
-									<label className="btn" htmlFor="formFile">Scegli un file</label>
-									<input className="form-control d-none" type="file" id="image" name="image" accept="image/*" onChange={handleFormField} />  {/* accept="image/*" ACCEPT ONLY IMG! */}
-									{selectedFile && <img src={selectedFile} alt='cover image' className='img-fluid rounded' />}
+									<div className="form-group mb-3">
+										<label htmlFor="name">Nome Proprietà:</label>
+										<input
+											className="form-control"
+											type="text"
+											id="name"
+											name="name"
+											placeholder="Inserisci il nome della proprietà"
+											required
+											minLength={3}
+											maxLength={100}
+											value={formData.name} onChange={handleFormField} />
+									</div>
+
+									<div className='row mb-3'>
+										<div className='form-group col-md-6 '>
+											<label htmlFor="formFile" className='form-label'>Scegli una foto: </label><br />
+											<label className="btn" htmlFor="formFile">Scegli un file</label>
+											<input className="form-control d-none" type="file" id="image" name="image" accept="image/*" onChange={handleFormField} />  {/* accept="image/*" ACCEPT ONLY IMG! */}
+											{selectedFile && <img src={selectedFile} alt='cover image' className='img-fluid rounded' />}
+										</div>
+									</div>
+
+									<div className="mb-3">
+										<label htmlFor="rooms">Numero stanze:</label>
+										<input type="number"
+											className="form-control"
+											id="rooms"
+											name="rooms"
+											required
+											min={1}
+											max={100}
+											value={formData.rooms} onChange={handleFormField} />
+									</div>
+									<div className="mb-3">
+										<label htmlFor="beds">Numero letti:</label>
+										<input type="number"
+											className="form-control"
+											id="beds" name="beds"
+											required
+											min={1}
+											max={100}
+											value={formData.beds} onChange={handleFormField} />
+									</div>
+									<div className="mb-3">
+										<label htmlFor="bathrooms">Numero bagni:</label>
+										<input type="number"
+											className="form-control"
+											id="bathrooms"
+											name="bathrooms"
+											required
+											min={1}
+											max={100}
+											value={formData.bathrooms} onChange={handleFormField} />
+									</div>
+									<div className="mb-3">
+										<label htmlFor="mq">Superficie in mq:</label>
+										<input type="number"
+											className="form-control"
+											id="mq"
+											name="mq"
+											required
+											min={1}
+											max={1000}
+											value={formData.mq} onChange={handleFormField} />
+									</div>
+
+									<div className='form-group mb-3'>
+										<label className="" htmlFor="address">Indirizzo proprietà:</label>
+										<input
+											className='form-control'
+											type="text"
+											id="address"
+											name="address"
+											required
+											minLength={5}
+											maxLength={100}
+											placeholder="Inserisci l'indirizzo"
+											value={formData.address} onChange={handleFormField} /> {/* required value= */}
+									</div>
+									<div className='form-group col-md-8 mt-4 text-center'>
+										<button className='btn btn-DarkRose w-100 mb-3' type='submit' id='formSubmit' name='submit'>
+											<span className='d-flex align-items-center justify-content-center gap-2'>
+												<button className="btn btn-primary">Salva <i className="bi bi-cloud-arrow-up" /></button>
+											</span>
+										</button>
+									</div>
 								</div>
-							</div>
+							</form> : <h5 className='bg-danger text-warning'>Non puoi farlo!</h5>
+						}
 
-							<div className="mb-3">
-								<label htmlFor="rooms">Numero stanze:</label>
-								<input type="number"
-									className="form-control"
-									id="rooms"
-									name="rooms"
-									required
-									min={1}
-									max={100}
-									value={formData.rooms} onChange={handleFormField} />
-							</div>
-							<div className="mb-3">
-								<label htmlFor="beds">Numero letti:</label>
-								<input type="number"
-									className="form-control"
-									id="beds" name="beds"
-									required
-									min={1}
-									max={100}
-									value={formData.beds} onChange={handleFormField} />
-							</div>
-							<div className="mb-3">
-								<label htmlFor="bathrooms">Numero bagni:</label>
-								<input type="number"
-									className="form-control"
-									id="bathrooms"
-									name="bathrooms"
-									required
-									min={1}
-									max={100}
-									value={formData.bathrooms} onChange={handleFormField} />
-							</div>
-							<div className="mb-3">
-								<label htmlFor="mq">Superficie in mq:</label>
-								<input type="number"
-									className="form-control"
-									id="mq"
-									name="mq"
-									required
-									min={1}
-									max={1000}
-									value={formData.mq} onChange={handleFormField} />
-							</div>
+					</div>
 
-							<div className='form-group mb-3'>
-								<label className="" htmlFor="address">Indirizzo proprietà:</label>
-								<input
-									className='form-control'
-									type="text"
-									id="address"
-									name="address"
-									required
-									minLength={5}
-									maxLength={100}
-									placeholder="Inserisci l'indirizzo"
-									value={formData.address} onChange={handleFormField} /> {/* required value= */}
-							</div>
-							<div className='form-group col-md-8 mt-4 text-center'>
-								<button className='btn btn-DarkRose w-100 mb-3' type='submit' id='formSubmit' name='submit'>
-									<span className='d-flex align-items-center justify-content-center gap-2'>
-										<button className="btn btn-primary">Salva <i className="bi bi-cloud-arrow-up" /></button>
-									</span>
-								</button>
-							</div>
-						</div>
-					</form>
 				</div>
-
 			</div>
-		</div>
+
+		</>
 	)
 }
