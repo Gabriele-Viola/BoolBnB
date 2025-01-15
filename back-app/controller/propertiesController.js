@@ -33,7 +33,6 @@ function index(req, res) {
 
 //metodo show che restituisce l'appartamento selezionato
 function show(req, res) {
-	const id = req.params.id
 
 	const sql = `SELECT properties.*, 
         			JSON_ARRAYAGG(services.name) AS services
@@ -63,8 +62,9 @@ function show(req, res) {
 
 // metodo create per aggiungere nuovo appartamento
 function create(req, res) {
-	const token = req.params.owner
-	const owner = decrypt(token)
+	const tokenOwner = req.params.owner
+	const owner = decrypt(tokenOwner)
+
 	const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
 	const { name, rooms, beds, bathrooms, mq, address, email_owners, like, image } = req.body
 
@@ -80,7 +80,8 @@ function create(req, res) {
 		(err, result) => {
 			if (err)
 				return res.status(500).json({
-					error: 'Something went wrong...'
+					error: 'Something went wrong...',
+					err: err
 				})
 			return res.status(201).json({
 				success: true
