@@ -2,12 +2,13 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../Context/GlobalContext'; // Assicurati di avere il context
 
 export default function AppHeader() {
-	const { user, setUser } = useGlobalContext(); // Usa il context per recuperare l'utente loggato
+	const { user, setUser, setLogged } = useGlobalContext(); // Usa il context per recuperare l'utente loggato
 	const navigate = useNavigate(); // Per fare il redirect
 
 	// Funzione di logout
 	const handleLogout = () => {
 		setUser('Guest'); // Resetta l'utente nel contesto
+		setLogged(false)
 		localStorage.removeItem('user'); // Rimuovi l'utente dal localStorage
 		navigate('/'); // Redirigi alla homepage
 	};
