@@ -16,6 +16,7 @@ export default function AddPropertiesPage() {
 	const [selectedFile, setSelectedFile] = useState(null)
 	const [properties, setProperties] = useState([])
 	const [filteredProperties, setFilteredProperties] = useState(properties)
+	const [successMessage, setSuccessMessage] = useState('')
 
 	function fetchData(url = 'http://localhost:3000/api/properties') {
 		fetch(url)
@@ -86,6 +87,11 @@ export default function AddPropertiesPage() {
 			.then(() => {
 				setFormData(initialFormData)
 				setSelectedFile(null)
+				setSuccessMessage('Proprietà inserita con successo!')
+				// Rimuovi il messaggio dopo 3 secondi
+				setTimeout(() => {
+					setSuccessMessage('')
+				}, 3000)
 				fetchData()
 			})
 			.catch((error) => alert('Errore durante il salvataggio'))
@@ -99,6 +105,11 @@ export default function AddPropertiesPage() {
 
 	return (
 		<div className="container py-3">
+			{successMessage && (
+				<div className="alert alert-success text-center" role="alert">
+					{successMessage}
+				</div>
+			)}
 			<form className="my-3 rounded p-4" onSubmit={handleFormSubmit}>
 				<div className="form-group col-md-6 ">
 					<div className="form-group mb-3">
@@ -222,12 +233,6 @@ export default function AddPropertiesPage() {
 					</div>
 				</div>
 			</form>
-
-			<section className="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-4 g-3 mb-3">
-				{filteredProperties.map((item, index) => (
-					<PropertyCard key={item.id} data={item} />
-				))}
-			</section>
 		</div>
 	)
 }
