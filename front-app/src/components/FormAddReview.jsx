@@ -7,6 +7,11 @@ export default function FormAddReview({
 	review,
 	setReview
 }) {
+	// Aggiungiamo una funzione per verificare la validità dei campi
+	const isFormValid = () => {
+		return nameUser.length >= 3 && nights >= 1 && review.length >= 10
+	}
+
 	return (
 		<div className="mt-3 p-3 border border-primary-subtle rounded">
 			<h3 className="mb-2 text-center">Lascia una recensione</h3>
@@ -51,7 +56,7 @@ export default function FormAddReview({
 					value={review}
 					onChange={(e) => setReview(e.target.value)}
 					placeholder="Inserisci la tua recensione"></textarea>
-				<button className="btn btn-primary" type="submit">
+				<button className="btn btn-primary" type="submit" disabled={!isFormValid()}>
 					<i className="bi bi-send-fill"></i> Invia!
 				</button>
 			</form>
