@@ -76,6 +76,11 @@ export default function LogInPage() {
                             )}
                         </div>
                     </form>
+                    <div className="text-center mt-3">
+                        <small>
+                            Non hai un account? <Link to="/registration">Registrati qui</Link>
+                        </small>
+                    </div>
                 </div>
             </div>
         </>
