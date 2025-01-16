@@ -38,6 +38,7 @@ export default function ReviewsCard({ reviews, toggle }) {
                             handletoggle(`text-truncate-${review?.id}`, review?.id)
                         }
                     >
+
                         <div className="card-body d-flex flex-column justify-content-between">
                             <div
                                 id={`text-truncate-${review.id}`}
