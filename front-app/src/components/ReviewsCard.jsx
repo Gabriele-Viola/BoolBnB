@@ -32,6 +32,7 @@ export default function ReviewsCard({ reviews }) {
                     </div>
                 </div>
             </div>
+
         ))
     );
 }

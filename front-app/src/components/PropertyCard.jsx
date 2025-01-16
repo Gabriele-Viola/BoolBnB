@@ -64,6 +64,7 @@ export default function PropertyCard() {
 
 
 							<div className="col-12 col-md-6 col-lg-4" key={property?.id}>
+
 								<div
 									className={`card h-100 shadow ${user.email === property.email_owners ? 'border-success border-thick' : ''}`}
 								// Aggiunge il bordo se l'utente loggato ha la stessa email della proprietà
