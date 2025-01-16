@@ -3,7 +3,7 @@ const connection = require("../db/connection.js");
 // Metodo per mostrare le recensioni relative ad un appartamento
 function reviewsShow(req, res) {
     const id = req.params.id_property
-    const sqlShow = `SELECT * FROM reviews WHERE id_property=?`
+    const sqlShow = `SELECT * FROM reviews WHERE id_property=? order by date_review desc`
 
     connection.query(sqlShow, [id], (err, result) => {
         if (err) {
@@ -20,7 +20,7 @@ function reviewsShow(req, res) {
 // Metodo per aggiungere una recensione
 function reviewCreate(req, res) {
     const sql = `INSERT INTO reviews (id_property, name, text_review, nights, date_review) VALUES (?, ?, ?, ?, ?)`
-    const sqlShow = `SELECT * FROM reviews WHERE id_property=?`
+    const sqlShow = `SELECT * FROM reviews WHERE id_property=? order by date_review desc`
     const idName = req.params.name;
     const idProperty = req.params.id_property;
     const date = new Date();
