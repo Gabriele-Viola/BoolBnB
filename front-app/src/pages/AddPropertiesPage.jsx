@@ -31,28 +31,25 @@ export default function AddPropertiesPage() {
 	const [formData, setFormData] = useState(initialFormData) // Gestisce i dati del form
 	const [selectedFile, setSelectedFile] = useState(null) // Gestisce il file dell'immagine selezionata
 	const [properties, setProperties] = useState([]) // Contiene tutte le proprietà
-	const [filteredProperties, setFilteredProperties] = useState(properties) // Proprietà filtrate
 	const [successMessage, setSuccessMessage] = useState('') // Messaggio di successo dopo il salvataggio
 	const [showCard, setShowCard] = useState(false) // Aggiungi questo nuovo stato per tracciare quando mostrare la card
 	const [savedData, setSavedData] = useState(null) // Aggiungi questo nuovo stato per i dati salvati
 
 	// Funzione per recuperare i dati delle proprietà dal server
-	function fetchData(url = 'http://localhost:3000/api/properties') {
-		fetch(url)
-			.then((res) => res.json())
-			.then((response) => {
-				setProperties(response.data)
-			})
-			.catch((error) => {
-				console.log('Error fetching data: ', error)
-			})
-	}
-	useEffect(() => {
-		fetchData()
-	}, [])
-	useEffect(() => {
-		setFilteredProperties(properties)
-	}, [properties])
+	// function fetchData(url = 'http://localhost:3000/api/properties') {
+	// 	fetch(url)
+	// 		.then((res) => res.json())
+	// 		.then((response) => {
+	// 			setProperties(response.data)
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log('Error fetching data: ', error)
+	// 		})
+	// }
+	// useEffect(() => {
+	// 	fetchData()
+	// }, [])
+
 
 	// Gestisce i cambiamenti nei campi del form
 	function handleFormField(e) {
@@ -62,12 +59,20 @@ export default function AddPropertiesPage() {
 		if (name == 'image' && e.target.files.length > 0) {
 			const fileSelected = e.target.files[0]
 			if (fileSelected instanceof File) {
-				const fileSelectedUrl = URL.createObjectURL(fileSelected)
+				const fileSelectedUrl = URL.createObjectURL(fileSelected);
+				console.log(fileSelectedUrl);
+
+
+				console.log('Selected file:', fileSelected); // x check!
+				console.log('File type:', fileSelected.type); // x check!
+
 				setFormData((prev) => ({
 					...prev,
 					image: fileSelected // Salva l'immagine nel form
 				}))
-				console.log('type of imagine: ', typeof formData.image)
+				//console.log('type of imagine: ', typeof formData.image)
+				console.log('2 File type (MIME):', formData.image.type); // x check, mostra il tipo MIME (es.image/jpeg)
+				console.log('2 File name:', formData.image.name);       // x check, mostra il nome del file
 				setSelectedFile(fileSelected)
 			}
 		} else {
@@ -89,27 +94,34 @@ export default function AddPropertiesPage() {
 			return
 		}
 
-		// Prepara i dati da inviare al server convertendo i valori numerici
-		const dataToSend = {
-			id_user: owner,
-			name: formData.name,
-			rooms: Number(formData.rooms) || 0,
-			beds: Number(formData.beds) || 0,
-			bathrooms: Number(formData.bathrooms) || 0,
-			mq: Number(formData.mq) || 0,
-			address: formData.address,
-			email_owners: user.email,
-			image: formData.image || 'https://placehold.co/300x250/EEE/31343C'
+		const dataToSend = new FormData();
+		dataToSend.append('id_user', owner);
+		dataToSend.append('name', formData.name);
+		dataToSend.append('rooms', Number(formData.rooms) || 0);
+		dataToSend.append('beds', Number(formData.beds) || 0);
+		dataToSend.append('bathrooms', Number(formData.bathrooms) || 0);
+		dataToSend.append('mq', Number(formData.mq) || 0);
+		dataToSend.append('address', formData.address);
+		dataToSend.append('email_owners', user.email);
+		if (formData.image) {
+			dataToSend.append('image', formData.image); // Aggiungi l'immagine al FormData
 		}
+
+
+		console.log('Data to send:', Array.from(dataToSend.entries())); // x check, logga i dati inviati
 
 		// Chiamata API per salvare i dati
 		fetch(`http://localhost:3000/api/properties/${owner}`, {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(dataToSend)
+			//headers: { 'Content-Type': 'application/json' }, //cannot send img files
+			//body: JSON.stringify(dataToSend)  //cannot send img files
+			body: dataToSend
 		})
 			.then((res) => res.json())
 			.then((response) => {
+				console.log(response);
+				setProperties(response.properties)
+
 				setSuccessMessage('Proprietà inserita con successo!')
 				setSavedData(dataToSend) // Salva i dati inviati
 				setShowCard(true)
@@ -122,16 +134,16 @@ export default function AddPropertiesPage() {
 				setTimeout(() => {
 					setSuccessMessage('')
 				}, 5000)
-				fetchData()
 			})
-			.catch((error) => alert('Errore durante il salvataggio'))
+			.catch((error) => alert('Errore durante il salvataggio', error))
 	}
 
 	function showProperties() {
 		console.log(properties)
 	}
 
-	//id, id_user, name, rooms(int), beds(int), bathrooms(int), mq(int), address, email_owners, like(int), image
+	console.log(properties);
+
 
 	return (
 		<>
@@ -146,40 +158,40 @@ export default function AddPropertiesPage() {
 							<div className="col-4">
 								<img
 									src={selectedFile ? URL.createObjectURL(selectedFile) : 'https://placehold.co/300x250/EEE/31343C'}
-									alt={savedData.name}
+									alt={properties.name}
 									style={{ maxWidth: '100%', height: 'auto' }}
 								/>
 							</div>
 							<div className="col-8">
 								<div className="card-title my-2">
-									<h2>{savedData.name}</h2>
+									<h2>{properties.name}</h2>
 								</div>
 								<div className="mt-5">
 									<h3>Caratteristiche della proprietà:</h3>
 									<div className="row mt-2 g-3">
 										<div className="col-4">
 											<strong>Stanze: </strong>
-											<span>{savedData.rooms}</span>
+											<span>{properties.rooms}</span>
 										</div>
 										<div className="col-4">
 											<strong>Letti: </strong>
-											<span>{savedData.beds}</span>
+											<span>{properties.beds}</span>
 										</div>
 										<div className="col-4">
 											<strong>Bagni: </strong>
-											<span>{savedData.bathrooms}</span>
+											<span>{properties.bathrooms}</span>
 										</div>
 										<div className="col-4">
 											<i className="bi bi-rulers"> </i>
-											{savedData.mq}
+											{properties.mq}
 										</div>
 										<div className="col-4">
 											<i className="bi bi-geo-alt"> </i>
-											{savedData.address}
+											{properties.address}
 										</div>
 										<div className="col-4">
 											<i className="bi bi-envelope"> </i>
-											{savedData.email_owners}
+											{properties.email_owners}
 										</div>
 									</div>
 								</div>
@@ -210,26 +222,15 @@ export default function AddPropertiesPage() {
 										/>
 									</div>
 
-									<div className="row mb-3">
-										<div className="form-group col-md-6 ">
-											<label htmlFor="formFile" className="form-label">
-												Scegli una foto:{' '}
-											</label>
-											<br />
-											<label className="btn" htmlFor="formFile">
-												Scegli un file
-											</label>
-											<input
-												className="form-control d-none"
-												type="file"
-												id="image"
-												name="image"
-												accept="image/*"
-												onChange={handleFormField}
-											/>{' '}
-											{/* accept="image/*" ACCEPT ONLY IMG! */}
-											{selectedFile && <img src={selectedFile} alt="cover image" className="img-fluid rounded" />}
-										</div>
+
+									<div className='row mb-3'>
+										<div className='form-group col-md-6 '>
+											<label htmlFor="image" className='form-label'>Scegli una foto: </label><br />
+											<label className="btn" htmlFor="image">Scegli un file</label>
+											<input className="form-control d-none" type="file" id="image" name="image" accept="image/*" onChange={handleFormField} />  {/* accept="image/*" ACCEPT ONLY IMG! */}
+											{selectedFile && <img src={URL.createObjectURL(selectedFile)} alt='cover image' className='img-fluid rounded' />}
+										</div>   {/* .createObjectURL() x anteprima img on browser */}
+
 									</div>
 
 									<div className="mb-3">
