@@ -116,6 +116,23 @@ export default function DetailsPage() {
 			email: e.target.email.value,
 			text_message: e.target.message.value
 		}
+		if (!formMessage.email || !formMessage.text_message) {
+			return alert('All fields are required')
+		}
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+		if (!emailRegex.test(formMessage.email) || formMessage.email.length > 255) {
+			console.log(email)
+
+			return alert('Invalid email format')
+		}
+
+		if (formMessage.text_message.length < 10 || formMessage.text_message.length > 1000) {
+			console.log(text_message)
+
+			return alert('Message must be between 10 and 1000 characters')
+		}
 
 		try {
 			const res = await fetch(urlPostMessage, {
