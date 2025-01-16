@@ -35,28 +35,25 @@ export default function AddPropertiesPage() {
 	const [formData, setFormData] = useState(initialFormData) // Gestisce i dati del form
 	const [selectedFile, setSelectedFile] = useState(null) // Gestisce il file dell'immagine selezionata
 	const [properties, setProperties] = useState([]) // Contiene tutte le proprietà
-	const [filteredProperties, setFilteredProperties] = useState(properties) // Proprietà filtrate
 	const [successMessage, setSuccessMessage] = useState('') // Messaggio di successo dopo il salvataggio
 	const [showCard, setShowCard] = useState(false) // Aggiungi questo nuovo stato per tracciare quando mostrare la card
 	const [savedData, setSavedData] = useState(null) // Aggiungi questo nuovo stato per i dati salvati
 
 	// Funzione per recuperare i dati delle proprietà dal server
-	function fetchData(url = 'http://localhost:3000/api/properties') {
-		fetch(url)
-			.then((res) => res.json())
-			.then((response) => {
-				setProperties(response.data)
-			})
-			.catch((error) => {
-				console.log('Error fetching data: ', error)
-			})
-	}
-	useEffect(() => {
-		fetchData()
-	}, [])
-	useEffect(() => {
-		setFilteredProperties(properties)
-	}, [properties])
+	// function fetchData(url = 'http://localhost:3000/api/properties') {
+	// 	fetch(url)
+	// 		.then((res) => res.json())
+	// 		.then((response) => {
+	// 			setProperties(response.data)
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log('Error fetching data: ', error)
+	// 		})
+	// }
+	// useEffect(() => {
+	// 	fetchData()
+	// }, [])
+
 
 	// Gestisce i cambiamenti nei campi del form
 	function handleFormField(e) {
@@ -130,6 +127,9 @@ export default function AddPropertiesPage() {
 
 			.then((res) => res.json())
 			.then((response) => {
+				console.log(response);
+				setProperties(response.properties)
+
 				setSuccessMessage('Proprietà inserita con successo!')
 				setSavedData(dataToSend) // Salva i dati inviati
 				setShowCard(true)
@@ -142,14 +142,14 @@ export default function AddPropertiesPage() {
 				setTimeout(() => {
 					setSuccessMessage('')
 				}, 5000)
-				fetchData()
 			})
-			.catch((error) => alert('Errore durante il salvataggio'))
+			.catch((error) => alert('Errore durante il salvataggio', error))
 	}
 
 	function showProperties() {
 		console.log(properties)
 	}
+	console.log(properties);
 
 	return (
 
@@ -165,40 +165,40 @@ export default function AddPropertiesPage() {
 							<div className="col-4">
 								<img
 									src={selectedFile ? URL.createObjectURL(selectedFile) : 'https://placehold.co/300x250/EEE/31343C'}
-									alt={savedData.name}
+									alt={properties.name}
 									style={{ maxWidth: '100%', height: 'auto' }}
 								/>
 							</div>
 							<div className="col-8">
 								<div className="card-title my-2">
-									<h2>{savedData.name}</h2>
+									<h2>{properties.name}</h2>
 								</div>
 								<div className="mt-5">
 									<h3>Caratteristiche della proprietà:</h3>
 									<div className="row mt-2 g-3">
 										<div className="col-4">
 											<strong>Stanze: </strong>
-											<span>{savedData.rooms}</span>
+											<span>{properties.rooms}</span>
 										</div>
 										<div className="col-4">
 											<strong>Letti: </strong>
-											<span>{savedData.beds}</span>
+											<span>{properties.beds}</span>
 										</div>
 										<div className="col-4">
 											<strong>Bagni: </strong>
-											<span>{savedData.bathrooms}</span>
+											<span>{properties.bathrooms}</span>
 										</div>
 										<div className="col-4">
 											<i className="bi bi-rulers"> </i>
-											{savedData.mq}
+											{properties.mq}
 										</div>
 										<div className="col-4">
 											<i className="bi bi-geo-alt"> </i>
-											{savedData.address}
+											{properties.address}
 										</div>
 										<div className="col-4">
 											<i className="bi bi-envelope"> </i>
-											{savedData.email_owners}
+											{properties.email_owners}
 										</div>
 									</div>
 								</div>

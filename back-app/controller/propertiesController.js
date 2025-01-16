@@ -99,7 +99,8 @@ function create(req, res) {
 	const image = req.file?.filename
 	console.log(image)
 
-	const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	const sqlInsert = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	const sqlSelect = `SELECT * FROM properties WHERE id = LAST_INSERT_ID()`
 	const { name, rooms, beds, bathrooms, mq, address, email_owners } = req.body  //here removed 'image'
 
 	//verifica che i dati siano validi
@@ -115,24 +116,40 @@ function create(req, res) {
 		return res.status(400).json({
 			error: 'Length error name or address'
 		})
-	console.log('SQL Query:', sql)
+	console.log('SQL Query:', sqlInsert)
 	console.log('Values:', [owner, name, rooms, beds, bathrooms, mq, address, email_owners, image])
 
 	connection.query(
-		sql,
+		sqlInsert,
 		[owner, name, rooms, beds, bathrooms, mq, address, email_owners, image],
 		(err, result) => {
-			if (err)
+			if (err) {
+				console.error('Errore durante l\'inserimento:', err);
 				return res.status(500).json({
 					error: 'Something went wrong...',
-					err: err
-				})
-			return res.status(201).json({
-				success: true,
-				data: result
-			})
+					err: err,
+				});
+			}
+
+			// Esegui la query per ottenere i dettagli del record appena inserito
+			connection.query(sqlSelect, (err, rows) => {
+				if (err) {
+					console.error('Errore durante la selezione:', err);
+					return res.status(500).json({
+						error: 'Something went wrong while fetching the data...',
+						details: err.message,
+					});
+				}
+
+				// Invia i dati del record appena inserito come risposta
+				return res.status(201).json({
+					success: true,
+					properties: rows[0], // Ritorna il primo (e unico) record selezionato
+				});
+			});
 		}
-	)
+	);
+
 }
 
 function likeUpdate(req, res) {
