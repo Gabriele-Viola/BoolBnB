@@ -122,11 +122,11 @@ export default function DetailsPage() {
 
 		setEmailUser('');
 		setTextUser('');
-	};
+	}
 
 	// Funzione per toggle visibilità del modulo di invio messaggio
-	const HandleinputToggle = (item) => {
-		document.getElementById(item).classList.toggle('d-none');
+	const HandleinputToggle = (item, style) => {
+		document.getElementById(item).classList.toggle(style);
 	};
 
 	// Se i dati non sono ancora caricati, mostriamo il loading
@@ -143,7 +143,7 @@ export default function DetailsPage() {
 						<h1>Dettagli della proprietà</h1>
 					</div>
 					<div className="col-6 text-end">
-						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage')}>
+						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage', 'd-none')}>
 							Invia un messaggio
 						</button>
 					</div>
@@ -154,9 +154,9 @@ export default function DetailsPage() {
 				<DetailsCard property={property} services={services} />
 
 				<div className="reviews mt-5">
-					<h3>Recensioni</h3>
+					<div className='fs-3'>{reviews.length} <span className='fs-3'>Recensioni</span></div>
 					<div className="row g-3">
-						<ReviewsCard reviews={reviews} />
+						<ReviewsCard reviews={reviews} toggle={HandleinputToggle} />
 						<div>{feedback && <div className="alert alert-success mt-3">{feedback}</div>}</div>
 					</div>
 
