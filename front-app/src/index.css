@@ -16,10 +16,13 @@
 
 main {
     padding: 2rem 0;
+
     min-height: calc(100vh - 220px);
 }
 
-.custom-rotate-180 {
-    transform: rotate(180deg);
-    transition: transform 0.3s ease-in-out;
+
+
+.border-thick {
+    border-width: 3px;
+
 }

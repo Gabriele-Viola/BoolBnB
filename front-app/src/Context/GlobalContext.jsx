@@ -8,33 +8,40 @@ function GlobalContextProvider({ children }) {
     const [error, setError] = useState(null)
     const [logged, setLogged] = useState(false)
 
-    // Recuperare  user
-
+    // Recuperare user e logged dallo localStorage
     useEffect(() => {
         const user = localStorage.getItem('user')
-        const logged = localStorage.getItem('logged')
+
+        const logIn = localStorage.getItem('logged')
+
+
         if (user) {
             setUser(user)
         }
-        if (logged) {
-            setLogged(logged)
+
+        if (logIn === 'true') {  // Verifica che logIn sia 'true' (memorizzato come stringa)
+            setLogged(true)
+        } else {
+            setLogged(false)
         }
+
+        setLoading(false) // Una volta caricati i dati, settiamo loading a false
     }, [])
 
+    // Salvataggio di user e logged su localStorage ogni volta che cambiano
     useEffect(() => {
         if (user) {
             localStorage.setItem('user', user)
         } else {
             localStorage.removeItem('user')
         }
+
         if (logged) {
-            localStorage.setItem('logged', logged)
+            localStorage.setItem('logged', 'true') // Memorizza 'true' come stringa
         } else {
             localStorage.removeItem('logged')
         }
     }, [user, logged])
-
-
 
     const values = {
         user,
@@ -52,12 +59,12 @@ function GlobalContextProvider({ children }) {
             {children}
         </GlobalContext.Provider>
     )
-
 }
+
 function useGlobalContext() {
     return useContext(GlobalContext)
 }
-export { GlobalContextProvider, useGlobalContext }
 
+export { GlobalContextProvider, useGlobalContext }
 
 
