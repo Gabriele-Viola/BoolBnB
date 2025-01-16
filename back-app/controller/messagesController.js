@@ -11,17 +11,17 @@ function sendMessage(req, res) {
 	}
 	// Validazione formato email
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-	if (!emailRegex.test(email)) {
+	if (!emailRegex.test(email || email.length > 255)) {
 		return res.status(400).json({
 			success: false,
 			error: 'Invalid email format'
 		})
 	}
 	// Controllo lunghezza del messaggio
-	if (text_message.length < 10 || text_message.length > 500) {
+	if (text_message.length < 10 || text_message.length > 1000) {
 		return res.status(400).json({
 			success: false,
-			error: 'Message must be between 10 and 500 characters'
+			error: 'Message must be between 10 and 1000 characters'
 		})
 	}
 	// Query SQL per inserire il messaggio

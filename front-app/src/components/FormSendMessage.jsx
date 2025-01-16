@@ -26,10 +26,11 @@ export default function FormSendMessage({
 						id="email"
 						name="email"
 						required
+						maxLength={255}
 						value={emailUser}
 						onChange={(e) => setEmailUser(e.target.value)}
 						className="form-control mb-3"
-						placeholder="Inserisci il tuo indirizzo email"
+						placeholder="Inserisci il tuo indirizzo email (max 255 caratteri)"
 					/>
 					<label htmlFor="message" className="form-label text-light">
 						Messaggio:
@@ -40,10 +41,11 @@ export default function FormSendMessage({
 						name="message"
 						required
 						minLength={10}
+						maxLength={1000}
 						id="message"
 						value={textUser}
 						onChange={(e) => setTextUser(e.target.value)}
-						placeholder="Inserisci il tuo messaggio"></textarea>
+						placeholder="Inserisci il tuo messaggio (min 10 caratteri)"></textarea>
 					<button className="btn btn-light" style={{ color: '#29B6F6' }} type="submit">
 						<i className="bi bi-send-fill"></i> Invia!
 					</button>
