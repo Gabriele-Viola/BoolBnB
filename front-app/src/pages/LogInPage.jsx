@@ -1,43 +1,44 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useGlobalContext } from "../Context/GlobalContext";
-import { useState } from "react";
-
+import { Link, useNavigate } from 'react-router-dom'
+import { useGlobalContext } from '../Context/GlobalContext'
+import { useState } from 'react'
+import Jumbotron from '../components/Jumbotron'
 export default function LogInPage() {
-    const [errorLog, setErrorLog] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const { user, setUser } = useGlobalContext();
-    const navigate = useNavigate();  // Aggiungi useNavigate per il redirect
-    const urlLogIn = "http://localhost:3000/api/user/logIn";
+	const [errorLog, setErrorLog] = useState('')
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const { user, setUser } = useGlobalContext()
+	const navigate = useNavigate() // Aggiungi useNavigate per il redirect
+	const urlLogIn = 'http://localhost:3000/api/user/logIn'
 
-    function HandleUser(e) {
-        e.preventDefault();
-        const formLogIn = {
-            email,
-            password,
-        };
+	function HandleUser(e) {
+		e.preventDefault()
+		const formLogIn = {
+			email,
+			password
+		}
 
-        fetch(urlLogIn, {
-            method: "POST",
-            body: JSON.stringify(formLogIn),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data?.user) {
-                    setUser(data.user);
-                    setErrorLog(null);
+		fetch(urlLogIn, {
+			method: 'POST',
+			body: JSON.stringify(formLogIn),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				if (data?.user) {
+					setUser(data.user)
+					setErrorLog(null)
 
-                    // Dopo il login, fai il redirect alla homepage
-                    navigate('/');  // Redirige alla homepage
-                } else {
-                    setErrorLog(data?.error);
-                }
-            })
-            .catch((err) => console.error(err));
-    }
+					// Dopo il login, fai il redirect alla homepage
+					navigate('/') // Redirige alla homepage
+				} else {
+					setErrorLog(data?.error)
+				}
+			})
+			.catch((err) => console.error(err))
+	}
+
 
     return (
         <>
@@ -76,8 +77,14 @@ export default function LogInPage() {
                             )}
                         </div>
                     </form>
+                    <div className="text-center mt-3">
+                        <small>
+                            Non hai un account? <Link to="/registration">Registrati qui</Link>
+                        </small>
+                    </div>
                 </div>
             </div>
         </>
     );
+
 }

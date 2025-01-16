@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 
-export default function ReviewsCard({ reviews }) {
+export default function ReviewsCard({ reviews, toggle }) {
     // Stato per il caricamento
     const [loading, setLoading] = useState(true);
+    const [clicked, setCliked] = useState({})
 
 
     useEffect(() => {
@@ -16,24 +17,72 @@ export default function ReviewsCard({ reviews }) {
         return <div>Caricamento recensioni...</div>;
     }
 
-    return (
-        reviews.map((review) => (
-            <div className="col-sm-12 col-md-6 col-lg-4" key={review?.id}>
-                <div className="card h-100 my-3 shadow">
-                    <div className="card-body">
-                        <div className="fs-5">{review.text_review}</div>
-                        <div><span className="text-muted">Notti: </span>{review.nights}</div>
-                        <span className="text-muted">Lasciata da: </span>
-                        {review.name === "" || !review.name ? <span>Guest</span> : <span>{review.name}</span>}
-                        <div>
-                            <span className="text-muted">Data recensione: {review.date_review?.slice(0, 10)} </span>
+    function handletoggle(idTruncate, id) {
 
+        document.getElementById(idTruncate).classList.toggle('text-truncate');
+        setCliked((prevState) => ({
+            ...prevState,
+            [id]: !prevState[id], // Inverte lo stato corrente per l'id
+        }));
+
+    }
+
+    return (
+        reviews.map((review) => {
+            const isClicked = clicked[review.id] || false
+            return (
+                <div className="col-sm-12 col-md-6 col-lg-4" key={review?.id}>
+                    <div
+                        className="card my-3 shadow"
+                        onClick={() =>
+                            handletoggle(`text-truncate-${review?.id}`, review?.id)
+                        }
+                    >
+
+                        <div className="card-body d-flex flex-column justify-content-between">
+                            <div
+                                id={`text-truncate-${review.id}`}
+                                className="fs-5 text-truncate w-100 mb-4"
+                            >
+                                {review.text_review}
+                            </div>
+                            <div>
+                                <div className="position-relative">
+                                    <span className="text-muted">Notti: </span>
+                                    {review.nights}
+                                </div>
+                                <span className="text-muted">Lasciata da: </span>
+                                {review.name === "" || !review.name ? (
+                                    <span>Guest</span>
+                                ) : (
+                                    <span>{review.name}</span>
+                                )}
+                                <div>
+                                    <span className="text-muted">
+                                        Data recensione:{" "}
+                                        {review.date_review?.slice(0, 10)}
+                                    </span>
+                                </div>
+                                {review.text_review?.length > 40 && (
+                                    <div className="position-absolute end-0 bottom-0 px-3 py-2">
+                                        <i
+                                            className={`bi ${isClicked
+                                                ? "bi-caret-up"
+                                                : "bi-caret-down"
+                                                }`}
+                                        ></i>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        ))
-    );
+
+            )
+        }
+        )
+    )
+
 }
 
 

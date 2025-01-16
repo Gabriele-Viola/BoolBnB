@@ -7,6 +7,11 @@ export default function FormAddReview({
 	review,
 	setReview
 }) {
+	// Aggiungiamo una funzione per verificare la validità dei campi
+	const isFormValid = () => {
+		return nameUser.length >= 3 && nights >= 1 && review.length >= 10
+	}
+
 	return (
 		<div className="mt-3 p-3 border border-primary-subtle rounded">
 			<h3 className="mb-2 text-center">Lascia una recensione</h3>
@@ -23,7 +28,7 @@ export default function FormAddReview({
 					value={nameUser}
 					onChange={(e) => setNameUser(e.target.value)}
 					className="form-control mb-3"
-					placeholder="Inserisci il tuo nome"
+					placeholder="Inserisci il tuo nome (minimo 3 caratteri)"
 				/>
 				<label htmlFor="nights" className="form-label">
 					Notti
@@ -37,7 +42,7 @@ export default function FormAddReview({
 					value={nights}
 					onChange={(e) => setNights(e.target.value)}
 					className="form-control mb-3"
-					placeholder="Per quante notti hai soggiornato"
+					placeholder="Per quante notti hai soggiornato (minimo 1)"
 				/>
 				<label htmlFor="review" className="form-label">
 					La tua recensione:
@@ -50,8 +55,8 @@ export default function FormAddReview({
 					minLength={10}
 					value={review}
 					onChange={(e) => setReview(e.target.value)}
-					placeholder="Inserisci la tua recensione"></textarea>
-				<button className="btn btn-primary" type="submit">
+					placeholder="Inserisci la tua recensione (minimo 10 caratteri)"></textarea>
+				<button className="btn btn-primary" type="submit" disabled={!isFormValid()}>
 					<i className="bi bi-send-fill"></i> Invia!
 				</button>
 			</form>
