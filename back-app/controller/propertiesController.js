@@ -2,6 +2,25 @@ const connection = require('../db/connection')
 const jwt = require('jsonwebtoken')
 const secretKey = process.env.CRYPTOKEY
 
+const fs = require('fs');
+const path = require('path');  //x path absolute of your root
+const multer = require('multer');  //x upload file img on server(express)
+const pathImagecover = path.join(__dirname, '../public/imgcover');
+// Set Multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, pathImagecover);  // Salva i file nella cartella 'public/images'
+    },
+    filename: (req, file, cb) => {
+      //const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);  //BETTER USE THIS X SECURITY & NAME CONFLICTS!!
+      //cb(null, `${uniqueSuffix}${path.extname(file.originalname)}`); // Usa un nome unico generato
+      cb(null, file.originalname);  //mantiene il nome del file uploaded
+    },
+});
+const upload = multer({ storage: storage });
+
+
+
 //funtion to decrypt token
 function decrypt(id) {
 	try {
@@ -66,8 +85,11 @@ function create(req, res) {
 
 	const owner = decrypt(tokenOwner)
 
+	console.log('File ricevuto:', req.file);  //x check
+    console.log('Corpo della richiesta:', req.body);   //x check
+	const image = req.file ? `/imgcover/${req.file.filename}` : null;  
 	const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
-	const { name, rooms, beds, bathrooms, mq, address, email_owners, like, image } = req.body
+	const { name, rooms, beds, bathrooms, mq, address, email_owners, like } = req.body  //here removed 'image'
 
 	//verifica che i dati siano validi
 	if (!name || !rooms || !beds || !bathrooms || !mq || !address)
@@ -92,7 +114,8 @@ function create(req, res) {
 					error: 'Something went wrong...'
 				})
 			return res.status(201).json({
-				success: true
+				success: true,
+				data: result
 			})
 		}
 	)
@@ -117,5 +140,6 @@ module.exports = {
 	index,
 	show,
 	create,
-	likeUpdate
+	likeUpdate,
+	upload  //added x file img
 }

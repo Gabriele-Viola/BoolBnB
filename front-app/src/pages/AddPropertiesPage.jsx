@@ -66,12 +66,18 @@ export default function AddPropertiesPage() {
 		if (name == 'image' && e.target.files.length > 0) {
 			const fileSelected = e.target.files[0]
 			if (fileSelected instanceof File) {
-				const fileSelectedUrl = URL.createObjectURL(fileSelected)
+				const fileSelectedUrl = URL.createObjectURL(fileSelected);
+
+				console.log('Selected file:', fileSelected); // x check!
+                console.log('File type:', fileSelected.type); // x check!
+
 				setFormData((prev) => ({
 					...prev,
 					image: fileSelected // Salva l'immagine nel form
 				}))
-				console.log('type of imagine: ', typeof formData.image)
+				//console.log('type of imagine: ', typeof formData.image)
+				console.log('2 File type (MIME):', formData.image.type); // x check, mostra il tipo MIME (es.image/jpeg)
+				console.log('2 File name:', formData.image.name);       // x check, mostra il nome del file
 				setSelectedFile(fileSelected)
 			}
 		} else {
@@ -95,25 +101,40 @@ export default function AddPropertiesPage() {
 			return
 		}
 
-		// Prepara i dati da inviare al server convertendo i valori numerici
-		const dataToSend = {
-			id_user: owner,
-			name: formData.name,
-			rooms: Number(formData.rooms) || 0,
-			beds: Number(formData.beds) || 0,
-			bathrooms: Number(formData.bathrooms) || 0,
-			mq: Number(formData.mq) || 0,
-			address: formData.address,
-			email_owners: user.email,
-			image: formData.image || 'https://placehold.co/300x250/EEE/31343C'
+        const dataToSend = new FormData();
+		dataToSend.append('id_user', owner);
+		dataToSend.append('name', formData.name);
+		dataToSend.append('rooms', Number(formData.rooms) || 0);
+		dataToSend.append('beds', Number(formData.beds) || 0);
+		dataToSend.append('bathrooms', Number(formData.bathrooms) || 0);
+		dataToSend.append('mq', Number(formData.mq) || 0);
+		dataToSend.append('address', formData.address);
+		dataToSend.append('email_owners', user.email);
+		if (formData.image) {
+			dataToSend.append('image', formData.image); // Aggiungi l'immagine al FormData
 		}
+
+		// const dataToSenddd = {  //old form, cannot send img files
+		// 	id_user: owner,
+		// 	name: formData.name,
+		// 	rooms: Number(formData.rooms) || 0,
+		// 	beds: Number(formData.beds) || 0,
+		// 	bathrooms: Number(formData.bathrooms) || 0,
+		// 	mq: Number(formData.mq) || 0,
+		// 	address: formData.address,
+		// 	email_owners: user.email,
+		// 	image: formData.image || 'https://placehold.co/300x250/EEE/31343C'
+		// }
+
+		console.log('Data to send:', Array.from(dataToSend.entries())); // x check, logga i dati inviati
 
 		// Chiamata API per salvare i dati
 		fetch(`http://localhost:3000/api/properties/${owner}`, {
 
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(dataToSend)
+			//headers: { 'Content-Type': 'application/json' }, //cannot send img files
+			//body: JSON.stringify(dataToSend)  //cannot send img files
+			body: dataToSend
 		})
 
 			.then((res) => res.json())
@@ -138,10 +159,6 @@ export default function AddPropertiesPage() {
 	function showProperties() {
 		console.log(properties)
 	}
-
-
-
-	//id, id_user, name, rooms(int), beds(int), bathrooms(int), mq(int), address, email_owners, like(int), image
 
 	return (
 
@@ -223,11 +240,11 @@ export default function AddPropertiesPage() {
 
 									<div className='row mb-3'>
 										<div className='form-group col-md-6 '>
-											<label htmlFor="formFile" className='form-label'>Scegli una foto: </label><br />
-											<label className="btn" htmlFor="formFile">Scegli un file</label>
+											<label htmlFor="image" className='form-label'>Scegli una foto: </label><br />
+											<label className="btn" htmlFor="image">Scegli un file</label>
 											<input className="form-control d-none" type="file" id="image" name="image" accept="image/*" onChange={handleFormField} />  {/* accept="image/*" ACCEPT ONLY IMG! */}
-											{selectedFile && <img src={selectedFile} alt='cover image' className='img-fluid rounded' />}
-										</div>
+											{selectedFile && <img src={URL.createObjectURL(selectedFile)} alt='cover image' className='img-fluid rounded' />}
+										</div>   {/* .createObjectURL() x anteprima img on browser */}
 									</div>
 
 									<div className="mb-3">
