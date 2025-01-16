@@ -39,45 +39,52 @@ export default function LogInPage() {
 			.catch((err) => console.error(err))
 	}
 
-	return (
-		<>
-			<div className="d-flex justify-content-center">
-				<div className="w-25">
-					<Jumbotron title={'Effettua login'} />
-					<form onSubmit={HandleUser}>
-						{errorLog && <div className="bg-danger p-2 mb-2 text-light rounded text-center">{errorLog}</div>}
-						<label htmlFor="email">E-mail</label>
-						<input
-							type="email"
-							name="email"
-							id="email"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							className="form-control mb-3"
-						/>
-						<label htmlFor="password">Password</label>
-						<input
-							type="password"
-							name="password"
-							id="password"
-							className="form-control mb-5"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-						/>
-						<div className="text-center">
-							{!user?.id ? (
-								<button type="submit" className="btn btn-primary">
-									LOG IN
-								</button>
-							) : (
-								<Link to={`/add/properties/${user.id}`} className="btn btn-primary">
-									Aggiungi proprietà
-								</Link>
-							)}
-						</div>
-					</form>
-				</div>
-			</div>
-		</>
-	)
+
+    return (
+        <>
+            <div className="d-flex justify-content-center">
+                <div className="w-25">
+                    <h2 className="mb-4">Effettua il log in:</h2>
+                    <form onSubmit={HandleUser}>
+                        {errorLog && <div className="bg-danger p-2 mb-2 text-light rounded text-center">{errorLog}</div>}
+                        <label htmlFor="email">E-mail</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="form-control mb-3"
+                        />
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            className="form-control mb-5"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <div className="text-center">
+                            {!user?.id ? (
+                                <button type="submit" className="btn btn-primary">
+                                    LOG IN
+                                </button>
+                            ) : (
+                                <Link to={`/add/properties/${user.id}`} className="btn btn-primary">
+                                    Aggiungi proprietà
+                                </Link>
+                            )}
+                        </div>
+                    </form>
+                    <div className="text-center mt-3">
+                        <small>
+                            Non hai un account? <Link to="/registration">Registrati qui</Link>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+
 }

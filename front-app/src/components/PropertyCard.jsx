@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useGlobalContext } from '../Context/GlobalContext'
 
 export default function PropertyCard() {
-	const { error, setError, loading, setLoading } = useGlobalContext()
+	const { error, setError, loading, setLoading, user } = useGlobalContext()
 	const [properties, setProperties] = useState([])
 
 	const urlIndex = 'http://localhost:3000/api/properties'
@@ -44,14 +44,20 @@ export default function PropertyCard() {
 			console.error('Errore:', err)
 		}
 	}
+
 	// mostriamo un messaggio di caricamento se loading è true
 	if (loading) return <p>Loading...</p>
 
 	// mostriamo un messaggio di errore se c'è un errore
 	if (error) return <p>Error: {error}</p>
 
+	console.log(user);
+	console.log(properties);
+
+
 	return (
 		<>
+
 			<div className="row g-3">
 				{properties.length > 0 ? (
 					properties.map((property) => (
@@ -77,6 +83,7 @@ export default function PropertyCard() {
 									<Link to={`/properties/${property.id}`} className="text-decoration-none text-dark">
 										<button className="btn btn-primary">Dettagli</button>
 									</Link>
+
 								</div>
 							</div>
 						</div>

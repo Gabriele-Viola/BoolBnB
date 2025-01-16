@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { Routes, Route, BrowserRouter, Form } from 'react-router-dom'
 import LayoutDef from './Layout/LayoutDef.jsx'
 import Homepage from './pages/Homepage.jsx'
 import DetailsPage from './pages/DetailsPage.jsx'
@@ -8,6 +8,7 @@ import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import { GlobalContextProvider } from './Context/GlobalContext.jsx'
 import LogInPage from './pages/LogInPage.jsx'
+import RegistrationPage from './pages/RegistrationPage.jsx'
 function App() {
 	return (
 		<>
@@ -24,6 +25,7 @@ function App() {
 							<Route path="/about" element={<About />} />
 							<Route path="/contact" element={<Contact />} />
 							<Route path="/login" element={<LogInPage />} />
+							<Route path="/registration" element={<RegistrationPage />} />
 							<Route path="*" element={<h1>Not Found</h1>} />
 						</Route>
 					</Routes>
