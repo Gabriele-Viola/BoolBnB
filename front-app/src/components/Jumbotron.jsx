@@ -1,7 +1,10 @@
-export default function Banner({ title }) {
+export default function Jumbotron({ title, subtitle, className = '' }) {
 	return (
-		<div className="banner bg-primary text-white p-4 mb-5 rounded">
-			<h1>{title}</h1>
+		<div className={`banner bg-primary text-white p-5 mb-5 rounded shadow-lg ${className}`}>
+			<div className="container">
+				<h3 className="">{title}</h3>
+				{subtitle && <p className="lead mt-3">{subtitle}</p>}
+			</div>
 		</div>
 	)
 }
