@@ -1,7 +1,7 @@
 export default function DetailsCard({ property, services }) {
     return (
         <>
-            <div className="card overflow-hidden">
+            <div className="card overflow-hidden shadow">
                 <div className="row">
                     <div className="col-4 ">
                         <img src={`/${property.image}` || 'https://placehold.co/300x250/EEE/31343C'}
@@ -13,19 +13,19 @@ export default function DetailsCard({ property, services }) {
                         </div>
                         <div className="mt-5">
                             <h3>
-                                Property Features:
+                                Caratteristiche della proprietà:
                             </h3>
                             <div className="row mt-2 g-3 ">
                                 <div className="col-4">
-                                    <strong>Rooms: </strong>
+                                    <strong>Stanze: </strong>
                                     <span>{property.rooms}</span>
                                 </div>
                                 <div className="col-4">
-                                    <strong>Beds: </strong>
+                                    <strong>Letti: </strong>
                                     <span>{property.beds}</span>
                                 </div>
                                 <div className="col-4">
-                                    <strong>Bathrooms: </strong>
+                                    <strong>Bagni: </strong>
                                     <span>{property.bathrooms}</span>
                                 </div>
                                 <div className="col-4">

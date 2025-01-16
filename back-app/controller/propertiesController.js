@@ -1,4 +1,18 @@
 const connection = require('../db/connection')
+const jwt = require('jsonwebtoken')
+const secretKey = process.env.CRYPTOKEY
+
+//funtion to decrypt token
+function decrypt(id) {
+	try {
+		const decoded = jwt.verify(id, secretKey)
+		return decoded.id
+	} catch (err) {
+		console.error('Errore nella decodifica dell\'id', err.message)
+		return null
+	}
+}
+
 
 //metodo index che restituisce tutti gli oggetti presenti nel db in ordine decrescente di like
 function index(req, res) {
@@ -48,16 +62,27 @@ function show(req, res) {
 
 // metodo create per aggiungere nuovo appartamento
 function create(req, res) {
-	const owner = req.params.owner
+	const tokenOwner = req.params.owner
+
+	const owner = decrypt(tokenOwner)
+
 	const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
 	const { name, rooms, beds, bathrooms, mq, address, email_owners, like, image } = req.body
 
 	//verifica che i dati siano validi
-
-	if (beds < 1 || rooms < 1 || bathrooms < 1 || mq < 1)
+	if (!name || !rooms || !beds || !bathrooms || !mq || !address)
+		return res.status(400).json({
+			error: 'Missing data'
+		})
+	if (beds < 1 || beds > 100 || rooms < 1 || rooms > 100 || bathrooms < 1 || bathrooms > 100 || mq < 1 || mq > 10000)
 		return res.status(400).json({
 			error: 'Invalid data'
 		})
+	if (name.length < 3 || name.length > 100 || address.length < 3 || address.length > 100)
+		return res.status(400).json({
+			error: 'Length error name or address'
+		})
+
 	connection.query(
 		sql,
 		[owner, name, rooms, beds, bathrooms, mq, address, email_owners, like, image],

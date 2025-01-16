@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useGlobalContext } from '../Context/GlobalContext'
 
 export default function PropertyCard() {
+	const { error, setError, loading, setLoading } = useGlobalContext()
 	const [properties, setProperties] = useState([])
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState(null)
 
-	const url = 'http://localhost:3000/api/properties'
+	const urlIndex = 'http://localhost:3000/api/properties'
 
 	// Fetch data dall'API con async/await per migliorare la leggibilità del codice
 	async function fetchData() {
 		try {
-			const response = await fetch(url)
+			const response = await fetch(urlIndex)
 			if (!response.ok) {
 				throw new Error('Failed to fetch properties')
 			}
@@ -56,8 +56,8 @@ export default function PropertyCard() {
 				<div className="row g-3">
 					{properties.length > 0 ? (
 						properties.map((property) => (
-							<div className="col-12 col-md-6 col-lg-4" key={property.id}>
-								<div className="card h-100">
+							<div className="col-12 col-md-6 col-lg-4" key={property?.id}>
+								<div className="card h-100 shadow">
 									<img
 										src={property.image || 'https://placehold.co/300x250/EEE/31343C'}
 										alt={property.name}
@@ -76,14 +76,14 @@ export default function PropertyCard() {
 											<span style={{ fontSize: '1.2rem' }}>❤️ {property.like}</span>
 										</button>
 										<Link to={`/properties/${property.id}`} className="text-decoration-none text-dark">
-											<button className="btn btn-primary">Details</button>
+											<button className="btn btn-primary">Dettagli</button>
 										</Link>
 									</div>
 								</div>
 							</div>
 						))
 					) : (
-						<p>No properties available</p>
+						<p>Nessuna proprietà disponibile!</p>
 					)}
 				</div>
 			</div>

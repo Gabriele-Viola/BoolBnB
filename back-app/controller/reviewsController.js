@@ -3,9 +3,9 @@ const connection = require("../db/connection.js");
 // Metodo per mostrare le recensioni relative ad un appartamento
 function reviewsShow(req, res) {
     const id = req.params.id_property
-    const sql = `SELECT * FROM reviews WHERE id_property=?`
+    const sqlShow = `SELECT * FROM reviews WHERE id_property=?`
 
-    connection.query(sql, [id], (err, result) => {
+    connection.query(sqlShow, [id], (err, result) => {
         if (err) {
             return res.status(500).json({
                 error: 'Something went wrong... '
@@ -20,6 +20,7 @@ function reviewsShow(req, res) {
 // Metodo per aggiungere una recensione
 function reviewCreate(req, res) {
     const sql = `INSERT INTO reviews (id_property, name, text_review, nights, date_review) VALUES (?, ?, ?, ?, ?)`
+    const sqlShow = `SELECT * FROM reviews WHERE id_property=?`
     const idName = req.params.name;
     const idProperty = req.params.id_property;
     const date = new Date();
@@ -43,13 +44,23 @@ function reviewCreate(req, res) {
     connection.query(sql, [idProperty, idName, text_review, nights, date], (err, result) => {
         if (err) {
             res.status(500).json({
-                err: "Something went wrong..."
+                err: "Something went wrong...1"
             })
+        } else {
+            connection.query(sqlShow, [idProperty], (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        error: 'Something went wrong...2 '
+                    })
+                }
+                res.status(200).json({
+                    reviews: result,
+                    success: true,
+                    message: "Review added successfully"
+                })
+            })
+
         }
-        res.status(200).json({
-            success: true,
-            message: "Review added successfully"
-        })
     })
 }
 

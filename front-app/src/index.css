@@ -15,7 +15,6 @@
 }
 
 main {
-    padding-top: 150px;
-    min-height: 100vh;
-    padding-bottom: 150px;
+    padding: 2rem 0;
+    min-height: calc(100vh - 308px);
 }

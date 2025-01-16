@@ -1,4 +1,22 @@
 const connection = require('../db/connection')
+const jwt = require('jsonwebtoken')
+const secretKey = process.env.CRYPTOKEY
+
+function encryptid(id) {
+    const token = jwt.sign({ id }, secretKey)
+    return token
+}
+function decrypt(id) {
+    try {
+        const decoded = jwt.verify(id, secretKey)
+        return decoded.id
+    } catch (err) {
+        console.error('Errore nella decodifica dell\'id', err.message)
+        return null
+    }
+}
+
+
 // method LogIn to check if the user is present in the db
 
 function logIn(req, res) {
@@ -20,17 +38,24 @@ function logIn(req, res) {
         // verify if the user email is present in the db
         if (result.length === 0)
             return res.status(404).json({
-                error: 'There is no user with this email'
+                error: 'Nessun utente registrato con questa mail'
             })
         //verify if the password is correct
         if (result[0].password !== password)
-            return res.status(404).json({ error: 'Password is not correct' })
+            return res.status(404).json({ error: 'Password errata' })
         const user = result[0]
+        // const id = encryptid(user.id)
+        const tokenId = encryptid(user.id)
+        const tokenPassword = encryptid(user.password)
+
+
+        console.log(tokenId);
+
         // return the user
         res.status(200).json({
             status: 'success',
             success: true,
-            user
+            user: { ...user, id: tokenId, password: tokenPassword }
         })
     })
 }
@@ -39,28 +64,35 @@ function registration(req, res) {
     const insertSql = `INSERT INTO users (name, surname, user_name, password, email, phone, type) VALUES (?, ?, ?, ?, ?, ?, ?)`
     const checkSql = `SELECT * FROM users WHERE email = ? OR user_name = ?`
 
-    const { name, surname, user_name, password, email, phone } = req.body
+    const { name, surname, userName, password, email, phone } = req.body
     const type = req.body.type.toUpperCase()
-    // verify if the email or the user_name are already in use
-    connection.query(checkSql, [email, user_name], (err, result) => {
+    console.log(encryptid(name));
+
+    console.log(decrypt(encryptid(name)));
+
+
+
+    // verify if the email or the userName are already in use
+    connection.query(checkSql, [email, userName], (err, result) => {
         if (err)
             return res.status(500).json({
-                error: 'something went wrong...'
+                error: 'something went wrong...',
+                message: err
             })
         if (result.length > 0)
             if (result[0]?.email === email)
                 return res.status(400).json({
                     error: 'Email already in use'
                 })
-        if (result[0]?.user_name === user_name)
+        if (result[0]?.userName === userName)
             return res.status(400).json({
-                error: 'User_name already in use'
+                error: 'Username already in use'
             })
 
-        //veryfing if name, surname and user_name are at least 3 characters long
-        if (name.length < 3 || surname.length < 3 || user_name.length < 3)
+        //veryfing if name, surname and userName are at least 3 characters long
+        if (name.length < 3 || surname.length < 3 || userName.length < 3)
             return res.status(400).json({
-                error: 'Name, surname and user_name must be at least 3 characters long'
+                error: 'Name, surname and userName must be at least 3 characters long'
             })
         //verify correct password format
         if (password.length < 8 || /[^a-zA-Z0-9]/.test(password))
@@ -90,7 +122,7 @@ function registration(req, res) {
                 error: 'Type must be UI or UP'
             })
 
-        connection.query(insertSql, [name, surname, user_name, password, email, phone, type], (err, result) => {
+        connection.query(insertSql, [name, surname, userName, password, email, phone, type], (err, result) => {
             if (err)
                 return res.status(500).json({
                     error: 'something went wrong...'
