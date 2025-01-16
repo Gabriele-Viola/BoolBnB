@@ -11,7 +11,9 @@ function GlobalContextProvider({ children }) {
     // Recuperare user e logged dallo localStorage
     useEffect(() => {
         const user = localStorage.getItem('user')
+
         const logIn = localStorage.getItem('logged')
+
 
         if (user) {
             setUser(user)

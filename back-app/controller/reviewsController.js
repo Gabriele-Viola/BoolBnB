@@ -3,6 +3,7 @@ const connection = require('../db/connection.js')
 // Metodo per mostrare le recensioni relative ad un appartamento
 function reviewsShow(req, res) {
 
+
 	const id = req.params.id_property
 	const sqlShow = `SELECT * FROM reviews WHERE id_property=? ORDER BY date_review DESC`
 
@@ -14,7 +15,8 @@ function reviewsShow(req, res) {
 			})
 		}
 		res.status(200).json({
-			reviews: result
+			reviews: result,
+            count: result.length
 		})
 	})
 }

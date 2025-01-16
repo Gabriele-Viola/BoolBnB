@@ -13,7 +13,7 @@ export default function FormSendMessage({
 			<div className="mt-5 rounded w-50 p-4 shadow position-relative" style={{ backgroundColor: '#29B6F6' }}>
 				<button
 					className="text-light position-absolute end-0 top-0 m-4 fs-3 btn"
-					onClick={() => HandleinputToggle('newMessage')}>
+					onClick={() => HandleinputToggle('newMessage', 'd-none')}>
 					<i className="bi bi-x-circle"></i>
 				</button>
 				<h3 className="mb-4 text-light">Invia un messaggio</h3>
