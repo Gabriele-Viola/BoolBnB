@@ -149,7 +149,7 @@ export default function DetailsPage() {
 				<DetailsCard property={property} services={services} />
 
 				<div className="reviews mt-5">
-					<h3>Recensioni</h3>
+					<h3>Sono presenti {reviews.length} recensioni</h3>
 					<div className="row g-3">
 						<ReviewsCard reviews={reviews} />
 						<div>{feedback && <div className="alert alert-success mt-3">{feedback}</div>}</div>
