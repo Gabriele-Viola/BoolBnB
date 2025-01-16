@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
-import { useGlobalContext } from '../Context/GlobalContext';
-import PropertyCard from '../components/PropertyCard';
-
+import { Link } from 'react-router-dom'
+import { useGlobalContext } from '../Context/GlobalContext'
+import PropertyCard from '../components/PropertyCard'
+import Jumbotron from '../components/Jumbotron'
 export default function Homepage() {
-	const { user } = useGlobalContext(); // Ottieni il contesto globale per verificare se l'utente è loggato
+	const { user } = useGlobalContext() // Ottieni il contesto globale per verificare se l'utente è loggato
 
 	return (
 		<>
@@ -16,10 +16,10 @@ export default function Homepage() {
 						</Link>
 					</div>
 				)}
-
+				<Jumbotron title={'Lista proprietà disponibili'} />
 				{/* Mostra le proprietà */}
 				<PropertyCard />
 			</div>
 		</>
-	);
+	)
 }
