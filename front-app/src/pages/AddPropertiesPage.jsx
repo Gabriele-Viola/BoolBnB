@@ -67,9 +67,11 @@ export default function AddPropertiesPage() {
 			const fileSelected = e.target.files[0]
 			if (fileSelected instanceof File) {
 				const fileSelectedUrl = URL.createObjectURL(fileSelected);
+				console.log(fileSelectedUrl);
+
 
 				console.log('Selected file:', fileSelected); // x check!
-                console.log('File type:', fileSelected.type); // x check!
+				console.log('File type:', fileSelected.type); // x check!
 
 				setFormData((prev) => ({
 					...prev,
@@ -101,7 +103,7 @@ export default function AddPropertiesPage() {
 			return
 		}
 
-        const dataToSend = new FormData();
+		const dataToSend = new FormData();
 		dataToSend.append('id_user', owner);
 		dataToSend.append('name', formData.name);
 		dataToSend.append('rooms', Number(formData.rooms) || 0);
@@ -114,17 +116,6 @@ export default function AddPropertiesPage() {
 			dataToSend.append('image', formData.image); // Aggiungi l'immagine al FormData
 		}
 
-		// const dataToSenddd = {  //old form, cannot send img files
-		// 	id_user: owner,
-		// 	name: formData.name,
-		// 	rooms: Number(formData.rooms) || 0,
-		// 	beds: Number(formData.beds) || 0,
-		// 	bathrooms: Number(formData.bathrooms) || 0,
-		// 	mq: Number(formData.mq) || 0,
-		// 	address: formData.address,
-		// 	email_owners: user.email,
-		// 	image: formData.image || 'https://placehold.co/300x250/EEE/31343C'
-		// }
 
 		console.log('Data to send:', Array.from(dataToSend.entries())); // x check, logga i dati inviati
 
