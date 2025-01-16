@@ -18,3 +18,7 @@ main {
     padding: 2rem 0;
     min-height: calc(100vh - 308px);
 }
+
+.border-thick {
+    border-width: 3px;
+}
