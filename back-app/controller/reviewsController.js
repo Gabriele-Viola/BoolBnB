@@ -21,15 +21,22 @@ function reviewsShow(req, res) {
 function reviewCreate(req, res) {
 	const sql = `INSERT INTO reviews (id_property, name, text_review, nights, date_review) VALUES (?, ?, ?, ?, ?)`
 	const sqlShow = `SELECT * FROM reviews WHERE id_property=? ORDER BY date_review DESC`
-	const idName = req.params.name
+
 	const idProperty = req.params.id_property
 	const date = new Date()
 
-	const { text_review, nights } = req.body
-	if (!text_review || !nights)
+	const { text_review, nights, name } = req.body
+
+	if (!name || !text_review || !nights)
 		return res.status(400).json({
 			error: 'Some fields are missing!'
 		})
+
+	if (name.length < 3 || name.length > 250) {
+		return res.status(400).json({
+			error: 'Name must be between 3 and 250 characters!'
+		})
+	}
 	if (!Number(nights) || nights <= 0) {
 		return res.status(400).json({
 			error: 'Nights must be a positive number!'
@@ -51,7 +58,7 @@ function reviewCreate(req, res) {
 		})
 	}
 
-	connection.query(sql, [idProperty, idName, text_review, nights, date], (err, result) => {
+	connection.query(sql, [idProperty, name, text_review, nights, date], (err, result) => {
 		if (err) {
 			res.status(500).json({
 				err: 'Something went wrong...1'
