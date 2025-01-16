@@ -63,6 +63,19 @@ export default function DetailsPage() {
 			text_review: e.target.review.value,
 			nights: e.target.nights.value
 		}
+		if (!userName || !nights || !review) {
+			return alert('Per favore compila tutti i campi obbligatori')
+		}
+		if (
+			userName.length < 3 ||
+			userName.length > 250 ||
+			nights < 1 ||
+			nights > 255 ||
+			review.length < 10 ||
+			review.length > 1000
+		) {
+			return alert('Per favore compila in base alle indicazioni del form')
+		}
 
 		try {
 			const res = await fetch(urlPostReview, {

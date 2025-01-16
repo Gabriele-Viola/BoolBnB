@@ -35,9 +35,19 @@ function reviewCreate(req, res) {
 			error: 'Nights must be a positive number!'
 		})
 	}
+	if (!Number(nights) || nights > 255) {
+		return res.status(400).json({
+			error: 'Nights must be lower than 255!'
+		})
+	}
 	if (text_review.length < 10) {
 		return res.status(400).json({
 			error: 'Your review must be longer...'
+		})
+	}
+	if (text_review.length > 1000) {
+		return res.status(400).json({
+			error: 'Your review must be shorter...'
 		})
 	}
 
