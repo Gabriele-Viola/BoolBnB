@@ -36,25 +36,28 @@ export default function AddPropertiesPage() {
 	const [formData, setFormData] = useState(initialFormData) // Gestisce i dati del form
 	const [selectedFile, setSelectedFile] = useState(null) // Gestisce il file dell'immagine selezionata
 	const [properties, setProperties] = useState([]) // Contiene tutte le proprietà
+	const [filteredProperties, setFilteredProperties] = useState(properties) // Proprietà filtrate
 	const [successMessage, setSuccessMessage] = useState('') // Messaggio di successo dopo il salvataggio
 	const [showCard, setShowCard] = useState(false) // Aggiungi questo nuovo stato per tracciare quando mostrare la card
 	const [savedData, setSavedData] = useState(null) // Aggiungi questo nuovo stato per i dati salvati
 
 	// Funzione per recuperare i dati delle proprietà dal server
-	// function fetchData(url = 'http://localhost:3000/api/properties') {
-	// 	fetch(url)
-	// 		.then((res) => res.json())
-	// 		.then((response) => {
-	// 			setProperties(response.data)
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log('Error fetching data: ', error)
-	// 		})
-	// }
-	// useEffect(() => {
-	// 	fetchData()
-	// }, [])
-
+	function fetchData(url = 'http://localhost:3000/api/properties') {
+		fetch(url)
+			.then((res) => res.json())
+			.then((response) => {
+				setProperties(response.data)
+			})
+			.catch((error) => {
+				console.log('Error fetching data: ', error)
+			})
+	}
+	useEffect(() => {
+		fetchData()
+	}, [])
+	useEffect(() => {
+		setFilteredProperties(properties)
+	}, [properties])
 
 	// Gestisce i cambiamenti nei campi del form
 	function handleFormField(e) {
@@ -62,13 +65,11 @@ export default function AddPropertiesPage() {
 
 		if (name === 'image' && e.target.files.length > 0) {
 			const fileSelected = e.target.files[0]
-
 			setSelectedFile(fileSelected)
 			setFormData((prev) => ({
 				...prev,
 				image: fileSelected
 			}))
-
 		} else {
 			setFormData((prev) => ({
 				...prev,
@@ -100,24 +101,15 @@ export default function AddPropertiesPage() {
 		// Aggiungi l'immagine se presente
 		if (selectedFile) {
 			formDataToSend.append('image', selectedFile)
-
 		}
-
-
-		console.log('Data to send:', Array.from(dataToSend.entries())); // x check, logga i dati inviati
 
 		// Chiamata API per salvare i dati
 		fetch(`http://localhost:3000/api/properties/${owner}`, {
 			method: 'POST',
-
 			body: formDataToSend
-
 		})
 			.then((res) => res.json())
 			.then((response) => {
-				console.log(response);
-				setProperties(response.properties)
-
 				setSuccessMessage('Proprietà inserita con successo!')
 
 				// Crea l'oggetto con i dati salvati, includendo l'URL dell'immagine dal server
@@ -141,11 +133,9 @@ export default function AddPropertiesPage() {
 					setSuccessMessage('')
 				}, 5000)
 
-
 				fetchData()
-
 			})
-			.catch((error) => alert('Errore durante il salvataggio', error))
+			.catch((error) => alert('Errore durante il salvataggio'))
 	}
 
 	// Gestisce la visualizzazione delle proprietà nella console (funzione di debug)
@@ -153,8 +143,7 @@ export default function AddPropertiesPage() {
 		console.log(properties)
 	}
 
-	console.log(properties);
-
+	//id, id_user, name, rooms(int), beds(int), bathrooms(int), mq(int), address, email_owners, like(int), image
 
 	return (
 		<>
@@ -170,7 +159,6 @@ export default function AddPropertiesPage() {
 						<div className="row">
 							<div className="col-4">
 								<img
-
 									src={savedData.image || 'https://placehold.co/300x250/EEE/31343C'}
 									alt={savedData.name}
 									className="card-img-top p-0"
@@ -178,39 +166,38 @@ export default function AddPropertiesPage() {
 									onError={(e) => {
 										e.target.src = 'https://placehold.co/300x250/EEE/31343C'
 									}}
-
 								/>
 							</div>
 							<div className="col-8">
 								<div className="card-title my-2">
-									<h2>{properties.name}</h2>
+									<h2>{savedData.name}</h2>
 								</div>
 								<div className="mt-5">
 									<h3>Caratteristiche della proprietà:</h3>
 									<div className="row mt-2 g-3">
 										<div className="col-4">
 											<strong>Stanze: </strong>
-											<span>{properties.rooms}</span>
+											<span>{savedData.rooms}</span>
 										</div>
 										<div className="col-4">
 											<strong>Letti: </strong>
-											<span>{properties.beds}</span>
+											<span>{savedData.beds}</span>
 										</div>
 										<div className="col-4">
 											<strong>Bagni: </strong>
-											<span>{properties.bathrooms}</span>
+											<span>{savedData.bathrooms}</span>
 										</div>
 										<div className="col-4">
 											<i className="bi bi-rulers"> </i>
-											{properties.mq}
+											{savedData.mq}
 										</div>
 										<div className="col-4">
 											<i className="bi bi-geo-alt"> </i>
-											{properties.address}
+											{savedData.address}
 										</div>
 										<div className="col-4">
 											<i className="bi bi-envelope"> </i>
-											{properties.email_owners}
+											{savedData.email_owners}
 										</div>
 										<div className="col-4">
 											<i className="bi bi-heart"> </i>
@@ -288,7 +275,6 @@ export default function AddPropertiesPage() {
 												</div>
 											)}
 										</div>
-
 									</div>
 
 									<div className="mb-3">
