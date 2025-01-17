@@ -22,11 +22,11 @@ function searchUrl(req, res) {
         params.push(location)
     }
     if (beds) {
-        filters.push('beds=?')
+        filters.push('beds>=?')
         params.push(beds)
     }
     if (rooms) {
-        filters.push('rooms=?')
+        filters.push('rooms>=?')
         params.push(rooms)
     }
     const whereClause = filters.length > 0 ? `WHERE ${filters.join(' AND ')}` : ''
