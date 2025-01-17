@@ -1,17 +1,17 @@
-import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { useGlobalContext } from '../Context/GlobalContext'; // Assicurati di avere il context
+import { NavLink, Link, useNavigate } from 'react-router-dom'
+import { useGlobalContext } from '../Context/GlobalContext' // Assicurati di avere il context
 
 export default function AppHeader() {
-	const { user, setUser, setLogged } = useGlobalContext(); // Usa il context per recuperare l'utente loggato
-	const navigate = useNavigate(); // Per fare il redirect
+	const { user, setUser, setLogged } = useGlobalContext() // Usa il context per recuperare l'utente loggato
+	const navigate = useNavigate() // Per fare il redirect
 
 	// Funzione di logout
 	const handleLogout = () => {
-		setUser('Guest'); // Resetta l'utente nel contesto
+		setUser('Guest') // Resetta l'utente nel contesto
 		setLogged(false)
-		localStorage.removeItem('user'); // Rimuovi l'utente dal localStorage
-		navigate('/'); // Redirigi alla homepage
-	};
+		localStorage.removeItem('user') // Rimuovi l'utente dal localStorage
+		navigate('/') // Redirigi alla homepage
+	}
 
 	return (
 		<header className="text-white py-1 shadow-sm" style={{ backgroundColor: '#29B6F6' }}>
@@ -27,6 +27,11 @@ export default function AppHeader() {
 						<li>
 							<NavLink to="/" className="text-white text-decoration-none fs-6">
 								Home
+							</NavLink>
+						</li>
+						<li>
+							<NavLink to="/search" className="text-white text-decoration-none fs-6">
+								Cerca
 							</NavLink>
 						</li>
 						<li>
@@ -63,5 +68,5 @@ export default function AppHeader() {
 				</nav>
 			</div>
 		</header>
-	);
+	)
 }
