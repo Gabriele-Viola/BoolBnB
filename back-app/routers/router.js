@@ -9,10 +9,10 @@ router.get('/properties', index)
 router.get('/properties/:id', show)
 
 
-//const { upload } = PostController; // Import Multer configurated
-//router.post('/', upload.single('file'), PostController.store);   //x upload also file with Multer
 
-router.post('/properties/:owner', upload.single('image'), create)  //search field named "image"
+router.post('/properties/:owner', create)  //search field named "image"
+
+
 router.put('/like/:id', likeUpdate)
 
 router.post('/user/logIn', logIn)

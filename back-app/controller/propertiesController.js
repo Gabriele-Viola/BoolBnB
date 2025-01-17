@@ -3,32 +3,8 @@ const jwt = require('jsonwebtoken')
 const secretKey = process.env.CRYPTOKEY
 const multer = require('multer')
 const path = require('path')
-
 const fs = require('fs')
-const path = require('path')  //x path absolute of your root
-const multer = require('multer')  //x upload file img on server(express)
-const pathImagecover = path.join(__dirname, '../public/imgcover')
-// Set Multer
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, pathImagecover)  // Salva i file nella cartella 'public/images'
-		console.log(`Salvando immagine nella cartella: ${pathImagecover}`)
-	},
-	filename: (req, file, cb) => {
 
-		cb(null, file.originalname)  //mantiene il nome del file uploaded
-	},
-})
-const upload = multer({
-	storage,
-	fileFilter: (req, file, cb) => {
-		const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
-		if (!allowedTypes.includes(file.mimetype)) {
-			return cb(new Error('Tipo di file non supportato'), false)
-		}
-		cb(null, true)
-	},
-})
 
 
 
@@ -127,9 +103,10 @@ function create(req, res) {
 
 		// Modifica qui: salva solo il nome del file invece dell'URL completo
 		const imagePath = req.file ? req.file.filename : null
+		console.log(req.file.filename);
 
-		const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image) 
-					 VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
+
+		const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
 
 		const { name, rooms, beds, bathrooms, mq, address, email_owners } = req.body
 
@@ -146,7 +123,8 @@ function create(req, res) {
 			(err, result) => {
 				if (err) {
 					return res.status(500).json({
-						error: 'Errore durante il salvataggio'
+						error: 'Errore durante il salvataggio',
+						err: err
 					})
 				}
 				// Modifica qui: restituisci l'URL completo nella risposta
