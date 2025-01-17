@@ -5,6 +5,7 @@ import ReviewsCard from '../components/ReviewsCard'
 import FormAddReview from '../components/FormAddReview'
 import FormSendMessage from '../components/FormSendMessage'
 import Jumbotron from '../components/Jumbotron'
+
 export default function DetailsPage() {
 	const { id } = useParams()
 	const [property, setProperty] = useState({})
@@ -49,6 +50,15 @@ export default function DetailsPage() {
 
 		fetchData()
 	}, [id])
+
+	// Funzione per estrarre il nome dal campo email_owners
+	const getRecipientName = (email) => {
+		if (email) {
+			const username = email.split('@')[0]; // Prende la parte prima della @
+			return username.charAt(0).toUpperCase() + username.slice(1); // Capitalizza la prima lettera
+		}
+		return '';
+	}
 
 	// Gestione invio recensione
 	const HandleSubReview = async (e) => {
@@ -164,6 +174,8 @@ export default function DetailsPage() {
 		return <div>Loading...</div>
 	}
 
+	const recipientName = getRecipientName(property.email_owners); // Estrai il nome del destinatario
+
 	return (
 		<div>
 			<div className="container position-relative">
@@ -172,7 +184,6 @@ export default function DetailsPage() {
 					<Jumbotron title={property.name} />
 					<div>
 						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage', 'd-none')}>
-
 							Invia un messaggio
 						</button>
 					</div>
@@ -210,7 +221,10 @@ export default function DetailsPage() {
 				setEmailUser={setEmailUser}
 				textUser={textUser}
 				setTextUser={setTextUser}
-				correctSend={correctSend}
+				fromName={nameUser}  // Passa il nome del mittente
+				setFromName={setNameUser}  // Funzione per aggiornare il nome del mittente
+				toName={recipientName}  // Passa il nome del destinatario estratto dinamicamente
+				setToName={() => { }}  // Non serve, poiché `toName` è statico in questo caso
 			/>
 		</div>
 	)
