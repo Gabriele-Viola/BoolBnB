@@ -97,11 +97,14 @@ export default function DetailsPage() {
 
 		setEmailUser('')
 		setTextUser('')
+
 		setToName('')
+
 	}
 
 	// Funzione per toggle visibilità modulo
 	const HandleinputToggle = (item, style) => {
+
 		document.getElementById(item).classList.toggle(style);
 	};
 
@@ -166,7 +169,9 @@ export default function DetailsPage() {
 	return (
 		<div>
 			<div className="container position-relative">
+
 				<div className="my-4 align-items-center">
+
 					<Jumbotron title={property.name} />
 					<div>
 						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage', 'd-none')}>
@@ -180,7 +185,9 @@ export default function DetailsPage() {
 				<DetailsCard property={property} services={services} />
 
 				<div className="reviews mt-5">
+
 					<div className="fs-3">{reviews.length} <span className="fs-3">Recensioni</span></div>
+
 
 					<div className="row g-3">
 						<ReviewsCard reviews={reviews} toggle={HandleinputToggle} />
@@ -206,10 +213,12 @@ export default function DetailsPage() {
 				setEmailUser={setEmailUser}
 				textUser={textUser}
 				setTextUser={setTextUser}
+
 				fromName={nameUser}
 				setFromName={setNameUser}
 				toName={toName} // Gestione dell'email destinatario
 				setToName={setToName}  // Funzione per impostare l'email destinatario
+
 			/>
 		</div>
 	)

@@ -72,6 +72,9 @@ export default function FormSendMessage({
 			);
 	};
 
+  
+  
+  
 	return (
 		<div
 			id="newMessage"

@@ -8,7 +8,7 @@ export default function DetailsCard({ property, services }) {
 					{/* Colonna sinistra con l'immagine */}
 					<div className="col-4">
 						<img
-							src={property.image || 'https://placehold.co/300x250/EEE/31343C'}
+							src={`http://localhost:3000/uploads/${property.image}` || 'https://placehold.co/300x250/EEE/31343C'}
 							alt={property.name}
 							className="card-img-top p-0"
 							style={{ width: '100%', height: '300px', objectFit: 'cover' }}
