@@ -18,6 +18,27 @@ export default function FormSendMessage({
 	const handleSubmit = (e) => {
 		e.preventDefault()
 
+		if (!fromName || !emailUser || !textUser) {
+			alert("Per favore compila tutti i campi")
+			return
+		}
+
+		if (fromName.length < 3 || fromName.length > 50) {
+			alert("Per favore compila con dati validi")
+			return
+		}
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+		if (!emailRegex.test(emailUser) || emailUser.length > 255) {
+			alert("Compila l'email in modo valido")
+			return
+		}
+
+		if (textUser.length < 10 || textUser.length > 500) {
+			alert("Il testo deve essere lungo tra i 10 e i 500 caratteri")
+			return
+		}
+
 		// Parametri per il template per il destinatario
 		const templateParamsToRecipient = {
 			from_name: fromName,
@@ -33,6 +54,8 @@ export default function FormSendMessage({
 			user_email: emailUser,
 			message: textUser
 		}
+
+
 
 		// Invio dell'email al destinatario (usando il template per il destinatario)
 		emailjs
