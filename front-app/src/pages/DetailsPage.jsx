@@ -40,6 +40,7 @@ export default function DetailsPage() {
 				const propertyRes = await fetch(urlShow)
 				const propertyData = await propertyRes.json()
 				setProperty(propertyData.property)
+				setToName(propertyData.property.email_owners)
 				setServices(propertyData.property.services)
 			} catch (err) {
 				console.error(err)
@@ -99,14 +100,12 @@ export default function DetailsPage() {
 		setTextUser('')
 
 		setToName('')
-
 	}
 
 	// Funzione per toggle visibilità modulo
 	const HandleinputToggle = (item, style) => {
-
-		document.getElementById(item).classList.toggle(style);
-	};
+		document.getElementById(item).classList.toggle(style)
+	}
 
 	// Se i dati non sono ancora caricati, mostriamo il loading
 	if (loading) {
@@ -114,19 +113,19 @@ export default function DetailsPage() {
 	}
 
 	const HandleSubReview = async (e) => {
-		e.preventDefault();
+		e.preventDefault()
 
-		const userName = e.target.name.value;
-		const urlPostReview = `http://localhost:3000/api/${id}/${userName}/add-review`;
+		const userName = e.target.name.value
+		const urlPostReview = `http://localhost:3000/api/${id}/${userName}/add-review`
 
 		const formReview = {
 			id_property: id,
 			name: userName,
 			text_review: e.target.review.value,
-			nights: e.target.nights.value,
-		};
+			nights: e.target.nights.value
+		}
 		if (!userName || !nights || !review) {
-			return alert('Per favore compila tutti i campi obbligatori');
+			return alert('Per favore compila tutti i campi obbligatori')
 		}
 		if (
 			userName.length < 3 ||
@@ -136,7 +135,7 @@ export default function DetailsPage() {
 			review.length < 10 ||
 			review.length > 1000
 		) {
-			return alert('Per favore compila in base alle indicazioni del form');
+			return alert('Per favore compila in base alle indicazioni del form')
 		}
 
 		try {
@@ -144,34 +143,32 @@ export default function DetailsPage() {
 				method: 'POST',
 				body: JSON.stringify(formReview),
 				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-			const data = await res.json();
-			console.log(data);
+					'Content-Type': 'application/json'
+				}
+			})
+			const data = await res.json()
+			console.log(data)
 
-			setFeedback(data?.message);
+			setFeedback(data?.message)
 
-			setReviews(data.reviews);
+			setReviews(data.reviews)
 
 			setTimeout(() => {
-				setFeedback('');
-			}, 3000);
+				setFeedback('')
+			}, 3000)
 		} catch (err) {
-			console.error(err);
-			setFeedback('Errore nell\'invio della recensione');
+			console.error(err)
+			setFeedback("Errore nell'invio della recensione")
 		}
 
-		setNameUser('');
-		setNights('');
-		setReview('');
-	};
+		setNameUser('')
+		setNights('')
+		setReview('')
+	}
 	return (
 		<div>
 			<div className="container position-relative">
-
 				<div className="my-4 align-items-center">
-
 					<Jumbotron title={property.name} />
 					<div>
 						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage', 'd-none')}>
@@ -185,9 +182,9 @@ export default function DetailsPage() {
 				<DetailsCard property={property} services={services} />
 
 				<div className="reviews mt-5">
-
-					<div className="fs-3">{reviews.length} <span className="fs-3">Recensioni</span></div>
-
+					<div className="fs-3">
+						{reviews.length} <span className="fs-3">Recensioni</span>
+					</div>
 
 					<div className="row g-3">
 						<ReviewsCard reviews={reviews} toggle={HandleinputToggle} />
@@ -209,16 +206,14 @@ export default function DetailsPage() {
 			<FormSendMessage
 				HandleinputToggle={HandleinputToggle}
 				HandleSubMessage={HandleSubMessage}
-				emailUser={emailUser}  // Passa l'email dell'utente
+				emailUser={emailUser} // Passa l'email dell'utente
 				setEmailUser={setEmailUser}
 				textUser={textUser}
 				setTextUser={setTextUser}
-
 				fromName={nameUser}
 				setFromName={setNameUser}
 				toName={toName} // Gestione dell'email destinatario
-				setToName={setToName}  // Funzione per impostare l'email destinatario
-
+				setToName={setToName} // Funzione per impostare l'email destinatario
 			/>
 		</div>
 	)

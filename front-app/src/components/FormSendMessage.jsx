@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import emailjs from '@emailjs/browser';
+import { useRef } from 'react'
+import emailjs from '@emailjs/browser'
 
 export default function FormSendMessage({
 	HandleinputToggle,
@@ -11,80 +11,75 @@ export default function FormSendMessage({
 	fromName,
 	setFromName,
 	toName,
-	setToName,
+	setToName
 }) {
-	const form = useRef();
+	const form = useRef()
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
+		e.preventDefault()
 
 		// Parametri per il template per il destinatario
 		const templateParamsToRecipient = {
 			from_name: fromName,
 			to_name: toName,
 			user_email: emailUser,
-			message: textUser,
-		};
+			message: textUser
+		}
 
 		// Parametri per il template per il mittente (la tua email)
 		const templateParamsToSender = {
 			from_name: fromName,
 			to_name: toName, // Qui potresti voler personalizzare
 			user_email: emailUser,
-			message: textUser,
-		};
+			message: textUser
+		}
 
 		// Invio dell'email al destinatario (usando il template per il destinatario)
 		emailjs
 			.sendForm('service_o1o92us', 'template_zna5hon', form.current, {
-				publicKey: 'mKOnhKruH3ZwuWqlH',
+				publicKey: 'mKOnhKruH3ZwuWqlH'
 			})
 			.then(
 				(result) => {
-					console.log('SUCCESS!', result.text);
-					console.log('Messaggio inviato con successo al destinatario!');
+					console.log('SUCCESS!', result.text)
+					console.log('Messaggio inviato con successo al destinatario!')
 				},
 				(error) => {
-					console.log('FAILED...', error.text);
-					console.log('Errore nell\'invio del messaggio al destinatario');
+					console.log('FAILED...', error.text)
+					console.log("Errore nell'invio del messaggio al destinatario")
 				}
-			);
+			)
 
 		// Invio dell'email al mittente (usando il template per il mittente)
 		emailjs
 			.send('service_o1o92us', 'template_7duhytj', templateParamsToSender, {
-				publicKey: 'mKOnhKruH3ZwuWqlH',
+				publicKey: 'mKOnhKruH3ZwuWqlH'
 			})
 			.then(
 				(result) => {
-					console.log('SUCCESS!', result.text);
-					console.log('Messaggio inviato a te stesso!');
+					console.log('SUCCESS!', result.text)
+					console.log('Messaggio inviato a te stesso!')
 					// Reset dei campi
-					setFromName('');
-					setEmailUser('');
-					setTextUser('');
-					setToName('');
+					setFromName('')
+					setEmailUser('')
+					setTextUser('')
+					setToName('')
 				},
 				(error) => {
-					console.log('FAILED...', error.text);
-					console.log('Errore nell\'invio del messaggio a te stesso');
+					console.log('FAILED...', error.text)
+					console.log("Errore nell'invio del messaggio a te stesso")
 				}
-			);
-	};
+			)
+	}
 
-  
-  
-  
 	return (
 		<div
 			id="newMessage"
-			className="d-none vw-100 vh-100 d-flex flex-column justify-content-center align-items-center position-fixed top-0 start-0 bg-secondary bg-opacity-75"
-		>
+			className="d-none vw-100 vh-100 d-flex flex-column justify-content-center align-items-center position-fixed top-0 start-0 bg-secondary bg-opacity-75">
 			<div className="mt-5 rounded w-50 p-4 shadow position-relative" style={{ backgroundColor: '#29B6F6' }}>
 				<button
 					className="text-light position-absolute end-0 top-0 m-4 fs-3 btn"
-					onClick={() => HandleinputToggle('newMessage', 'd-none')}
-				>
+					onClick={() => HandleinputToggle('newMessage', 'd-none')}>
 					<i className="bi bi-x-circle"></i>
 				</button>
 				<h3 className="mb-4 text-light">Invia un messaggio</h3>
@@ -110,7 +105,7 @@ export default function FormSendMessage({
 						id="to_name"
 						name="to_name"
 						value={toName}
-						onChange={(e) => setToName(e.target.value)}
+						// onChange={(e) => setToName(e.target.value)}
 						className="form-control mb-3"
 						placeholder="Inserisci l'email del destinatario"
 						required
@@ -147,5 +142,5 @@ export default function FormSendMessage({
 				</form>
 			</div>
 		</div>
-	);
+	)
 }
