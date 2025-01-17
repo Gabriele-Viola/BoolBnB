@@ -4,16 +4,13 @@ export default function FormSendMessage({
 	emailUser,
 	setEmailUser,
 	textUser,
-	setTextUser,
-	correctSend,
+	setTextUser
 }) {
 	return (
 		<>
-
 			<div
 				id="newMessage"
 				className="d-none vw-100 vh-100 d-flex flex-column justify-content-center align-items-center position-fixed top-0 start-0 bg-secondary bg-opacity-75 ">
-				{correctSend && <div className="alert alert-success">Proprietà inserita con successo!</div>}
 				<div className="mt-5 rounded w-50 p-4 shadow position-relative" style={{ backgroundColor: '#29B6F6' }}>
 					<button
 						className="text-light position-absolute end-0 top-0 m-4 fs-3 btn"
