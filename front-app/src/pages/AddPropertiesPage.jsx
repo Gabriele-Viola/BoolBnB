@@ -2,9 +2,14 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGlobalContext } from '../Context/GlobalContext'
 import Jumbotron from '../components/Jumbotron'
+
+// Componente principale per l'aggiunta di nuove proprietà
 export default function AddPropertiesPage() {
+	// Estrazione dei parametri dall'URL e del contesto globale
 	const { owner } = useParams()
 	const { user, logged, setLogged } = useGlobalContext()
+
+	// Verifica se l'utente è autorizzato a visualizzare la pagina
 	useEffect(() => {
 		if (owner && user.id) {
 			if (owner === user.id) {
@@ -56,22 +61,16 @@ export default function AddPropertiesPage() {
 
 	// Gestisce i cambiamenti nei campi del form
 	function handleFormField(e) {
-		const { name, type, value, checked } = e.target
+		const { name, type, value } = e.target
 
-		// Gestione speciale per il caricamento delle immagini
-		if (name == 'image' && e.target.files.length > 0) {
+		if (name === 'image' && e.target.files.length > 0) {
 			const fileSelected = e.target.files[0]
-			if (fileSelected instanceof File) {
-				const fileSelectedUrl = URL.createObjectURL(fileSelected)
-				setFormData((prev) => ({
-					...prev,
-					image: fileSelected // Salva l'immagine nel form
-				}))
-				console.log('type of imagine: ', typeof formData.image)
-				setSelectedFile(fileSelected)
-			}
+			setSelectedFile(fileSelected)
+			setFormData((prev) => ({
+				...prev,
+				image: fileSelected
+			}))
 		} else {
-			// Aggiorna lo stato del form per gli altri campi
 			setFormData((prev) => ({
 				...prev,
 				[name]: value
@@ -89,44 +88,57 @@ export default function AddPropertiesPage() {
 			return
 		}
 
-		// Prepara i dati da inviare al server convertendo i valori numerici
-		const dataToSend = {
-			id_user: owner,
-			name: formData.name,
-			rooms: Number(formData.rooms) || 0,
-			beds: Number(formData.beds) || 0,
-			bathrooms: Number(formData.bathrooms) || 0,
-			mq: Number(formData.mq) || 0,
-			address: formData.address,
-			email_owners: user.email,
-			image: formData.image || 'https://placehold.co/300x250/EEE/31343C'
+		// Crea un FormData object per inviare anche il file
+		const formDataToSend = new FormData()
+		formDataToSend.append('name', formData.name)
+		formDataToSend.append('rooms', formData.rooms)
+		formDataToSend.append('beds', formData.beds)
+		formDataToSend.append('bathrooms', formData.bathrooms)
+		formDataToSend.append('mq', formData.mq)
+		formDataToSend.append('address', formData.address)
+		formDataToSend.append('email_owners', user.email)
+
+		// Aggiungi l'immagine se presente
+		if (selectedFile) {
+			formDataToSend.append('image', selectedFile)
 		}
 
 		// Chiamata API per salvare i dati
 		fetch(`http://localhost:3000/api/properties/${owner}`, {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(dataToSend)
+			body: formDataToSend
 		})
 			.then((res) => res.json())
 			.then((response) => {
 				setSuccessMessage('Proprietà inserita con successo!')
-				setSavedData(dataToSend) // Salva i dati inviati
-				setShowCard(true)
 
-				// Reset del form
+				// Crea l'oggetto con i dati salvati, includendo l'URL dell'immagine dal server
+				setSavedData({
+					name: formData.name,
+					rooms: formData.rooms,
+					beds: formData.beds,
+					bathrooms: formData.bathrooms,
+					mq: formData.mq,
+					address: formData.address,
+					email_owners: user.email,
+					like: 0,
+					image: response.imagePath // Usa l'URL dell'immagine restituito dal server
+				})
+
+				setShowCard(true)
 				setFormData(initialFormData)
 				setSelectedFile(null)
 
-				// Rimuovi solo il messaggio di successo dopo 5 secondi
 				setTimeout(() => {
 					setSuccessMessage('')
 				}, 5000)
+
 				fetchData()
 			})
 			.catch((error) => alert('Errore durante il salvataggio'))
 	}
 
+	// Gestisce la visualizzazione delle proprietà nella console (funzione di debug)
 	function showProperties() {
 		console.log(properties)
 	}
@@ -135,19 +147,25 @@ export default function AddPropertiesPage() {
 
 	return (
 		<>
+			{/* Layout principale della pagina */}
 			<Jumbotron title={'Aggiungi una nuova proprietà'} />
 			<div className="container py-3">
+				{/* Sezione per i messaggi di feedback */}
 				{successMessage && <div className="alert alert-success">{successMessage}</div>}
 
-				{/* La card usa savedData invece di formData */}
+				{/* Card di anteprima della proprietà appena salvata */}
 				{showCard && savedData && (
-					<div className="card overflow-hidden mb-4">
+					<div className="card overflow-hidden shadow">
 						<div className="row">
 							<div className="col-4">
 								<img
-									src={selectedFile ? URL.createObjectURL(selectedFile) : 'https://placehold.co/300x250/EEE/31343C'}
+									src={savedData.image || 'https://placehold.co/300x250/EEE/31343C'}
 									alt={savedData.name}
-									style={{ maxWidth: '100%', height: 'auto' }}
+									className="card-img-top p-0"
+									style={{ width: '100%', height: '300px', objectFit: 'cover' }}
+									onError={(e) => {
+										e.target.src = 'https://placehold.co/300x250/EEE/31343C'
+									}}
 								/>
 							</div>
 							<div className="col-8">
@@ -181,6 +199,10 @@ export default function AddPropertiesPage() {
 											<i className="bi bi-envelope"> </i>
 											{savedData.email_owners}
 										</div>
+										<div className="col-4">
+											<i className="bi bi-heart"> </i>
+											{savedData.like}
+										</div>
 									</div>
 								</div>
 							</div>
@@ -188,7 +210,9 @@ export default function AddPropertiesPage() {
 					</div>
 				)}
 
+				{/* Contenitore del form */}
 				<div className="container d-flex justify-content-center py-3">
+					{/* Form per l'inserimento della proprietà */}
 					<div className="mt-3 p-3 border border-primary-subtle rounded w-50 shadow">
 						<h3 className="mb-2 text-center">Compila il form</h3>
 						{logged ? (
@@ -211,24 +235,45 @@ export default function AddPropertiesPage() {
 									</div>
 
 									<div className="row mb-3">
-										<div className="form-group col-md-6 ">
-											<label htmlFor="formFile" className="form-label">
-												Scegli una foto:{' '}
+										<div className="form-group">
+											<label htmlFor="image" className="form-label">
+												Carica una foto della proprietà:
 											</label>
-											<br />
-											<label className="btn" htmlFor="formFile">
-												Scegli un file
-											</label>
-											<input
-												className="form-control d-none"
-												type="file"
-												id="image"
-												name="image"
-												accept="image/*"
-												onChange={handleFormField}
-											/>{' '}
-											{/* accept="image/*" ACCEPT ONLY IMG! */}
-											{selectedFile && <img src={selectedFile} alt="cover image" className="img-fluid rounded" />}
+											<div className="input-group">
+												<input
+													className="form-control"
+													type="file"
+													id="image"
+													name="image"
+													accept="image/*"
+													onChange={handleFormField}
+												/>
+												<label className="input-group-text" htmlFor="image">
+													<i className="bi bi-image"></i>
+												</label>
+											</div>
+											{selectedFile && (
+												<div className="mt-2">
+													<div className="d-flex justify-content-between align-items-center">
+														<p className="text-muted small mb-0">Anteprima:</p>
+														<button
+															type="button"
+															className="btn btn-sm btn-outline-danger"
+															onClick={() => {
+																setSelectedFile(null)
+																setFormData((prev) => ({ ...prev, image: null }))
+															}}>
+															<i className="bi bi-trash"></i> Rimuovi immagine
+														</button>
+													</div>
+													<img
+														src={URL.createObjectURL(selectedFile)}
+														alt="Anteprima"
+														className="img-fluid mt-2 rounded"
+														style={{ maxHeight: '200px' }}
+													/>
+												</div>
+											)}
 										</div>
 									</div>
 

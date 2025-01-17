@@ -1,6 +1,8 @@
 const connection = require('../db/connection')
 const jwt = require('jsonwebtoken')
 const secretKey = process.env.CRYPTOKEY
+const multer = require('multer')
+const path = require('path')
 
 //funtion to decrypt token
 function decrypt(id) {
@@ -8,11 +10,33 @@ function decrypt(id) {
 		const decoded = jwt.verify(id, secretKey)
 		return decoded.id
 	} catch (err) {
-		console.error('Errore nella decodifica dell\'id', err.message)
+		console.error("Errore nella decodifica dell'id", err.message)
 		return null
 	}
 }
 
+// Configurazione di multer per il salvataggio delle immagini
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, 'public/uploads/')
+	},
+	filename: function (req, file, cb) {
+		// Genera un nome file unico usando timestamp
+		const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
+		cb(null, uniqueSuffix + path.extname(file.originalname))
+	}
+})
+
+const upload = multer({
+	storage: storage,
+	fileFilter: function (req, file, cb) {
+		// Accetta solo immagini
+		if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+			return cb(new Error('Solo file immagine sono permessi!'), false)
+		}
+		cb(null, true)
+	}
+}).single('image')
 
 //metodo index che restituisce tutti gli oggetti presenti nel db in ordine decrescente di like
 function index(req, res) {
@@ -62,40 +86,49 @@ function show(req, res) {
 
 // metodo create per aggiungere nuovo appartamento
 function create(req, res) {
-	const tokenOwner = req.params.owner
-
-	const owner = decrypt(tokenOwner)
-
-	const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
-	const { name, rooms, beds, bathrooms, mq, address, email_owners, like, image } = req.body
-
-	//verifica che i dati siano validi
-	if (!name || !rooms || !beds || !bathrooms || !mq || !address)
-		return res.status(400).json({
-			error: 'Missing data'
-		})
-	if (beds < 1 || beds > 100 || rooms < 1 || rooms > 100 || bathrooms < 1 || bathrooms > 100 || mq < 1 || mq > 10000)
-		return res.status(400).json({
-			error: 'Invalid data'
-		})
-	if (name.length < 3 || name.length > 100 || address.length < 3 || address.length > 100)
-		return res.status(400).json({
-			error: 'Length error name or address'
-		})
-
-	connection.query(
-		sql,
-		[owner, name, rooms, beds, bathrooms, mq, address, email_owners, like, image],
-		(err, result) => {
-			if (err)
-				return res.status(500).json({
-					error: 'Something went wrong...'
-				})
-			return res.status(201).json({
-				success: true
+	upload(req, res, function (err) {
+		if (err) {
+			return res.status(400).json({
+				error: err.message
 			})
 		}
-	)
+
+		const tokenOwner = req.params.owner
+		const owner = decrypt(tokenOwner)
+
+		// Modifica qui: salva solo il nome del file invece dell'URL completo
+		const imagePath = req.file ? req.file.filename : null
+
+		const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image) 
+					 VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
+
+		const { name, rooms, beds, bathrooms, mq, address, email_owners } = req.body
+
+		// Validazione...
+		if (!name || !rooms || !beds || !bathrooms || !mq || !address) {
+			return res.status(400).json({
+				error: 'Dati mancanti'
+			})
+		}
+
+		connection.query(
+			sql,
+			[owner, name, rooms, beds, bathrooms, mq, address, email_owners, imagePath],
+			(err, result) => {
+				if (err) {
+					return res.status(500).json({
+						error: 'Errore durante il salvataggio'
+					})
+				}
+				// Modifica qui: restituisci l'URL completo nella risposta
+				const fullImagePath = imagePath ? `http://localhost:3000/uploads/${imagePath}` : null
+				return res.status(201).json({
+					success: true,
+					imagePath: fullImagePath
+				})
+			}
+		)
+	})
 }
 
 function likeUpdate(req, res) {
