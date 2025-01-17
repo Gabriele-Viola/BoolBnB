@@ -33,9 +33,11 @@ export default function SearchPage() {
 							<input type="number" id="minBeds" className="form-control" min="1" placeholder="Es: 3" />
 						</div>
 
-						<button type="submit" className="btn btn-primary w-100">
-							Cerca
-						</button>
+						<div className="d-flex justify-content-start">
+							<button type="submit" className="btn btn-primary px-4 py-2">
+								Cerca
+							</button>
+						</div>
 					</form>
 				</div>
 			</div>
