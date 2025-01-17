@@ -4,6 +4,34 @@ const secretKey = process.env.CRYPTOKEY
 const multer = require('multer')
 const path = require('path')
 
+const fs = require('fs')
+const path = require('path')  //x path absolute of your root
+const multer = require('multer')  //x upload file img on server(express)
+const pathImagecover = path.join(__dirname, '../public/imgcover')
+// Set Multer
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, pathImagecover)  // Salva i file nella cartella 'public/images'
+		console.log(`Salvando immagine nella cartella: ${pathImagecover}`)
+	},
+	filename: (req, file, cb) => {
+
+		cb(null, file.originalname)  //mantiene il nome del file uploaded
+	},
+})
+const upload = multer({
+	storage,
+	fileFilter: (req, file, cb) => {
+		const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
+		if (!allowedTypes.includes(file.mimetype)) {
+			return cb(new Error('Tipo di file non supportato'), false)
+		}
+		cb(null, true)
+	},
+})
+
+
+
 //funtion to decrypt token
 function decrypt(id) {
 	try {
@@ -64,7 +92,7 @@ function show(req, res) {
 					LEFT JOIN properties_services ON properties.id = properties_services.id_property
 					LEFT JOIN services ON properties_services.id_service = services.id
 					WHERE properties.id = ?
-					GROUP BY properties.id;`
+					GROUP BY properties.id`
 
 	connection.query(sql, [id], (err, result) => {
 		if (err)
@@ -95,6 +123,7 @@ function create(req, res) {
 
 		const tokenOwner = req.params.owner
 		const owner = decrypt(tokenOwner)
+
 
 		// Modifica qui: salva solo il nome del file invece dell'URL completo
 		const imagePath = req.file ? req.file.filename : null
@@ -129,6 +158,7 @@ function create(req, res) {
 			}
 		)
 	})
+
 }
 
 function likeUpdate(req, res) {
@@ -150,5 +180,6 @@ module.exports = {
 	index,
 	show,
 	create,
-	likeUpdate
+	likeUpdate,
+	upload  //added x file img
 }
