@@ -210,6 +210,7 @@ export default function DetailsPage() {
 				setEmailUser={setEmailUser}
 				textUser={textUser}
 				setTextUser={setTextUser}
+				correctSend={correctSend}
 			/>
 		</div>
 	)
