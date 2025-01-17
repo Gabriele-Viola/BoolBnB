@@ -18,8 +18,8 @@ function searchUrl(req, res) {
 
 
     if (location) {
-        filters.push('address=?')
-        params.push(location)
+        filters.push('address LIKE ?')
+        params.push(`%${location}%`)
     }
     if (beds) {
         filters.push('beds>=?')
