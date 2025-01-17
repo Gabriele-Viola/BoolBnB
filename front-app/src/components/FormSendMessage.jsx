@@ -74,7 +74,7 @@ export default function FormSendMessage({
 						required
 					/>
 					<label htmlFor="to_name" className="form-label text-light">
-						Nome destinatario
+						Email destinatario
 					</label>
 					<input
 						type="text"

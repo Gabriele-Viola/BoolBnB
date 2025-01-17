@@ -51,15 +51,6 @@ export default function DetailsPage() {
 		fetchData()
 	}, [id])
 
-	// Funzione per estrarre il nome dal campo email_owners
-	const getRecipientName = (email) => {
-		if (email) {
-			const username = email.split('@')[0]; // Prende la parte prima della @
-			return username.charAt(0).toUpperCase() + username.slice(1); // Capitalizza la prima lettera
-		}
-		return '';
-	}
-
 	// Gestione invio recensione
 	const HandleSubReview = async (e) => {
 		e.preventDefault()
@@ -174,7 +165,8 @@ export default function DetailsPage() {
 		return <div>Loading...</div>
 	}
 
-	const recipientName = getRecipientName(property.email_owners); // Estrai il nome del destinatario
+	// Passa direttamente la email completa del proprietario come destinatario
+	const recipientEmail = property.email_owners;
 
 	return (
 		<div>
@@ -223,7 +215,7 @@ export default function DetailsPage() {
 				setTextUser={setTextUser}
 				fromName={nameUser}  // Passa il nome del mittente
 				setFromName={setNameUser}  // Funzione per aggiornare il nome del mittente
-				toName={recipientName}  // Passa il nome del destinatario estratto dinamicamente
+				toName={recipientEmail}  // Passa l'email completa del destinatario
 				setToName={() => { }}  // Non serve, poiché `toName` è statico in questo caso
 			/>
 		</div>
