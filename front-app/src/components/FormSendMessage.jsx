@@ -8,24 +8,33 @@ export default function FormSendMessage({
 	setEmailUser,
 	textUser,
 	setTextUser,
-	fromName,  // Nome mittente
-	setFromName,  // Funzione per aggiornare il nome mittente
-	toName,  // Nome destinatario
-	setToName,  // Funzione per aggiornare il nome destinatario
+	fromName,
+	setFromName,
+	toName,
+	setToName,
 }) {
 	const form = useRef();
 
-	// Gestione dell'invio del messaggio
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		const templateParams = {
-			from_name: fromName, // Nome del mittente
-			to_name: toName,     // Nome del destinatario
+		// Parametri per il template per il destinatario
+		const templateParamsToRecipient = {
+			from_name: fromName,
+			to_name: toName,
 			user_email: emailUser,
 			message: textUser,
 		};
 
+		// Parametri per il template per il mittente (la tua email)
+		const templateParamsToSender = {
+			from_name: fromName,
+			to_name: toName, // Qui potresti voler personalizzare
+			user_email: emailUser,
+			message: textUser,
+		};
+
+		// Invio dell'email al destinatario (usando il template per il destinatario)
 		emailjs
 			.sendForm('service_o1o92us', 'template_zna5hon', form.current, {
 				publicKey: 'mKOnhKruH3ZwuWqlH',
@@ -33,15 +42,32 @@ export default function FormSendMessage({
 			.then(
 				(result) => {
 					console.log('SUCCESS!', result.text);
-					alert('Messaggio inviato con successo!');
-					setFromName(''); // Resetta il nome del mittente
-					setToName('');   // Resetta il nome del destinatario
-					setEmailUser(''); // Resetta l'email
-					setTextUser(''); // Resetta il messaggio
+					console.log('Messaggio inviato con successo al destinatario!');
 				},
 				(error) => {
 					console.log('FAILED...', error.text);
-					alert('Errore nell\'invio del messaggio');
+					console.log('Errore nell\'invio del messaggio al destinatario');
+				}
+			);
+
+		// Invio dell'email al mittente (usando il template per il mittente)
+		emailjs
+			.send('service_o1o92us', 'template_7duhytj', templateParamsToSender, {
+				publicKey: 'mKOnhKruH3ZwuWqlH',
+			})
+			.then(
+				(result) => {
+					console.log('SUCCESS!', result.text);
+					console.log('Messaggio inviato a te stesso!');
+					// Reset dei campi
+					setFromName('');
+					setEmailUser('');
+					setTextUser('');
+					setToName('');
+				},
+				(error) => {
+					console.log('FAILED...', error.text);
+					console.log('Errore nell\'invio del messaggio a te stesso');
 				}
 			);
 	};
@@ -77,13 +103,13 @@ export default function FormSendMessage({
 						Email destinatario
 					</label>
 					<input
-						type="text"
+						type="email"
 						id="to_name"
 						name="to_name"
 						value={toName}
 						onChange={(e) => setToName(e.target.value)}
 						className="form-control mb-3"
-						placeholder="Inserisci il nome del destinatario"
+						placeholder="Inserisci l'email del destinatario"
 						required
 					/>
 					<label htmlFor="email" className="form-label text-light">

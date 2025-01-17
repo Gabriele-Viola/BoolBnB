@@ -11,12 +11,13 @@ export default function DetailsPage() {
 	const [property, setProperty] = useState({})
 	const [services, setServices] = useState([])
 	const [reviews, setReviews] = useState([])
-	const [loading, setLoading] = useState(true) // Aggiungi lo stato di caricamento
+	const [loading, setLoading] = useState(true)
 	const [nameUser, setNameUser] = useState('')
 	const [nights, setNights] = useState('')
 	const [review, setReview] = useState('')
-	const [emailUser, setEmailUser] = useState('')
+	const [emailUser, setEmailUser] = useState('') // Email dell'utente
 	const [textUser, setTextUser] = useState('')
+	const [toName, setToName] = useState('') // Email destinatario
 	const [feedback, setFeedback] = useState('')
 
 	const urlShow = `http://localhost:3000/api/properties/${id}`
@@ -44,67 +45,12 @@ export default function DetailsPage() {
 				console.error(err)
 			}
 
-			await fetchReviews() // Carica le recensioni all'inizio
-			setLoading(false) // Imposta lo stato di caricamento su false quando i dati sono pronti
+			await fetchReviews()
+			setLoading(false)
 		}
 
 		fetchData()
 	}, [id])
-
-	// Gestione invio recensione
-	const HandleSubReview = async (e) => {
-		e.preventDefault()
-
-		const userName = e.target.name.value
-		const urlPostReview = `http://localhost:3000/api/${id}/${userName}/add-review`
-
-		const formReview = {
-			id_property: id,
-			name: userName,
-			text_review: e.target.review.value,
-			nights: e.target.nights.value
-		}
-		if (!userName || !nights || !review) {
-			return alert('Per favore compila tutti i campi obbligatori')
-		}
-		if (
-			userName.length < 3 ||
-			userName.length > 250 ||
-			nights < 1 ||
-			nights > 255 ||
-			review.length < 10 ||
-			review.length > 1000
-		) {
-			return alert('Per favore compila in base alle indicazioni del form')
-		}
-
-		try {
-			const res = await fetch(urlPostReview, {
-				method: 'POST',
-				body: JSON.stringify(formReview),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			const data = await res.json()
-			console.log(data)
-
-			setFeedback(data?.message)
-
-			setReviews(data.reviews)
-
-			setTimeout(() => {
-				setFeedback('')
-			}, 3000)
-		} catch (err) {
-			console.error(err)
-			setFeedback('Error sending your review')
-		}
-
-		setNameUser('')
-		setNights('')
-		setReview('')
-	}
 
 	// Gestione invio messaggio
 	const HandleSubMessage = async (e) => {
@@ -114,25 +60,25 @@ export default function DetailsPage() {
 
 		const formMessage = {
 			id_property: id,
-			email: e.target.email.value,
-			text_message: e.target.message.value
+			email: e.target.email.value, // Email dell'utente
+			text_message: e.target.message.value,
+			// Email destinatario fissa (email proprietario)
+			recipient_email: toName || property.email_owners
 		}
+
+		// Controllo email e messaggio
 		if (!formMessage.email || !formMessage.text_message) {
-			return alert('All fields are required')
+			return alert('Tutti i campi sono obbligatori')
 		}
 
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 		if (!emailRegex.test(formMessage.email) || formMessage.email.length > 255) {
-			console.log(email)
-
-			return alert('Invalid email format')
+			return alert('Formato email non valido')
 		}
 
 		if (formMessage.text_message.length < 10 || formMessage.text_message.length > 1000) {
-			console.log(text_message)
-
-			return alert('Message must be between 10 and 1000 characters')
+			return alert('Il messaggio deve essere tra 10 e 1000 caratteri')
 		}
 
 		try {
@@ -149,30 +95,78 @@ export default function DetailsPage() {
 			console.error(err)
 		}
 
-
-		setEmailUser('');
-		setTextUser('');
+		setEmailUser('')
+		setTextUser('')
+		setToName('')
 	}
 
-	// Funzione per toggle visibilità del modulo di invio messaggio
+	// Funzione per toggle visibilità modulo
 	const HandleinputToggle = (item, style) => {
 		document.getElementById(item).classList.toggle(style);
 	};
-
 
 	// Se i dati non sono ancora caricati, mostriamo il loading
 	if (loading) {
 		return <div>Loading...</div>
 	}
 
-	// Passa direttamente la email completa del proprietario come destinatario
-	const recipientEmail = property.email_owners;
+	const HandleSubReview = async (e) => {
+		e.preventDefault();
 
+		const userName = e.target.name.value;
+		const urlPostReview = `http://localhost:3000/api/${id}/${userName}/add-review`;
+
+		const formReview = {
+			id_property: id,
+			name: userName,
+			text_review: e.target.review.value,
+			nights: e.target.nights.value,
+		};
+		if (!userName || !nights || !review) {
+			return alert('Per favore compila tutti i campi obbligatori');
+		}
+		if (
+			userName.length < 3 ||
+			userName.length > 250 ||
+			nights < 1 ||
+			nights > 255 ||
+			review.length < 10 ||
+			review.length > 1000
+		) {
+			return alert('Per favore compila in base alle indicazioni del form');
+		}
+
+		try {
+			const res = await fetch(urlPostReview, {
+				method: 'POST',
+				body: JSON.stringify(formReview),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			const data = await res.json();
+			console.log(data);
+
+			setFeedback(data?.message);
+
+			setReviews(data.reviews);
+
+			setTimeout(() => {
+				setFeedback('');
+			}, 3000);
+		} catch (err) {
+			console.error(err);
+			setFeedback('Errore nell\'invio della recensione');
+		}
+
+		setNameUser('');
+		setNights('');
+		setReview('');
+	};
 	return (
 		<div>
 			<div className="container position-relative">
-
-				<div className=" my-4 align-items-center">
+				<div className="my-4 align-items-center">
 					<Jumbotron title={property.name} />
 					<div>
 						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage', 'd-none')}>
@@ -186,8 +180,7 @@ export default function DetailsPage() {
 				<DetailsCard property={property} services={services} />
 
 				<div className="reviews mt-5">
-
-					<div className='fs-3'>{reviews.length} <span className='fs-3'>Recensioni</span></div>
+					<div className="fs-3">{reviews.length} <span className="fs-3">Recensioni</span></div>
 
 					<div className="row g-3">
 						<ReviewsCard reviews={reviews} toggle={HandleinputToggle} />
@@ -209,14 +202,14 @@ export default function DetailsPage() {
 			<FormSendMessage
 				HandleinputToggle={HandleinputToggle}
 				HandleSubMessage={HandleSubMessage}
-				emailUser={emailUser}
+				emailUser={emailUser}  // Passa l'email dell'utente
 				setEmailUser={setEmailUser}
 				textUser={textUser}
 				setTextUser={setTextUser}
-				fromName={nameUser}  // Passa il nome del mittente
-				setFromName={setNameUser}  // Funzione per aggiornare il nome del mittente
-				toName={recipientEmail}  // Passa l'email completa del destinatario
-				setToName={() => { }}  // Non serve, poiché `toName` è statico in questo caso
+				fromName={nameUser}
+				setFromName={setNameUser}
+				toName={toName} // Gestione dell'email destinatario
+				setToName={setToName}  // Funzione per impostare l'email destinatario
 			/>
 		</div>
 	)
