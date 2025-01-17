@@ -127,7 +127,7 @@ export default function FormSendMessage({
 						id="to_name"
 						name="to_name"
 						value={toName}
-						// onChange={(e) => setToName(e.target.value)}
+						onChange={(e) => setToName(e.target.value)}
 						className="form-control mb-3"
 						placeholder="Inserisci l'email del destinatario"
 						required

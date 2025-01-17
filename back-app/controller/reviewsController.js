@@ -16,7 +16,7 @@ function reviewsShow(req, res) {
 		}
 		res.status(200).json({
 			reviews: result,
-            count: result.length
+			count: result.length
 		})
 	})
 }

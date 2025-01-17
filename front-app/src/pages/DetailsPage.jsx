@@ -7,7 +7,7 @@ import FormSendMessage from '../components/FormSendMessage'
 import Jumbotron from '../components/Jumbotron'
 
 export default function DetailsPage() {
-	const { id } = useParams()
+	const { slug, id } = useParams()
 	const [property, setProperty] = useState({})
 	const [services, setServices] = useState([])
 	const [reviews, setReviews] = useState([])
@@ -20,8 +20,8 @@ export default function DetailsPage() {
 	const [toName, setToName] = useState('') // Email destinatario
 	const [feedback, setFeedback] = useState('')
 
-	const urlShow = `http://localhost:3000/api/properties/${id}`
-	const urlreviews = `http://localhost:3000/api/${id}/reviews`
+	const urlShow = `http://localhost:3000/api/properties/${slug}`
+	const urlreviews = `http://localhost:3000/api/properties/${id}/reviews`
 
 	// Funzione per recuperare le recensioni
 	const fetchReviews = async () => {
@@ -51,7 +51,7 @@ export default function DetailsPage() {
 		}
 
 		fetchData()
-	}, [id])
+	}, [slug])
 
 	// Gestione invio messaggio
 	const HandleSubMessage = async (e) => {
@@ -116,7 +116,7 @@ export default function DetailsPage() {
 		e.preventDefault()
 
 		const userName = e.target.name.value
-		const urlPostReview = `http://localhost:3000/api/${id}/${userName}/add-review`
+		const urlPostReview = `http://localhost:3000/api/${slug}/${userName}/add-review`
 
 		const formReview = {
 			id_property: id,

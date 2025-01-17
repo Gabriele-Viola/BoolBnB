@@ -68,9 +68,8 @@ export default function PropertyCard() {
 						<div className="col-12 col-md-6 col-lg-4" key={property?.id}>
 							{/* Card della proprietà con bordo speciale per le proprietà dell'utente */}
 							<div
-								className={`card h-100 shadow ${
-									user.email === property.email_owners ? 'border-success border-thick' : ''
-								}`}>
+								className={`card h-100 shadow ${user.email === property.email_owners ? 'border-success border-thick' : ''
+									}`}>
 								<img
 									src={
 										property.image
@@ -95,7 +94,7 @@ export default function PropertyCard() {
 										className="position-absolute top-0 end-0 p-2 bg-white bg-opacity-25 custom-blur  border-0 rounded">
 										<span style={{ fontSize: '1.2rem' }}>❤️ {property.like}</span>
 									</button>
-									<Link to={`/properties/${property.id}`} className="text-decoration-none text-dark">
+									<Link to={`/properties/${property.slug}`} className="text-decoration-none text-dark">
 										<button className="btn btn-primary">Dettagli</button>
 									</Link>
 								</div>

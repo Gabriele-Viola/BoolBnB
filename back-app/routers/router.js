@@ -7,7 +7,7 @@ const { sendMessage } = require('../controller/messagesController')
 const { searchUrl } = require('../controller/searchController')
 
 router.get('/properties', index)
-router.get('/properties/:id', show)
+router.get('/properties/:slug', show)
 
 
 
@@ -21,7 +21,7 @@ router.post('/user/registration', registration)
 
 router.post('/message/send', sendMessage)
 
-router.get('/:id_property/reviews', reviewsShow)
+router.get('/properties/:slug/reviews', reviewsShow)
 router.post('/:id_property/:name/add-review', reviewCreate)
 
 router.get('/search', searchUrl)

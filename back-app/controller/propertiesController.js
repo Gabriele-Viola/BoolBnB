@@ -61,16 +61,16 @@ function index(req, res) {
 
 //metodo show che restituisce l'appartamento selezionato
 function show(req, res) {
-	const id = req.params.id
+	const slug = req.params.slug
 	const sql = `SELECT properties.*, 
         			JSON_ARRAYAGG(services.name) AS services
 					FROM properties
 					LEFT JOIN properties_services ON properties.id = properties_services.id_property
 					LEFT JOIN services ON properties_services.id_service = services.id
-					WHERE properties.id = ?
+					WHERE properties.slug = ?
 					GROUP BY properties.id`
 
-	connection.query(sql, [id], (err, result) => {
+	connection.query(sql, [slug], (err, result) => {
 		if (err)
 			return res.status(500).json({
 				error: 'error server side'
@@ -106,7 +106,7 @@ function create(req, res) {
 		console.log(req.file.filename);
 
 
-		const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
+		const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image, slug) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)`
 
 		const { name, rooms, beds, bathrooms, mq, address, email_owners } = req.body
 
