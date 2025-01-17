@@ -19,12 +19,12 @@ export default function FormSendMessage({
 		e.preventDefault()
 
 		if (!fromName || !emailUser || !textUser) {
-			alert("Per favore compila tutti i campi")
+			alert('Per favore compila tutti i campi')
 			return
 		}
 
 		if (fromName.length < 3 || fromName.length > 50) {
-			alert("Per favore compila con dati validi")
+			alert('Per favore compila con dati validi')
 			return
 		}
 
@@ -35,7 +35,7 @@ export default function FormSendMessage({
 		}
 
 		if (textUser.length < 10 || textUser.length > 500) {
-			alert("Il testo deve essere lungo tra i 10 e i 500 caratteri")
+			alert('Il testo deve essere lungo tra i 10 e i 500 caratteri')
 			return
 		}
 
@@ -55,8 +55,6 @@ export default function FormSendMessage({
 			message: textUser
 		}
 
-
-
 		// Invio dell'email al destinatario (usando il template per il destinatario)
 		emailjs
 			.sendForm('service_o1o92us', 'template_zna5hon', form.current, {
@@ -66,6 +64,7 @@ export default function FormSendMessage({
 				(result) => {
 					console.log('SUCCESS!', result.text)
 					console.log('Messaggio inviato con successo al destinatario!')
+					alert('Messaggio inviato con successo!')
 				},
 				(error) => {
 					console.log('FAILED...', error.text)
