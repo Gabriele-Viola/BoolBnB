@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import Jumbotron from './components/Jumbotron';
+import Jumbotron from '../components/Jumbotron';
+import { useGlobalContext } from '../Context/GlobalContext';
 
-const FinderPage = () => {
+export default function FinderPage() {
+    // const { handleLikeIncrement } = useGlobalContext()
+
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
 
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+
 
     useEffect(() => {
         // Costruisci l'URL della query per il backend
@@ -106,9 +111,7 @@ const FinderPage = () => {
                                                         </div>
                                                         <div className="col-6 pb-2">
                                                             <i className="bi bi-heart-fill"> </i>
-                                                            <span className='mb-2'>
-
-                                                                {property.like}
+                                                            <span className='mb-2'> indice di gradimento: {property.like}
                                                             </span>
                                                         </div>
                                                         {/* <div className="col-4">
@@ -132,4 +135,3 @@ const FinderPage = () => {
     );
 };
 
-export default FinderPage;

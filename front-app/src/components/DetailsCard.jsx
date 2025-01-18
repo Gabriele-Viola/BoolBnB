@@ -1,5 +1,14 @@
+import { useGlobalContext } from "../Context/GlobalContext"
+import { useEffect, useState } from "react"
+
 // Componente per visualizzare i dettagli di una proprietà
 export default function DetailsCard({ property, services }) {
+	const { handleLikeIncrement, fetchData } = useGlobalContext()
+	const [likes, setLikes] = useState(property.like)
+	useEffect(() => {
+		fetchData()
+	}, [likes])
+
 	return (
 		<>
 			{/* Card principale con layout a griglia */}
@@ -8,17 +17,17 @@ export default function DetailsCard({ property, services }) {
 					{/* Colonna sinistra con l'immagine */}
 					<div className="col-12 col-md-12 col-lg-4">
 						<img
-							src={`http://localhost:3000/uploads/${property.image}` || 'https://placehold.co/300x250/EEE/31343C'}
-							alt={property.name}
+							src={`http://localhost:3000/uploads/${property?.image}` || 'https://placehold.co/300x250/EEE/31343C'}
+							alt={property?.name}
 							className="card-img-top p-0"
 							style={{ width: '100%', height: '305px', objectFit: 'cover' }}
 							onError={(e) => {
 								// Logica di fallback per il caricamento delle immagini
 								// Gestione fallback delle immagini con multiple alternative
-								console.log('Tentativo di caricare immagine dal backend fallito:', property.image)
+								console.log('Tentativo di caricare immagine dal backend fallito:', property?.image)
 
 								// Estrai il nome del file dal percorso completo
-								const fileName = property.image?.split('/').pop()
+								const fileName = property?.image?.split('/').pop()
 
 								// Prima prova il percorso diretto agli uploads
 								const localImagePath = `/uploads/${fileName}`
@@ -50,7 +59,7 @@ export default function DetailsCard({ property, services }) {
 					<div className="col-md-12 col-lg-8">
 						{/* Intestazione con il nome della proprietà */}
 						<div className="card-title my-2 px-2">
-							<h2>{property.name}</h2>
+							<h2>{property?.name}</h2>
 						</div>
 						{/* Griglia delle caratteristiche della proprietà */}
 						<div className="mt-3 px-2">
@@ -58,35 +67,38 @@ export default function DetailsCard({ property, services }) {
 							<div className="row mt-2 g-3 ">
 								<div className="col-6">
 									<strong>Stanze: </strong>
-									<span>{property.rooms}</span>
+									<span>{property?.rooms}</span>
 								</div>
 								<div className="col-6">
 									<strong>Letti: </strong>
-									<span>{property.beds}</span>
+									<span>{property?.beds}</span>
 								</div>
 								<div className="col-6">
 									<strong>Bagni: </strong>
-									<span>{property.bathrooms}</span>
+									<span>{property?.bathrooms}</span>
 								</div>
 								<div className="col-6">
 									<i className="bi bi-rulers"> </i>
-									{property.mq}
+									{property?.mq}
 								</div>
 								<div className="col-12 col-lg-6">
 									<i className="bi bi-geo-alt"> </i>
-									{property.address}
+									{property?.address}
 								</div>
 								<div className="col-12 col-lg-6">
 									<i className="bi bi-envelope"> </i>
-									{property.email_owners}
+									{property?.email_owners}
 								</div>
 								<div className="col-12">
 									<i className="bi bi-tools"> </i>
 									{services.join(', ')}
 								</div>
 								<div className="col-6">
-									<i className="bi bi-heart"> </i>
-									{property.like}
+									<button
+										onClick={() => handleLikeIncrement(property.id)}
+										className="position-absolute top-0 end-0 p-2 bg-white bg-opacity-25 custom-blur  border-0 rounded">
+										<span style={{ fontSize: '1.2rem' }}>❤️ {property.like}</span>
+									</button>
 								</div>
 
 							</div>

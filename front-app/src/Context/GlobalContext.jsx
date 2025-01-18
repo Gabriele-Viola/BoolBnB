@@ -8,6 +8,20 @@ function GlobalContextProvider({ children }) {
     const [error, setError] = useState(null)
     const [logged, setLogged] = useState(false)
     const [services, setServices] = useState([])
+    const [properties, setProperties] = useState([])
+    const [reviews, setReviews] = useState([])
+    const [property, setProperty] = useState({})
+    const [like, setLike] = useState('')
+
+
+
+
+
+    // const urlreviews = `http://localhost:3000/api/${id}/reviews`
+
+    const urlIndex = 'http://localhost:3000/api/properties'
+
+
 
     // Recuperare user e logged dallo localStorage
     useEffect(() => {
@@ -44,23 +58,69 @@ function GlobalContextProvider({ children }) {
         }
     }, [user, logged])
 
+    async function fetchData() {
+        try {
+            const response = await fetch(urlIndex)
+            if (!response.ok) {
+                throw new Error('Failed to fetch properties')
+            }
+            const data = await response.json()
+            // Aggiorna lo stato con i dati ricevuti
+            setProperties(data?.data || [])
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    async function fetchReviews(urlreviews) {
+
+        try {
+            const res = await fetch(urlreviews)
+            const data = await res.json()
+            setReviews(data.reviews)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    async function fetchDataShow(urlShow) {
+
+        try {
+            const propertyRes = await fetch(urlShow)
+            const propertyData = await propertyRes.json()
+            setProperty(propertyData.property)
+            setServices(propertyData.property.services)
+            setLike(propertyData.property.like)
+        } catch (err) {
+            console.error(err)
+        }
+
+        setLoading(false)
+    }
 
 
-    // const fetchData = async () => {
-    //     try {
-    //         const propertyRes = await fetch(urlShow)
-    //         const propertyData = await propertyRes.json()
-    //         setProperty(propertyData.property)
-    //         setServices(propertyData.property.services)
-    //     } catch (err) {
-    //         console.error(err)
-    //     }
+    async function handleLikeIncrement(propertyId) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/like/${propertyId}`, {
+                method: 'PUT',
+            });
 
-    //     await fetchReviews()
-    //     setLoading(false)
-    // }
+            if (response.ok) {
+                const data = await response.json()
+                console.log(data.likes);
+                setLike(data.likes)
 
-    // fetchData()
+                // Ricarica tutti i dati dopo l'aggiornamento del like
+                fetchData();
+            } else {
+                console.error('Errore nella risposta:', response.statusText);
+            }
+        } catch (err) {
+            console.error('Errore durante l\'aggiornamento del like:', err);
+        }
+    }
 
 
 
@@ -73,7 +133,20 @@ function GlobalContextProvider({ children }) {
         error,
         setError,
         logged,
-        setLogged, services, setServices
+        setLogged,
+        services,
+        setServices,
+        handleLikeIncrement,
+        fetchData,
+        properties,
+        setProperties,
+        reviews,
+        setReviews,
+        fetchReviews,
+        fetchDataShow,
+        property,
+        setProperty,
+        like, setLike
     }
 
     return (
