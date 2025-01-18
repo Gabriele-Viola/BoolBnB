@@ -146,9 +146,20 @@ function likeUpdate(req, res) {
 			return res.status(500).json({
 				error: 'Something went wrong...'
 			})
-		return res.status(200).json({
-			success: true,
-			message: 'Like updated'
+
+		const selectSql = `SELECT \`like\` FROM properties WHERE id = ?`;
+		connection.query(selectSql, [id], (err, data) => {
+			if (err) {
+				return res.status(500).json({
+					error: 'Error fetching updated like count'
+				})
+			}
+
+			return res.status(200).json({
+				success: true,
+				message: 'Like updated',
+				likes: data[0].like
+			})
 		})
 	})
 }
