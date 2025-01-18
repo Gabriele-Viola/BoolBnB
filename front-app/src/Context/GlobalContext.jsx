@@ -7,6 +7,7 @@ function GlobalContextProvider({ children }) {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [logged, setLogged] = useState(false)
+    const [services, setServices] = useState([])
 
     // Recuperare user e logged dallo localStorage
     useEffect(() => {
@@ -43,6 +44,27 @@ function GlobalContextProvider({ children }) {
         }
     }, [user, logged])
 
+
+
+    // const fetchData = async () => {
+    //     try {
+    //         const propertyRes = await fetch(urlShow)
+    //         const propertyData = await propertyRes.json()
+    //         setProperty(propertyData.property)
+    //         setServices(propertyData.property.services)
+    //     } catch (err) {
+    //         console.error(err)
+    //     }
+
+    //     await fetchReviews()
+    //     setLoading(false)
+    // }
+
+    // fetchData()
+
+
+
+
     const values = {
         user,
         setUser,
@@ -51,7 +73,7 @@ function GlobalContextProvider({ children }) {
         error,
         setError,
         logged,
-        setLogged
+        setLogged, services, setServices
     }
 
     return (

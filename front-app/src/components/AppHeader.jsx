@@ -25,23 +25,38 @@ export default function AppHeader() {
 				<nav className="d-flex">
 					<ul className="list-unstyled d-flex gap-4 mb-0">
 						<li>
-							<NavLink to="/" className="text-white text-decoration-none fs-6">
+							<NavLink to="/" className="text-white text-decoration-none fs-6 d-none d-md-block">
 								Home
 							</NavLink>
+							<NavLink to="/" className="text-white text-decoration-none fs-6 d-md-none">
+								<i className="bi bi-house-door-fill"></i>
+							</NavLink>
 						</li>
 						<li>
-							<NavLink to="/search" className="text-white text-decoration-none fs-6">
+							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-none d-md-block">
 								Cerca
 							</NavLink>
+							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-md-none">
+								<i className="bi bi-search"></i>
+							</NavLink>
+
+
+
 						</li>
 						<li>
-							<NavLink to="/about" className="text-white text-decoration-none fs-6">
+							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-none d-md-block">
 								Chi Siamo
+							</NavLink>
+							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-md-none">
+								<i className="bi bi-people-fill"></i>
 							</NavLink>
 						</li>
 						<li>
-							<NavLink to="/contact" className="text-white text-decoration-none fs-6">
+							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-none d-md-block">
 								Contatti
+							</NavLink>
+							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-md-none">
+								<i className="bi bi-headset"></i>
 							</NavLink>
 						</li>
 
@@ -49,18 +64,30 @@ export default function AppHeader() {
 						{user !== 'Guest' ? (
 							<>
 								<li>
-									<span className="text-white fs-6 me-1">USER: {user.user_name}</span>
+									<div className="text-white fs-6 me-1 ">
+
+										<span className="d-none d-md-inline ">USER: </span>
+										<span className='d-none d-sm-inline'>{user.user_name}</span>
+										<span className='d-sm-none'>{user.user_name.slice(0, 3)}</span>
+
+									</div>
 								</li>
 								<li>
-									<button onClick={handleLogout} className="btn btn-danger btn-sm fs-6">
+									<button onClick={handleLogout} className="btn btn-danger btn-sm fs-6 d-none d-md-block">
 										Logout
+									</button>
+									<button onClick={handleLogout} className="btn btn-danger btn-sm fs-6 d-md-none">
+										<i className="bi bi-box-arrow-left"></i>
 									</button>
 								</li>
 							</>
 						) : (
 							<li>
-								<Link to="/login" className="btn btn-success btn-sm fs-6">
+								<Link to="/login" className="btn btn-success btn-sm fs-6 d-none d-md-block">
 									Login
+								</Link>
+								<Link to="/login" className="bg-success text-decoration-none text-light py-1 px-2 rounded  fs-6 d-md-none text-center">
+									<i className="bi bi-box-arrow-in-right"></i>
 								</Link>
 							</li>
 						)}

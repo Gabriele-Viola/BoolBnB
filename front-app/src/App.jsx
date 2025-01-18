@@ -10,6 +10,7 @@ import { GlobalContextProvider } from './Context/GlobalContext.jsx'
 import LogInPage from './pages/LogInPage.jsx'
 import RegistrationPage from './pages/RegistrationPage.jsx'
 import SearchPage from './pages/SearchPage.jsx'
+import FinderPage from './FinderPage.jsx'
 function App() {
 	return (
 		<>
@@ -21,6 +22,7 @@ function App() {
 							<Route path="/properties/:id" element={<DetailsPage />} />
 							<Route path="/add/properties/:owner" element={<AddPropertiesPage />} />
 							<Route path="/search" element={<SearchPage />} />
+							<Route path='/search/finder' element={<FinderPage />} />
 							<Route path="/about" element={<About />} />
 							<Route path="/contact" element={<Contact />} />
 							<Route path="/login" element={<LogInPage />} />
