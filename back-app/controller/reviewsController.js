@@ -1,5 +1,6 @@
 const connection = require('../db/connection.js')
 
+
 // Metodo per mostrare le recensioni relative ad un appartamento
 function reviewsShow(req, res) {
 

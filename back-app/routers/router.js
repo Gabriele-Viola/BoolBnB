@@ -1,5 +1,6 @@
 const router = require('express').Router()
 
+
 const { index, show, create, likeUpdate, upload } = require('../controller/propertiesController')
 const { logIn, registration } = require('../controller/usersController')
 const { reviewsShow, reviewCreate } = require('../controller/reviewsController')

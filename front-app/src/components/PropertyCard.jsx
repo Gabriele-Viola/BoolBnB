@@ -56,11 +56,11 @@ export default function PropertyCard() {
 									<h3 className="card-title ">{property.name}</h3>
 									<p className="card-text">{property.address}</p>
 									<button
-										onClick={() => handleLikeIncrement(property.id)}
+										onClick={() => handleLikeIncrement(property.slug)}
 										className="position-absolute top-0 end-0 p-2 bg-white bg-opacity-25 custom-blur  border-0 rounded">
 										<span style={{ fontSize: '1.2rem' }}>❤️ {property.like}</span>
 									</button>
-									<Link to={`/properties/${property.id}`} className="text-decoration-none text-dark">
+									<Link to={`/properties/${property.slug}`} className="text-decoration-none text-dark">
 										<button className="btn btn-primary">Dettagli</button>
 									</Link>
 								</div>

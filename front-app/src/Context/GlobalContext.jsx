@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 
+
 const GlobalContext = createContext()
 
 function GlobalContextProvider({ children }) {
@@ -99,6 +100,7 @@ function GlobalContextProvider({ children }) {
 
         setLoading(false)
     }
+    console.log();
 
 
     async function handleLikeIncrement(propertyId) {
