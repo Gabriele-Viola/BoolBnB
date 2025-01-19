@@ -17,6 +17,7 @@ export default function ReviewsCard({ reviews, toggle }) {
         if (reviews.length == 0) {
             return <div>Nessuna recensione presente</div>
         }
+
         return <div>Caricamento recensioni...</div>;
     }
 
