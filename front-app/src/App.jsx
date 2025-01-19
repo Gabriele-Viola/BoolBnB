@@ -19,7 +19,7 @@ function App() {
 					<Routes>
 						<Route element={<LayoutDef />}>
 							<Route index element={<Homepage />} />
-							<Route path="/properties/:id" element={<DetailsPage />} />
+							<Route path="/properties/:slug" element={<DetailsPage />} />
 							<Route path="/add/properties/:owner" element={<AddPropertiesPage />} />
 							<Route path="/search" element={<SearchPage />} />
 							<Route path='/search/finder' element={<FinderPage />} />
