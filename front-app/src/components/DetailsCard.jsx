@@ -8,6 +8,8 @@ export default function DetailsCard({ property, services }) {
 	useEffect(() => {
 		fetchData()
 	}, [likes])
+	console.log(property.like);
+
 
 	return (
 		<>
@@ -95,7 +97,7 @@ export default function DetailsCard({ property, services }) {
 								</div>
 								<div className="col-6">
 									<button
-										onClick={() => handleLikeIncrement(property.id)}
+										onClick={() => handleLikeIncrement(property.slug)}
 										className="position-absolute top-0 end-0 p-2 bg-white bg-opacity-25 custom-blur  border-0 rounded">
 										<span style={{ fontSize: '1.2rem' }}>❤️ {property.like}</span>
 									</button>

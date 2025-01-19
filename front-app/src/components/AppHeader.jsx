@@ -44,18 +44,18 @@ export default function AppHeader() {
 
 						</li>
 						<li>
-							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-none d-md-block">
+							<NavLink to="/about" className="text-white text-decoration-none fs-6 d-none d-md-block">
 								Chi Siamo
 							</NavLink>
-							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-md-none">
+							<NavLink to="/about" className="text-white text-decoration-none fs-6 d-md-none">
 								<i className="bi bi-people-fill"></i>
 							</NavLink>
 						</li>
 						<li>
-							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-none d-md-block">
+							<NavLink to="/contact" className="text-white text-decoration-none fs-6 d-none d-md-block">
 								Contatti
 							</NavLink>
-							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-md-none">
+							<NavLink to="/contact" className="text-white text-decoration-none fs-6 d-md-none">
 								<i className="bi bi-headset"></i>
 							</NavLink>
 						</li>

@@ -58,72 +58,72 @@ export default function FinderPage() {
                             {properties.map(property =>
 
 
-                                <>
-                                    <div className="card overflow-hidden shadow mb-3" key={property?.id}>
-                                        <div className="row">
 
-                                            <div className="col-12 col-md-12 col-lg-4">
-                                                <img
-                                                    src={`http://localhost:3000/uploads/${property.image}` || 'https://placehold.co/300x250/EEE/31343C'}
-                                                    alt={property.name}
-                                                    style={{ width: '100%', maxHeight: '270px' }}
-                                                    className="object-fit-cover"
+                                <div className="card overflow-hidden shadow mb-3" key={property?.id}>
+                                    <div className="row">
 
-                                                />
-                                            </div>
-                                            {/* Colonna destra con i dettagli */}
-                                            <div className="col-md-12 col-lg-8">
-                                                {/* Intestazione con il nome della proprietà */}
-                                                <div className="card-title my-4 d-flex justify-content-between px-2 ">
-                                                    <h2>{property.name}</h2>
-                                                    <div className='px-2'>
+                                        <div className="col-12 col-md-12 col-lg-4">
+                                            <img
+                                                src={`http://localhost:3000/uploads/${property.image}` || 'https://placehold.co/300x250/EEE/31343C'}
+                                                alt={property.name}
+                                                style={{ width: '100%', maxHeight: '270px' }}
+                                                className="object-fit-cover"
 
-                                                        <Link to={`/properties/${property.id}`} className="text-decoration-none text-light btn btn-primary">Dettagli</Link>
-                                                    </div>
+                                            />
+                                        </div>
+                                        {/* Colonna destra con i dettagli */}
+                                        <div className="col-md-12 col-lg-8">
+                                            {/* Intestazione con il nome della proprietà */}
+                                            <div className="card-title my-4 d-flex justify-content-between px-2 ">
+                                                <h2>{property.name}</h2>
+                                                <div className='px-2'>
+
+                                                    <Link to={`/properties/${property.slug}`} className="text-decoration-none text-light btn btn-primary">Dettagli</Link>
                                                 </div>
-                                                {/* Griglia delle caratteristiche della proprietà */}
-                                                <div className="mt-3 px-2">
-                                                    <h3>Caratteristiche della proprietà:</h3>
-                                                    <div className="row mt-2 g-3 ">
-                                                        <div className="col-6">
-                                                            <strong>Stanze: </strong>
-                                                            <span>{property.rooms}</span>
-                                                        </div>
-                                                        <div className="col-6">
-                                                            <strong>Letti: </strong>
-                                                            <span>{property.beds}</span>
-                                                        </div>
-                                                        <div className="col-6">
-                                                            <strong>Bagni: </strong>
-                                                            <span>{property.bathrooms}</span>
-                                                        </div>
-                                                        <div className="col-6">
-                                                            <i className="bi bi-rulers"> </i>
-                                                            {property.mq}
-                                                        </div>
-                                                        <div className="col-12 col-lg-6">
-                                                            <i className="bi bi-geo-alt"> </i>
-                                                            {property.address}
-                                                        </div>
-                                                        <div className="col-12 col-lg-6">
-                                                            <i className="bi bi-envelope"> </i>
-                                                            {property.email_owners}
-                                                        </div>
-                                                        <div className="col-6 pb-2">
-                                                            <i className="bi bi-heart-fill"> </i>
-                                                            <span className='mb-2'> indice di gradimento: {property.like}
-                                                            </span>
-                                                        </div>
-                                                        {/* <div className="col-4">
+                                            </div>
+                                            {/* Griglia delle caratteristiche della proprietà */}
+                                            <div className="mt-3 px-2">
+                                                <h3>Caratteristiche della proprietà:</h3>
+                                                <div className="row mt-2 g-3 ">
+                                                    <div className="col-6">
+                                                        <strong>Stanze: </strong>
+                                                        <span>{property.rooms}</span>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <strong>Letti: </strong>
+                                                        <span>{property.beds}</span>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <strong>Bagni: </strong>
+                                                        <span>{property.bathrooms}</span>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <i className="bi bi-rulers"> </i>
+                                                        {property.mq}
+                                                    </div>
+                                                    <div className="col-12 col-lg-6">
+                                                        <i className="bi bi-geo-alt"> </i>
+                                                        {property.address}
+                                                    </div>
+                                                    <div className="col-12 col-lg-6">
+                                                        <i className="bi bi-envelope"> </i>
+                                                        {property.email_owners}
+                                                    </div>
+                                                    <div className="col-6 pb-2">
+                                                        <i className="bi bi-heart-fill"> </i>
+                                                        <span className='mb-2'> indice di gradimento: {property.like}
+                                                        </span>
+                                                    </div>
+                                                    {/* <div className="col-4">
 									<i className="bi bi-tools"> </i>
 									{services.join(', ')}
 								</div> */}
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </>
+                                </div>
+
                             )}
                         </> : (
                             <Link to={'/search'} className='bg-danger btn text-light'><span>Mi spiace non abbiamo trovato nulla effettua una nuova ricerca</span> <i className="bi bi-emoji-frown-fill"></i></Link>

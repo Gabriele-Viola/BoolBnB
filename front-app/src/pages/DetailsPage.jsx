@@ -8,7 +8,7 @@ import Jumbotron from '../components/Jumbotron'
 import { useGlobalContext } from '../Context/GlobalContext'
 
 export default function DetailsPage() {
-	const { id } = useParams()
+	const { slug } = useParams()
 	const { reviews, setReviews, fetchReviews, fetchDataShow, property, services, loading, like, fetchData } = useGlobalContext()
 	const [nameUser, setNameUser] = useState('')
 	const [nights, setNights] = useState('')
@@ -18,12 +18,16 @@ export default function DetailsPage() {
 	const [toName, setToName] = useState('') // Email destinatario
 	const [feedback, setFeedback] = useState('')
 
-	const urlShow = `http://localhost:3000/api/properties/${id}`
-	const urlreviews = `http://localhost:3000/api/${id}/reviews`
+	console.log(slug);
+
+
+	const urlShow = `http://localhost:3000/api/properties/${slug}`
+	const urlreviews = `http://localhost:3000/api/properties/${slug}/reviews`
+	console.log({ urlShow, urlreviews });
 	useEffect(() => {
 		fetchReviews(urlreviews)
 		fetchDataShow(urlShow)
-	}, [id, like])
+	}, [slug, like])
 
 
 
@@ -31,7 +35,7 @@ export default function DetailsPage() {
 	useEffect(() => {
 
 		fetchDataShow(urlShow)
-	}, [id])
+	}, [slug])
 
 	// Gestione invio messaggio
 	const HandleSubMessage = async (e) => {
@@ -98,10 +102,9 @@ export default function DetailsPage() {
 		e.preventDefault();
 
 		const userName = e.target.name.value;
-		const urlPostReview = `http://localhost:3000/api/${id}/${userName}/add-review`;
+		const urlPostReview = `http://localhost:3000/api/${slug}/${userName}/add-review`;
 
 		const formReview = {
-			id_property: id,
 			name: userName,
 			text_review: e.target.review.value,
 			nights: e.target.nights.value,

@@ -99,6 +99,7 @@ function GlobalContextProvider({ children }) {
 
         setLoading(false)
     }
+    console.log();
 
 
     async function handleLikeIncrement(propertyId) {
