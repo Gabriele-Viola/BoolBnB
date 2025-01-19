@@ -5,13 +5,11 @@ import ReviewsCard from '../components/ReviewsCard'
 import FormAddReview from '../components/FormAddReview'
 import FormSendMessage from '../components/FormSendMessage'
 import Jumbotron from '../components/Jumbotron'
+import { useGlobalContext } from '../Context/GlobalContext'
 
 export default function DetailsPage() {
 	const { id } = useParams()
-	const [property, setProperty] = useState({})
-	const [services, setServices] = useState([])
-	const [reviews, setReviews] = useState([])
-	const [loading, setLoading] = useState(true)
+	const { reviews, setReviews, fetchReviews, fetchDataShow, property, services, loading, like, fetchData } = useGlobalContext()
 	const [nameUser, setNameUser] = useState('')
 	const [nights, setNights] = useState('')
 	const [review, setReview] = useState('')
@@ -22,35 +20,18 @@ export default function DetailsPage() {
 
 	const urlShow = `http://localhost:3000/api/properties/${id}`
 	const urlreviews = `http://localhost:3000/api/${id}/reviews`
+	useEffect(() => {
+		fetchReviews(urlreviews)
+		fetchDataShow(urlShow)
+	}, [id, like])
 
-	// Funzione per recuperare le recensioni
-	const fetchReviews = async () => {
-		try {
-			const res = await fetch(urlreviews)
-			const data = await res.json()
-			setReviews(data.reviews)
-		} catch (err) {
-			console.error(err)
-		}
-	}
+
+
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const propertyRes = await fetch(urlShow)
-				const propertyData = await propertyRes.json()
-				setProperty(propertyData.property)
-				setToName(propertyData.property.email_owners)
-				setServices(propertyData.property.services)
-			} catch (err) {
-				console.error(err)
-			}
 
-			await fetchReviews()
-			setLoading(false)
-		}
 
-		fetchData()
+		fetchDataShow(urlShow)
 	}, [id])
 
 	// Gestione invio messaggio
@@ -169,7 +150,10 @@ export default function DetailsPage() {
 		<div>
 			<div className="container position-relative">
 				<div className="my-4 align-items-center">
-					<Jumbotron title={property.name} />
+
+
+					<Jumbotron title={property?.name} />
+
 					<div>
 						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage', 'd-none')}>
 							Invia un messaggio

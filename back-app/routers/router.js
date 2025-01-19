@@ -7,22 +7,22 @@ const { sendMessage } = require('../controller/messagesController')
 const { searchUrl } = require('../controller/searchController')
 
 router.get('/properties', index)
-router.get('/properties/:id', show)
+router.get('/properties/:slug', show)
 
 
 
 router.post('/properties/:owner', create)  //search field named "image"
 
 
-router.put('/like/:id', likeUpdate)
+router.put('/like/:slug', likeUpdate)
 
 router.post('/user/logIn', logIn)
 router.post('/user/registration', registration)
 
 router.post('/message/send', sendMessage)
 
-router.get('/:id_property/reviews', reviewsShow)
-router.post('/:id_property/:name/add-review', reviewCreate)
+router.get('/properties/:slug/reviews', reviewsShow)
+router.post('/:slug/:name/add-review', reviewCreate)
 
 router.get('/search', searchUrl)
 

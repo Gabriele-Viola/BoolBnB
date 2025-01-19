@@ -5,49 +5,15 @@ import { useGlobalContext } from '../Context/GlobalContext'
 // Definizione del componente principale che mostra le card delle proprietà
 export default function PropertyCard() {
 	// Estrazione delle variabili dal contesto globale
-	const { error, setError, loading, setLoading, user } = useGlobalContext()
-	// Stato locale per memorizzare l'elenco delle proprietà
-	const [properties, setProperties] = useState([])
+	const { error, loading, user, handleLikeIncrement, properties, fetchData, like } = useGlobalContext()
 
-	// URL dell'endpoint API per recuperare le proprietà
-	const urlIndex = 'http://localhost:3000/api/properties'
-
-	// Fetch data dall'API con async/await per migliorare la leggibilità del codice
-	async function fetchData() {
-		try {
-			const response = await fetch(urlIndex)
-			if (!response.ok) {
-				throw new Error('Failed to fetch properties')
-			}
-			const data = await response.json()
-			// Aggiorna lo stato con i dati ricevuti
-			setProperties(data?.data || [])
-		} catch (err) {
-			setError(err.message)
-		} finally {
-			setLoading(false)
-		}
-	}
+	console.log('dettaglio:', like);
 
 	useEffect(() => {
 		fetchData()
-	}, [])
+	}, [like])
 
-	// Funzione che gestisce il click sul pulsante "like"
-	const handleLikeIncrement = async (propertyId) => {
-		try {
-			const response = await fetch(`http://localhost:3000/api/like/${propertyId}`, {
-				method: 'PUT'
-			})
 
-			if (response.ok) {
-				// Ricarica tutti i dati dopo l'aggiornamento del like
-				fetchData()
-			}
-		} catch (err) {
-			console.error('Errore:', err)
-		}
-	}
 
 	// mostriamo un messaggio di caricamento se loading è true
 	if (loading) return <p>Loading...</p>
@@ -68,9 +34,8 @@ export default function PropertyCard() {
 						<div className="col-12 col-md-6 col-lg-4" key={property?.id}>
 							{/* Card della proprietà con bordo speciale per le proprietà dell'utente */}
 							<div
-								className={`card h-100 shadow ${
-									user.email === property.email_owners ? 'border-success border-thick' : ''
-								}`}>
+								className={`card h-100 shadow ${user.email === property.email_owners ? 'border-success border-thick' : ''
+									}`}>
 								<img
 									src={
 										property.image

@@ -1,12 +1,31 @@
+import { useState } from 'react';
 import Jumbotron from '../components/Jumbotron'
+import { useNavigate } from 'react-router-dom';
 export default function SearchPage() {
+	const navigate = useNavigate();
+
+
+	const [rooms, setRooms] = useState('');
+	const [beds, setBeds] = useState('');
+	const [location, setLocation] = useState('');
+
+
 	const handleSubmit = (e) => {
-		e.preventDefault() // Previene il comportamento predefinito del form
-		// Qui in futuro gestiremo la logica di ricerca
+		e.preventDefault()
+
+		// Costruisce la query string dai parametri
+		const queryParams = new URLSearchParams({
+			rooms: rooms || '',
+			beds: beds || '',
+			location: location || ''
+		}).toString();
+
+		// Naviga alla URL con i parametri
+		navigate(`/search/finder?${queryParams}`);
 	}
 
 	return (
-		<div className="container ">
+		<div className="container">
 			<div className="row justify-content-center">
 				<div className="col-md-8 col-lg-6">
 					<Jumbotron title="Cerca appartamenti" />
@@ -16,25 +35,52 @@ export default function SearchPage() {
 							<label htmlFor="city" className="form-label">
 								Città
 							</label>
-							<input type="text" id="city" className="form-control" placeholder="Inserisci la città..." />
+							<input
+								type="text"
+								id="city"
+								className="form-control"
+								placeholder="Inserisci la città..."
+								value={location}
+								onChange={(e) => setLocation(e.target.value)}
+							/>
 						</div>
 
 						<div className="mb-3">
 							<label htmlFor="minRooms" className="form-label">
 								Numero minimo di stanze
 							</label>
-							<input type="number" id="minRooms" className="form-control" min="1" placeholder="Es: 2" />
+							<input
+								type="number"
+								id="minRooms"
+								className="form-control"
+								min="1"
+								placeholder="Es: 2"
+								value={rooms}
+								onChange={(e) => setRooms(e.target.value)}
+							/>
 						</div>
 
 						<div className="mb-3">
 							<label htmlFor="minBeds" className="form-label">
 								Numero minimo di letti
 							</label>
-							<input type="number" id="minBeds" className="form-control" min="1" placeholder="Es: 3" />
+							<input
+								type="number"
+								id="minBeds"
+								className="form-control"
+								min="1"
+								placeholder="Es: 3"
+								value={beds}
+								onChange={(e) => setBeds(e.target.value)}
+							/>
 						</div>
 
 						<div className="d-flex justify-content-start">
-							<button type="submit" className="btn btn-primary px-4 py-2">
+							<button
+								type="submit"
+								className="btn btn-primary px-4 py-2"
+								disabled={!beds && !rooms && !location} // Disabilita se tutti i campi sono vuoti
+							>
 								Cerca
 							</button>
 						</div>
