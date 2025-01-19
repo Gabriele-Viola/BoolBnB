@@ -62,13 +62,16 @@ function index(req, res) {
 //metodo show che restituisce l'appartamento selezionato
 function show(req, res) {
 	const slug = req.params.slug
+	if (!slug) {
+		return res.status(400).json({ error: 'Slug is required' });
+	}
 	const sql = `SELECT properties.*, 
         			JSON_ARRAYAGG(services.name) AS services
 					FROM properties
 					LEFT JOIN properties_services ON properties.id = properties_services.id_property
 					LEFT JOIN services ON properties_services.id_service = services.id
-					WHERE properties.id = ?
-					GROUP BY properties.slug`
+					WHERE properties.slug = ?
+					GROUP BY properties.id`
 
 	connection.query(sql, [slug], (err, result) => {
 		if (err)
@@ -104,10 +107,10 @@ function create(req, res) {
 		// Modifica qui: salva solo il nome del file invece dell'URL completo
 		const imagePath = req.file ? req.file.filename : null
 
-
 		const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image, slug) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0,? ,?)`
 
 		const { name, rooms, beds, bathrooms, mq, address, email_owners } = req.body
+		const slug = name.toLowerCase().replace(/\s+/g, '-')
 
 		// Validazione...
 		if (!name || !rooms || !beds || !bathrooms || !mq || !address) {
@@ -118,7 +121,7 @@ function create(req, res) {
 
 		connection.query(
 			sql,
-			[owner, name, rooms, beds, bathrooms, mq, address, email_owners, imagePath],
+			[owner, name, rooms, beds, bathrooms, mq, address, email_owners, imagePath, slug],
 			(err, result) => {
 				if (err) {
 					return res.status(500).json({
@@ -139,16 +142,19 @@ function create(req, res) {
 }
 
 function likeUpdate(req, res) {
-	const id = req.params.id
-	const sql = `UPDATE properties SET \`like\` = \`like\` + 1 WHERE id = ?`
-	connection.query(sql, [id], (err, result) => {
+	const slug = req.params.slug
+	if (!slug) {
+		return res.status(400).json({ error: 'Slug is required' });
+	}
+	const sql = `UPDATE properties SET \`like\` = \`like\` + 1 WHERE slug = ?`
+	connection.query(sql, [slug], (err, result) => {
 		if (err)
 			return res.status(500).json({
 				error: 'Something went wrong...'
 			})
 
-		const selectSql = `SELECT \`like\` FROM properties WHERE id = ?`;
-		connection.query(selectSql, [id], (err, data) => {
+		const selectSql = `SELECT \`like\` FROM properties WHERE slug = ?`;
+		connection.query(selectSql, [slug], (err, data) => {
 			if (err) {
 				return res.status(500).json({
 					error: 'Error fetching updated like count'
@@ -158,7 +164,7 @@ function likeUpdate(req, res) {
 			return res.status(200).json({
 				success: true,
 				message: 'Like updated',
-				likes: data[0].like
+				likes: data[0]
 			})
 		})
 	})
