@@ -4,11 +4,12 @@ const connection = require('../db/connection.js')
 function reviewsShow(req, res) {
 
 
-	const id = req.params.id_property
-	const sqlShow = `SELECT * FROM reviews WHERE id_property=? ORDER BY date_review DESC`
+	const slug = req.params.slug
+
+	const sqlShow = `SELECT * FROM reviews WHERE id_property=(SELECT id FROM properties WHERE slug = ?) ORDER BY date_review DESC`
 
 
-	connection.query(sqlShow, [id], (err, result) => {
+	connection.query(sqlShow, [slug], (err, result) => {
 		if (err) {
 			return res.status(500).json({
 				error: 'Something went wrong... '
@@ -16,7 +17,7 @@ function reviewsShow(req, res) {
 		}
 		res.status(200).json({
 			reviews: result,
-            count: result.length
+			count: result.length
 		})
 	})
 }
