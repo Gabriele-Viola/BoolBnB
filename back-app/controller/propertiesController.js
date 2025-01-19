@@ -63,7 +63,7 @@ function index(req, res) {
 function show(req, res) {
 	const slug = req.params.slug
 	if (!slug) {
-		return res.status(400).json({ error: 'Slug is required' });
+		return res.status(400).json({ error: 'Slug is required' })
 	}
 	const sql = `SELECT properties.*, 
         			JSON_ARRAYAGG(services.name) AS services
@@ -106,37 +106,63 @@ function create(req, res) {
 
 		// Modifica qui: salva solo il nome del file invece dell'URL completo
 		const imagePath = req.file ? req.file.filename : null
-
+		const sqlCheckSlug = `SELECT slug FROM properties WHERE slug LIKE ?`
 		const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image, slug) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0,? ,?)`
 
 		const { name, rooms, beds, bathrooms, mq, address, email_owners } = req.body
-		const slug = name.toLowerCase().replace(/\s+/g, '-')
+		const slug = name.toLowerCase().replace(/\s+/g, '_')
 
-		// Validazione...
 		if (!name || !rooms || !beds || !bathrooms || !mq || !address) {
 			return res.status(400).json({
 				error: 'Dati mancanti'
 			})
 		}
 
-		connection.query(
-			sql,
-			[owner, name, rooms, beds, bathrooms, mq, address, email_owners, imagePath, slug],
-			(err, result) => {
-				if (err) {
-					return res.status(500).json({
-						error: 'Errore durante il salvataggio',
-						err: err
-					})
-				}
-				// Modifica qui: restituisci l'URL completo nella risposta
-				const fullImagePath = imagePath ? `http://localhost:3000/uploads/${imagePath}` : null
-				return res.status(201).json({
-					success: true,
-					imagePath: fullImagePath
+		function generateUniqueSlug(baseSlug, existingSlugs) {
+			const today = new Date()
+			const dateSuffix = today.toISOString().slice(0, 10).replace(/-/g, '')
+			let newSlug = `${baseSlug}_${dateSuffix}`
+
+			// Controlla se esiste uno slug uguale o simile
+			let counter = 1
+			while (existingSlugs.includes(newSlug)) {
+				newSlug = `${baseSlug}_${counter}`
+				counter++
+			}
+
+			return newSlug
+		}
+		connection.query(sqlCheckSlug, [`${slug}%`], (err, results) => {
+			if (err) {
+				return res.status(500).json({
+					error: 'Error checking slug availability.',
+					details: err,
 				})
 			}
-		)
+
+			// Ottieni tutti gli slug simili per generare uno slug unico
+			const existingSlugs = results.map((property) => property.slug)
+			const uniqueSlug = generateUniqueSlug(slug, existingSlugs)
+
+			connection.query(
+				sql,
+				[owner, name, rooms, beds, bathrooms, mq, address, email_owners, imagePath, uniqueSlug],
+				(err, result) => {
+					if (err) {
+						return res.status(500).json({
+							error: 'Errore durante il salvataggio',
+							err: err
+						})
+					}
+					// Modifica qui: restituisci l'URL completo nella risposta
+					const fullImagePath = imagePath ? `http://localhost:3000/uploads/${imagePath}` : null
+					return res.status(201).json({
+						success: true,
+						imagePath: fullImagePath
+					})
+				}
+			)
+		})
 	})
 
 }
@@ -144,7 +170,7 @@ function create(req, res) {
 function likeUpdate(req, res) {
 	const slug = req.params.slug
 	if (!slug) {
-		return res.status(400).json({ error: 'Slug is required' });
+		return res.status(400).json({ error: 'Slug is required' })
 	}
 	const sql = `UPDATE properties SET \`like\` = \`like\` + 1 WHERE slug = ?`
 	connection.query(sql, [slug], (err, result) => {
@@ -153,7 +179,7 @@ function likeUpdate(req, res) {
 				error: 'Something went wrong...'
 			})
 
-		const selectSql = `SELECT \`like\` FROM properties WHERE slug = ?`;
+		const selectSql = `SELECT \`like\` FROM properties WHERE slug = ?`
 		connection.query(selectSql, [slug], (err, data) => {
 			if (err) {
 				return res.status(500).json({

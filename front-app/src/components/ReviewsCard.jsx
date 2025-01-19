@@ -14,6 +14,10 @@ export default function ReviewsCard({ reviews, toggle }) {
     }, [reviews]);
 
     if (loading) {
+        if (reviews.length == 0) {
+            return <div>Nessuna recensione presente</div>
+        }
+
         return <div>Caricamento recensioni...</div>;
     }
 
