@@ -1,6 +1,7 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../Context/GlobalContext' // Assicurati di avere il context
 
+
 export default function AppHeader() {
 	const { user, setUser, setLogged } = useGlobalContext() // Usa il context per recuperare l'utente loggato
 	const navigate = useNavigate() // Per fare il redirect

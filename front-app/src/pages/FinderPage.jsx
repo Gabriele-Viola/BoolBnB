@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Jumbotron from '../components/Jumbotron';
 import { useGlobalContext } from '../Context/GlobalContext';
 
+
 export default function FinderPage() {
     // const { handleLikeIncrement } = useGlobalContext()
 

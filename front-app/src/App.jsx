@@ -11,6 +11,7 @@ import LogInPage from './pages/LogInPage.jsx'
 import RegistrationPage from './pages/RegistrationPage.jsx'
 import SearchPage from './pages/SearchPage.jsx'
 import FinderPage from './pages/FinderPage.jsx'
+
 function App() {
 	return (
 		<>

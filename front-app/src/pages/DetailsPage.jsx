@@ -7,6 +7,7 @@ import FormSendMessage from '../components/FormSendMessage'
 import Jumbotron from '../components/Jumbotron'
 import { useGlobalContext } from '../Context/GlobalContext'
 
+
 export default function DetailsPage() {
 	const { slug } = useParams()
 	const { reviews, setReviews, fetchReviews, fetchDataShow, property, services, loading, like, fetchData } = useGlobalContext()
@@ -96,6 +97,7 @@ export default function DetailsPage() {
 	if (loading) {
 		return <div>Loading...</div>
 	}
+
 
 	const HandleSubReview = async (e) => {
 		e.preventDefault()
