@@ -10,7 +10,8 @@ import { useGlobalContext } from '../Context/GlobalContext'
 export default function DetailsPage() {
 	const { slug } = useParams()
 
-	const { reviews, setReviews, fetchReviews, fetchDataShow, property, services, loading, like, user } = useGlobalContext()
+	const { reviews, setReviews, fetchReviews, fetchDataShow, property, services, loading, like, user } =
+		useGlobalContext()
 
 	const [nameUser, setNameUser] = useState('')
 	const [nights, setNights] = useState('')
@@ -19,6 +20,7 @@ export default function DetailsPage() {
 	const [textUser, setTextUser] = useState('')
 	const [toName, setToName] = useState('') // Email destinatario
 	const [feedback, setFeedback] = useState('')
+	const [showReviewForm, setShowReviewForm] = useState(true)
 
 	console.log(slug)
 
@@ -131,12 +133,12 @@ export default function DetailsPage() {
 			console.log(data)
 
 			setFeedback(data?.message)
-
 			setReviews(data.reviews)
+			setShowReviewForm(false)
 
 			setTimeout(() => {
 				setFeedback('')
-			}, 300000)
+			}, 3000)
 		} catch (err) {
 			console.error(err)
 			setFeedback("Errore nell'invio della recensione")
@@ -147,7 +149,7 @@ export default function DetailsPage() {
 		setReview('')
 	}
 
-	console.log(property.id_user, user.id);
+	console.log(property.id_user, user.id)
 
 	return (
 		<div>
@@ -155,15 +157,18 @@ export default function DetailsPage() {
 				<div className="my-4 align-items-center">
 					<Jumbotron title={property?.name} />
 
-					{property.email_owners !== user.email ? <div>
-						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage', 'd-none')}>
-							Invia un messaggio
-						</button>
-					</div>
-						:
-						<div className=" fs-5 badge text-bg-success" >
-							Sei il proprietario
-						</div>}
+					{property.email_owners !== user.email ? (
+						<div>
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={() => HandleinputToggle('newMessage', 'd-none')}>
+								Invia un messaggio
+							</button>
+						</div>
+					) : (
+						<div className=" fs-5 badge text-bg-success">Sei il proprietario</div>
+					)}
 				</div>
 			</div>
 
@@ -180,17 +185,18 @@ export default function DetailsPage() {
 						<div>{feedback && <div className="alert alert-success mt-3">{feedback}</div>}</div>
 					</div>
 
-					{property.email_owners !== user.email && <FormAddReview
-						HandleSubReview={HandleSubReview}
-						nameUser={nameUser}
-						setNameUser={setNameUser}
-						nights={nights}
-						setNights={setNights}
-						review={review}
-						setReview={setReview}
 
-						feedback={feedback}
-					/>}
+					{property.email_owners !== user.email && showReviewForm && (
+						<FormAddReview
+							HandleSubReview={HandleSubReview}
+							nameUser={nameUser}
+							setNameUser={setNameUser}
+							nights={nights}
+							setNights={setNights}
+							review={review}
+							setReview={setReview}
+						/>
+					)}
 
 				</div>
 			</div>
