@@ -1,5 +1,5 @@
-import { useGlobalContext } from "../Context/GlobalContext"
-import { useEffect, useState } from "react"
+import { useGlobalContext } from '../Context/GlobalContext'
+import { useEffect, useState } from 'react'
 
 // Componente per visualizzare i dettagli di una proprietà
 export default function DetailsCard({ property, services }) {
@@ -8,8 +8,7 @@ export default function DetailsCard({ property, services }) {
 	useEffect(() => {
 		fetchData()
 	}, [likes])
-	console.log(property.like);
-
+	console.log(property.like)
 
 	return (
 		<>
@@ -19,41 +18,18 @@ export default function DetailsCard({ property, services }) {
 					{/* Colonna sinistra con l'immagine */}
 					<div className="col-12 col-md-12 col-lg-4">
 						<img
-							src={`http://localhost:3000/uploads/${property?.image}` || 'https://placehold.co/300x250/EEE/31343C'}
+							src={
+								property?.image
+									? `http://localhost:3000/uploads/${property.image}`
+									: 'https://placehold.co/300x250/EEE/31343C'
+							}
 							alt={property?.name}
 							className="card-img-top p-0"
 							style={{ width: '100%', height: '305px', objectFit: 'cover' }}
 							onError={(e) => {
-								// Logica di fallback per il caricamento delle immagini
-								// Gestione fallback delle immagini con multiple alternative
-								console.log('Tentativo di caricare immagine dal backend fallito:', property?.image)
-
-								// Estrai il nome del file dal percorso completo
-								const fileName = property?.image?.split('/').pop()
-
-								// Prima prova il percorso diretto agli uploads
-								const localImagePath = `/uploads/${fileName}`
-								console.log('Provo a caricare da:', localImagePath)
-
-								e.target.src = localImagePath
-
-								// Se anche il percorso locale fallisce, usa il placeholder
-								e.target.onerror = () => {
-									console.log(
-										'Caricamento locale fallito, provo il percorso completo:',
-										`http://localhost:3000/uploads/${fileName}`
-									)
-
-									// Prova con il percorso completo al backend
-									e.target.src = `http://localhost:3000/uploads/${fileName}`
-
-									// Se anche questo fallisce, usa il placeholder
-									e.target.onerror = () => {
-										console.log('Tutti i tentativi falliti, uso placeholder')
-										e.target.src = 'https://placehold.co/300x250/EEE/31343C'
-										e.target.onerror = null // Previene loop infiniti
-									}
-								}
+								console.log('Errore caricamento immagine, uso placeholder')
+								e.target.src = 'https://placehold.co/300x250/EEE/31343C'
+								e.target.onerror = null // Previene loop infiniti
 							}}
 						/>
 					</div>
@@ -102,7 +78,6 @@ export default function DetailsCard({ property, services }) {
 										<span style={{ fontSize: '1.2rem' }}>❤️ {property.like}</span>
 									</button>
 								</div>
-
 							</div>
 						</div>
 					</div>
