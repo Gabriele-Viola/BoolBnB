@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react"
 
 
+
+
 const GlobalContext = createContext()
 
 function GlobalContextProvider({ children }) {
@@ -13,6 +15,14 @@ function GlobalContextProvider({ children }) {
     const [reviews, setReviews] = useState([])
     const [property, setProperty] = useState({})
     const [like, setLike] = useState('')
+    const [rooms, setRooms] = useState('')
+    const [beds, setBeds] = useState('');
+    const [destination, setDestination] = useState('');
+    const [bathrooms, setBathrooms] = useState('');
+    const [mq, setMq] = useState('');
+
+
+
 
 
 
@@ -100,7 +110,7 @@ function GlobalContextProvider({ children }) {
 
         setLoading(false)
     }
-    console.log();
+
 
 
     async function handleLikeIncrement(propertyId) {
@@ -148,7 +158,12 @@ function GlobalContextProvider({ children }) {
         fetchDataShow,
         property,
         setProperty,
-        like, setLike
+        like, setLike,
+        rooms, setRooms,
+        destination, setDestination,
+        bathrooms, setBathrooms,
+        mq, setMq,
+        beds, setBeds
     }
 
     return (

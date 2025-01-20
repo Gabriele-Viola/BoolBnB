@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Jumbotron from '../components/Jumbotron';
 import { useGlobalContext } from '../Context/GlobalContext';
 
 
 export default function FinderPage() {
-    // const { handleLikeIncrement } = useGlobalContext()
+    const navigate = useNavigate();
+    const { rooms, setRooms,
+        destination, setDestination,
+        bathrooms, setBathrooms,
+        mq, setMq,
+        beds, setBeds } = useGlobalContext()
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -15,6 +20,13 @@ export default function FinderPage() {
     const [error, setError] = useState(null);
 
 
+    useEffect(() => {
+        setRooms(searchParams.get('rooms') || '');
+        setBeds(searchParams.get('beds') || '');
+        setBathrooms(searchParams.get('bathrooms') || '');
+        setMq(searchParams.get('mq') || '');
+        setDestination(searchParams.get('location') || '');
+    }, [location.search]);
 
     useEffect(() => {
         // Costruisci l'URL della query per il backend
@@ -36,8 +48,27 @@ export default function FinderPage() {
                 setError(err.message);
                 setLoading(false);
             });
-    }, []);
+    }, [searchParams]);
 
+    function handleSubmitResearch(e) {
+        e.preventDefault()
+
+        // Costruisce la query string dai parametri
+        const queryParams = new URLSearchParams({
+            rooms: rooms || '',
+            beds: beds || '',
+            bathrooms: bathrooms || '',
+            mq: mq || '',
+            location: destination || ''
+        }).toString()
+
+        const currentSearch = location.search.substring(1); // Rimuove il "?" iniziale
+        if (currentSearch !== queryParams) {
+            navigate(`/search/finder?${queryParams}`);
+        }
+
+        // Naviga alla URL con i parametri
+    }
     if (loading) {
         return <p>Caricamento...</p>;
     }
@@ -53,6 +84,104 @@ export default function FinderPage() {
                     <Jumbotron title={'Spero tu abbia trovato ciò che cercavi'} />
                 </div>
                 <div className="container-fluid">
+                    <form onSubmit={handleSubmitResearch} className="p-4 shadow-sm d-flex justify-content-between align-items-center">
+                        <div className="mb-3 col-2">
+                            <label htmlFor="city" className="form-label">
+                                Località
+                            </label>
+                            <input
+                                type="text"
+                                id="city"
+                                className="form-control"
+                                placeholder="Inserisci la città..."
+                                value={destination}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (value !== destination) setDestination(value);
+                                }}
+                            />
+                        </div>
+
+                        <div className="mb-3 col-2">
+                            <label htmlFor="minRooms" className="form-label">
+                                Numero minimo di stanze
+                            </label>
+                            <input
+                                type="number"
+                                id="minRooms"
+                                className="form-control"
+                                min="1"
+                                placeholder="Es: 2"
+                                value={rooms}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (value !== rooms) setRooms(value);
+                                }}
+                            />
+                        </div>
+
+                        <div className="mb-3 col-2">
+                            <label htmlFor="minBeds" className="form-label">
+                                Numero minimo di letti
+                            </label>
+                            <input
+                                type="number"
+                                id="minBeds"
+                                className="form-control"
+                                min="1"
+                                placeholder="Es: 3"
+                                value={beds}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (value !== beds) setBeds(value);
+                                }}
+                            />
+                        </div>
+                        <div className="mb-3 col-2">
+                            <label htmlFor="minBathrooms" className="form-label">
+                                Numero minimo di Bagni
+                            </label>
+                            <input
+                                type="number"
+                                id="minBathrooms"
+                                className="form-control"
+                                min="1"
+                                placeholder="Es: 1"
+                                value={bathrooms}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (value !== bathrooms) setBathrooms(value);
+                                }}
+                            />
+                        </div>
+                        <div className="mb-3 col-2">
+                            <label htmlFor="minmq" className="form-label">
+                                Numero minimo di Mq
+                            </label>
+                            <input
+                                type="number"
+                                id="minmq"
+                                className="form-control"
+                                min="1"
+                                placeholder="Es: 1"
+                                value={mq}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (value !== mq) setMq(value);
+                                }}
+                            />
+                        </div>
+
+                        <div className="mt-3">
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                                disabled={!beds && !rooms && !location && !mq && !bathrooms} // Disabilita se tutti i campi sono vuoti
+                            >
+                                Cerca
+                            </button>
+                        </div>
+                    </form>
                     <h1 className={`text-${properties.length ? 'success' : 'danger'}`}>{properties.length} Risultati trovati </h1>
                     {properties.length > 0 ?
                         <div >

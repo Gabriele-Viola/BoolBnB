@@ -17,13 +17,7 @@ function searchUrl(req, res) {
     const bathrooms = req.query.bathrooms
     const filters = []
     const params = []
-    console.log({
-        location: req.query.location,
-        beds: req.query.beds,
-        rooms: req.query.rooms,
-        mq: req.query.mq,
-        bathrooms: req.query.batrooms
-    });
+
 
 
 
