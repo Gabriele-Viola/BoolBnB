@@ -1,18 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Jumbotron from '../components/Jumbotron'
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../Context/GlobalContext';
+
 export default function SearchPage() {
+
+
 	const navigate = useNavigate();
+	const { rooms, setRooms,
+		destination, setDestination,
+		bathrooms, setBathrooms,
+		mq, setMq,
+		beds, setBeds
+	} = useGlobalContext()
+
+	useEffect(() => {
+
+		setBathrooms('')
+		setDestination('')
+		setRooms('')
+		setMq('')
+		setBeds('')
+	}, [])
 
 
-	const [rooms, setRooms] = useState('');
-	const [beds, setBeds] = useState('');
-	const [location, setLocation] = useState('');
-	const [bathrooms, setBathrooms] = useState('');
-	const [mq, setMq] = useState('');
-
-
-	const handleSubmit = (e) => {
+	function handleSubmitSearch(e) {
 		e.preventDefault()
 
 		// Costruisce la query string dai parametri
@@ -21,10 +33,9 @@ export default function SearchPage() {
 			beds: beds || '',
 			bathrooms: bathrooms || '',
 			mq: mq || '',
-			location: location || ''
-		}).toString();
-		console.log(queryParams);
-		console.log({ location, rooms, beds, bathrooms, mq });
+			location: destination || ''
+		}).toString()
+
 
 
 		// Naviga alla URL con i parametri
@@ -37,7 +48,7 @@ export default function SearchPage() {
 				<div className="col-md-8 col-lg-6">
 					<Jumbotron title="Cerca appartamenti" />
 
-					<form onSubmit={handleSubmit} className="card p-4 shadow-sm">
+					<form onSubmit={handleSubmitSearch} className="card p-4 shadow-sm">
 						<div className="mb-3">
 							<label htmlFor="city" className="form-label">
 								Località
@@ -47,8 +58,8 @@ export default function SearchPage() {
 								id="city"
 								className="form-control"
 								placeholder="Inserisci la città..."
-								value={location}
-								onChange={(e) => setLocation(e.target.value)}
+								value={destination}
+								onChange={(e) => setDestination(e.target.value)}
 							/>
 						</div>
 
