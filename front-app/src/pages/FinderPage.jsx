@@ -5,7 +5,7 @@ import { useGlobalContext } from '../Context/GlobalContext';
 
 
 export default function FinderPage() {
-    // const { handleLikeIncrement } = useGlobalContext()
+    const { fetchReviews } = useGlobalContext()
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -65,7 +65,7 @@ export default function FinderPage() {
 
                                         <div className="col-12 col-md-12 col-lg-4">
                                             <img
-                                                src={`http://localhost:3000/uploads/${property.image}` || 'https://placehold.co/300x250/EEE/31343C'}
+                                                src={property?.image ? `http://localhost:3000/uploads/${property?.image}` : 'https://placehold.co/300x250/EEE/31343C'}
                                                 alt={property.name}
                                                 style={{ width: '100%', maxHeight: '270px' }}
                                                 className="object-fit-cover"
