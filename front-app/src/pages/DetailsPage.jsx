@@ -28,6 +28,7 @@ export default function DetailsPage() {
 	useEffect(() => {
 		fetchReviews(urlreviews)
 		fetchDataShow(urlShow)
+		setToName(property.email_owners)
 	}, [slug, like])
 
 

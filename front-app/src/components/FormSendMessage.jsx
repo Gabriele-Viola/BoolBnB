@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import emailjs from '@emailjs/browser'
+import { useGlobalContext } from '../Context/GlobalContext'
 
 export default function FormSendMessage({
 	HandleinputToggle,
@@ -13,6 +14,7 @@ export default function FormSendMessage({
 	toName,
 	setToName
 }) {
+	const { property } = useGlobalContext()
 	const form = useRef()
 
 	const handleSubmit = (e) => {
@@ -80,12 +82,14 @@ export default function FormSendMessage({
 			.then(
 				(result) => {
 					console.log('SUCCESS!', result.text)
+					console.log(result);
+
 					console.log('Messaggio inviato a te stesso!')
 					// Reset dei campi
 					setFromName('')
 					setEmailUser('')
 					setTextUser('')
-					setToName('')
+					// setToName('')
 				},
 				(error) => {
 					console.log('FAILED...', error.text)
@@ -127,7 +131,7 @@ export default function FormSendMessage({
 						id="to_name"
 						name="to_name"
 						value={toName}
-						// onChange={(e) => setToName(e.target.value)}
+						readOnly
 						className="form-control mb-3"
 						placeholder="Inserisci l'email del destinatario"
 						required
