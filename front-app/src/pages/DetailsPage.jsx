@@ -185,6 +185,7 @@ export default function DetailsPage() {
 						<div>{feedback && <div className="alert alert-success mt-3">{feedback}</div>}</div>
 					</div>
 
+
 					{property.email_owners !== user.email && showReviewForm && (
 						<FormAddReview
 							HandleSubReview={HandleSubReview}
@@ -196,6 +197,7 @@ export default function DetailsPage() {
 							setReview={setReview}
 						/>
 					)}
+
 				</div>
 			</div>
 

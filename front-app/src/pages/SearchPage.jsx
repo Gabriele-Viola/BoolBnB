@@ -19,8 +19,13 @@ export default function SearchPage() {
 		const queryParams = new URLSearchParams({
 			rooms: rooms || '',
 			beds: beds || '',
+			bathrooms: bathrooms || '',
+			mq: mq || '',
 			location: location || ''
 		}).toString();
+		console.log(queryParams);
+		console.log({ location, rooms, beds, bathrooms, mq });
+
 
 		// Naviga alla URL con i parametri
 		navigate(`/search/finder?${queryParams}`);
@@ -85,21 +90,21 @@ export default function SearchPage() {
 								id="minBathrooms"
 								className="form-control"
 								min="1"
-								placeholder="Es: 3"
+								placeholder="Es: 1"
 								value={bathrooms}
 								onChange={(e) => setBathrooms(e.target.value)}
 							/>
 						</div>
 						<div className="mb-3">
 							<label htmlFor="minmq" className="form-label">
-								Numero minimo di letti
+								Numero minimo di Mq
 							</label>
 							<input
 								type="number"
 								id="minmq"
 								className="form-control"
 								min="1"
-								placeholder="Es: 3"
+								placeholder="Es: 1"
 								value={mq}
 								onChange={(e) => setMq(e.target.value)}
 							/>
