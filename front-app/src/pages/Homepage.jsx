@@ -2,8 +2,18 @@ import { Link } from 'react-router-dom'
 import { useGlobalContext } from '../Context/GlobalContext'
 import PropertyCard from '../components/PropertyCard'
 import Jumbotron from '../components/Jumbotron'
+import { useState } from 'react'
+
 export default function Homepage() {
 	const { user } = useGlobalContext() // Ottieni il contesto globale per verificare se l'utente è loggato
+	const [searchText, setSearchText] = useState('') // Aggiungi questo stato
+
+	// Funzione che gestisce la ricerca
+	// Aggiorna lo stato searchText con il valore inserito dall'utente
+	// Questo valore viene poi passato al componente PropertyCard per filtrare le proprietà
+	const handleSearch = (value) => {
+		setSearchText(value)
+	}
 
 	return (
 		<>
@@ -16,9 +26,10 @@ export default function Homepage() {
 						</Link>
 					</div>
 				)}
-				<Jumbotron title={'Lista proprietà disponibili'} />
-				{/* Mostra le proprietà */}
-				<PropertyCard />
+				{/* Componente Jumbotron che mostra il titolo e la barra di ricerca */}
+				<Jumbotron title={'Lista proprietà disponibili'} showSearch={true} onSearchChange={handleSearch} />
+				{/* Componente PropertyCard che mostra la lista delle proprietà filtrate in base al testo di ricerca */}
+				<PropertyCard searchText={searchText} />
 			</div>
 		</>
 	)

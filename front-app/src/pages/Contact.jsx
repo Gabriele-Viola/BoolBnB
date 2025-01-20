@@ -1,15 +1,16 @@
+import Jumbotron from '../components/Jumbotron'
 export default function Contact() {
 	return (
-
-		<div className="container">
-			<h1 className="mb-4">Contattaci</h1>
-			<div className="row">
-				<div className="col-12">
-					<p>Hai domande o suggerimenti? Siamo qui per aiutarti!</p>
-					<p>Email: info@boolbnb.it | Telefono: +39 02 1234567</p>
+		<>
+			<div className="container">
+				<Jumbotron title="Contattaci" className="mb-5" />
+				<div className="row">
+					<div className="ps-4 col-12">
+						<p className=" fw-bold">Hai domande o suggerimenti? Siamo qui per aiutarti!</p>
+						<p className=" fw-bold">Email: info@boolbnb.it | Telefono: +39 02 1234567</p>
+					</div>
 				</div>
 			</div>
-		</div>
-
+		</>
 	)
 }
