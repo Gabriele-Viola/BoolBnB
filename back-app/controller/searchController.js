@@ -19,7 +19,7 @@ function searchUrl(req, res) {
 
     if (location) {
         filters.push('address LIKE ?')
-        params.push(`%${location}% , `)
+        params.push(`%${location}%`)
     }
     if (beds) {
         filters.push('beds>=?')
