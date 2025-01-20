@@ -9,8 +9,9 @@ import { useGlobalContext } from '../Context/GlobalContext'
 
 export default function DetailsPage() {
 	const { slug } = useParams()
-	const { reviews, setReviews, fetchReviews, fetchDataShow, property, services, loading, like, fetchData } =
-		useGlobalContext()
+
+	const { reviews, setReviews, fetchReviews, fetchDataShow, property, services, loading, like, user } = useGlobalContext()
+
 	const [nameUser, setNameUser] = useState('')
 	const [nights, setNights] = useState('')
 	const [review, setReview] = useState('')
@@ -27,6 +28,7 @@ export default function DetailsPage() {
 	useEffect(() => {
 		fetchReviews(urlreviews)
 		fetchDataShow(urlShow)
+		setToName(property.email_owners)
 	}, [slug, like])
 
 	useEffect(() => {
@@ -144,17 +146,24 @@ export default function DetailsPage() {
 		setNights('')
 		setReview('')
 	}
+
+	console.log(property.id_user, user.id);
+
 	return (
 		<div>
 			<div className="container position-relative">
 				<div className="my-4 align-items-center">
 					<Jumbotron title={property?.name} />
 
-					<div>
+					{property.email_owners !== user.email ? <div>
 						<button type="button" className="btn btn-primary" onClick={() => HandleinputToggle('newMessage', 'd-none')}>
 							Invia un messaggio
 						</button>
 					</div>
+						:
+						<div className=" fs-5 badge text-bg-success" >
+							Sei il proprietario
+						</div>}
 				</div>
 			</div>
 
@@ -171,7 +180,7 @@ export default function DetailsPage() {
 						<div>{feedback && <div className="alert alert-success mt-3">{feedback}</div>}</div>
 					</div>
 
-					<FormAddReview
+					{property.email_owners !== user.email && <FormAddReview
 						HandleSubReview={HandleSubReview}
 						nameUser={nameUser}
 						setNameUser={setNameUser}
@@ -179,8 +188,10 @@ export default function DetailsPage() {
 						setNights={setNights}
 						review={review}
 						setReview={setReview}
+
 						feedback={feedback}
 					/>
+
 				</div>
 			</div>
 

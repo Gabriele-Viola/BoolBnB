@@ -247,182 +247,185 @@ export default function AddPropertiesPage() {
 				)}
 
 				{/* Contenitore del form */}
-				<div className="container d-flex justify-content-center py-3">
-					{/* Form per l'inserimento della proprietà */}
-					<div className="mt-3 p-3 border border-primary-subtle rounded w-50 shadow">
-						<h3 className="mb-2 text-center">Compila il form</h3>
-						{logged ? (
-							<form className="my-3 rounded p-4" onSubmit={handleFormSubmit}>
-								<div className="form-group col-md-6 col-lg-12">
-									<div className="form-group mb-3">
-										<label htmlFor="name">Nome Proprietà:</label>
+
+				{/* Form per l'inserimento della proprietà */}
+				<div className="mt-3 mx-auto p-3 border border-primary-subtle rounded shadow col-lg-8 col-xl-6">
+					<h3 className="mb-2 text-center">Compila il form</h3>
+					{logged ? (
+						<form className="my-3 rounded p-4" onSubmit={handleFormSubmit}>
+							<div className="form-group">
+								<div className="form-group mb-3">
+									<label htmlFor="name">Nome Proprietà:</label>
+									<input
+										className="form-control"
+										type="text"
+										id="name"
+										name="name"
+										placeholder="Inserisci il nome della proprietà"
+										required
+										minLength={3}
+										maxLength={100}
+										value={formData.name}
+										onChange={handleFormField}
+									/>
+								</div>
+
+								<div className="row mb-3">
+									<div className="form-group">
+										<label htmlFor="image" className="form-label">
+											Carica una foto della proprietà:
+										</label>
+										<div className="input-group">
+											<input
+												className="form-control"
+												type="file"
+												id="image"
+												name="image"
+												accept="image/*"
+												onChange={handleFormField}
+											/>
+											<label className="input-group-text" htmlFor="image">
+												<i className="bi bi-image"></i>
+											</label>
+										</div>
+										{selectedFile && (
+											<div className="mt-2">
+												<div className="d-flex justify-content-between align-items-center">
+													<p className="text-muted small mb-0">Anteprima:</p>
+													<button
+														type="button"
+														className="btn btn-sm btn-outline-danger"
+														onClick={() => {
+															setSelectedFile(null)
+															setFormData((prev) => ({ ...prev, image: null }))
+														}}>
+														<i className="bi bi-trash"></i> <span className='d-none d-md-inline'>Rimuovi immagine</span>
+													</button>
+												</div>
+												<img
+													src={URL.createObjectURL(selectedFile)}
+													alt="Anteprima"
+													className="img-fluid mt-2 rounded"
+													style={{ maxHeight: '200px' }}
+												/>
+											</div>
+										)}
+									</div>
+								</div>
+
+								<div className="row justify-content-between">
+
+									<div className="mb-3 col-12 col-md-2 h-100">
+										<label htmlFor="rooms" className="form-label"><span className='d-none d-md-inline'>Numero</span> Stanze:</label>
 										<input
+											type="number"
 											className="form-control"
-											type="text"
-											id="name"
-											name="name"
-											placeholder="Inserisci il nome della proprietà"
+											id="rooms"
+											name="rooms"
 											required
-											minLength={3}
-											maxLength={100}
-											value={formData.name}
+											min={1}
+											max={100}
+											value={formData.rooms}
+											onChange={handleFormField}
+										/>
+									</div>
+									<div className="mb-3 col-12 col-md-2 h-100">
+										<label htmlFor="beds" className="form-label"><span className='d-none d-md-inline'>Numero</span> Letti:</label>
+										<input
+											type="number"
+											className="form-control"
+											id="beds"
+											name="beds"
+											required
+											min={1}
+											max={100}
+											value={formData.beds}
+											onChange={handleFormField}
+										/>
+									</div>
+									<div className="mb-3 col-12 col-md-2 h-100">
+										<label htmlFor="bathrooms" className="form-label"><span className='d-none d-md-inline'>Numero</span> Bagni:</label>
+										<input
+											type="number"
+											className="form-control"
+											id="bathrooms"
+											name="bathrooms"
+											required
+											min={1}
+											max={100}
+											value={formData.bathrooms}
+											onChange={handleFormField}
+										/>
+									</div>
+									<div className="mb-3 col-12 col-md-2 h-100">
+										<label htmlFor="mq" className="form-label"><span className='d-none d-md-inline'>Superficie in</span> Mq:</label>
+										<input
+											type="number"
+											className="form-control"
+											id="mq"
+											name="mq"
+											required
+											min={1}
+											max={1000}
+											value={formData.mq}
 											onChange={handleFormField}
 										/>
 									</div>
 
-									<div className="row mb-3">
-										<div className="form-group">
-											<label htmlFor="image" className="form-label">
-												Carica una foto della proprietà:
-											</label>
-											<div className="input-group">
-												<input
-													className="form-control"
-													type="file"
-													id="image"
-													name="image"
-													accept="image/*"
-													onChange={handleFormField}
-												/>
-												<label className="input-group-text" htmlFor="image">
-													<i className="bi bi-image"></i>
-												</label>
-											</div>
-											{selectedFile && (
-												<div className="mt-2">
-													<div className="d-flex justify-content-between align-items-center">
-														<p className="text-muted small mb-0">Anteprima:</p>
-														<button
-															type="button"
-															className="btn btn-sm btn-outline-danger"
-															onClick={() => {
-																setSelectedFile(null)
-																setFormData((prev) => ({ ...prev, image: null }))
-															}}>
-															<i className="bi bi-trash"></i> Rimuovi immagine
-														</button>
-													</div>
-													<img
-														src={URL.createObjectURL(selectedFile)}
-														alt="Anteprima"
-														className="img-fluid mt-2 rounded"
-														style={{ maxHeight: '200px' }}
-													/>
-												</div>
-											)}
-										</div>
-									</div>
-									<div className='d-flex justify-content-between'>
 
-										<div className="mb-3">
-											<label htmlFor="rooms" className="form-label">Numero stanze:</label>
-											<input
-												type="number"
-												className="form-control"
-												id="rooms"
-												name="rooms"
-												required
-												min={1}
-												max={100}
-												value={formData.rooms}
-												onChange={handleFormField}
-											/>
-										</div>
-										<div className="mb-3">
-											<label htmlFor="beds" className="form-label">Numero letti:</label>
-											<input
-												type="number"
-												className="form-control"
-												id="beds"
-												name="beds"
-												required
-												min={1}
-												max={100}
-												value={formData.beds}
-												onChange={handleFormField}
-											/>
-										</div>
-										<div className="mb-3">
-											<label htmlFor="bathrooms" className="form-label">Numero bagni:</label>
-											<input
-												type="number"
-												className="form-control"
-												id="bathrooms"
-												name="bathrooms"
-												required
-												min={1}
-												max={100}
-												value={formData.bathrooms}
-												onChange={handleFormField}
-											/>
-										</div>
-										<div className="mb-3">
-											<label htmlFor="mq" className="form-label">Superficie in mq:</label>
-											<input
-												type="number"
-												className="form-control"
-												id="mq"
-												name="mq"
-												required
-												min={1}
-												max={1000}
-												value={formData.mq}
-												onChange={handleFormField}
-											/>
-										</div>
-									</div>
-
-									<div className="form-group mb-3">
-										<label className="form-label" htmlFor="address">
-											Indirizzo proprietà:
-										</label>
-										<div className='d-flex mb-3'>
-											<div className='w-25'>
-
-												<label className="form-label" htmlFor="address">
-													Via / Viale...
-												</label>
-												<select className='form-control w-75' name="a" id="a" value={address.a}
-													onChange={handleFormField}>
-													<option value="none">--</option>
-													<option value="Via">Via</option>
-													<option value="Viale">Viale</option>
-													<option value="Piazza">Piazza</option>
-													<option value="Privata">Privata</option>
-												</select>
-											</div>
-
-											<div className='w-50'>
-												<label className="form-label" htmlFor="address">
-													indirizzo
-												</label>
-												<input type="text" placeholder='indirizzo' name="b" id="b" className='form-control' value={address.b} onChange={handleFormField} />
-
-											</div>
-											<div className='w-25 d-flex flex-column align-items-end'>
-
-												<label className="form-label align-self-center" htmlFor="address">
-													n. Civico
-												</label>
-												<input type="number" placeholder='Nc' name="c" id="c" className='form-control w-75 d-flex justify-content-end' value={address.c} onChange={handleFormField} />
-											</div>
-
-										</div>
-										<label className="form-label" htmlFor="address">
-											Città:
-										</label>
-										<input type="text" placeholder='città' name="d" id="d" className='form-control' value={address.d} onChange={handleFormField} />
-									</div>
-									<button className="btn btn-primary w-100 mb-3" type="submit" id="formSubmit" name="submit">
-										<span>Salva</span> <i className="bi bi-cloud-arrow-up" />
-									</button>
 								</div>
-							</form>
-						) : (
-							<h5 className="bg-danger text-warning">Non puoi farlo!</h5>
-						)}
-					</div>
+
+								<div className="form-group mb-3">
+									<label className="form-label" htmlFor="address">
+										<span className='d-none d-md-inline'>Indirizzo</span> Proprietà:
+									</label>
+									<div className='d-flex flex-column flex-md-row justify-content-between mb-3'>
+										<div className='col-12 col-md-2 mb-3'>
+
+											<label className="form-label" htmlFor="address">
+												Via / Viale...
+											</label>
+											<select className='form-control' name="a" id="a" value={address.a}
+												onChange={handleFormField}>
+												<option value="none">--</option>
+												<option value="Via">Via</option>
+												<option value="Viale">Viale</option>
+												<option value="Piazza">Piazza</option>
+												<option value="Privata">Privata</option>
+											</select>
+										</div>
+
+										<div className='col-12 col-md-5 mb-3'>
+											<label className="form-label" htmlFor="address">
+												indirizzo
+											</label>
+											<input type="text" placeholder='indirizzo' name="b" id="b" className='form-control' value={address.b} onChange={handleFormField} />
+
+										</div>
+										<div className='col-12 col-md-2 d-flex flex-column mb-3'>
+
+											<label className="form-label" htmlFor="address">
+												n. Civico
+											</label>
+											<input type="number" min={0} placeholder='Nc' name="c" id="c" className='form-control d-flex justify-content-end' value={address.c} onChange={handleFormField} />
+										</div>
+
+									</div>
+									<label className="form-label" htmlFor="address">
+										Città:
+									</label>
+									<input type="text" placeholder='città' name="d" id="d" className='form-control' value={address.d} onChange={handleFormField} />
+								</div>
+								<button className="btn btn-primary w-100 my-3" type="submit" id="formSubmit" name="submit">
+									<span>Salva</span> <i className="bi bi-cloud-arrow-up" />
+								</button>
+							</div>
+						</form>
+					) : (
+						<h5 className="bg-danger text-warning">Non puoi farlo!</h5>
+					)}
 				</div>
+
 			</div>
 		</>
 	)

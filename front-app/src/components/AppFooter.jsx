@@ -5,28 +5,28 @@ export default function AppFooter() {
                 <div className="container d-flex justify-content-center py-3">
                     <button
                         type="button"
-                        className="btn btn-primary btn-lg btn-floating mx-2"
+                        className="btn btn-primary btn btn-floating mx-2"
                         style={{ backgroundColor: '#54456b' }}
                     >
                         <i className="bi bi-facebook"></i>
                     </button>
                     <button
                         type="button"
-                        className="btn btn-primary btn-lg btn-floating mx-2"
+                        className="btn btn-primary btn btn-floating mx-2"
                         style={{ backgroundColor: '#54456b' }}
                     >
                         <i className="bi bi-youtube"></i>
                     </button>
                     <button
                         type="button"
-                        className="btn btn-primary btn-lg btn-floating mx-2"
+                        className="btn btn-primary btn btn-floating mx-2"
                         style={{ backgroundColor: '#54456b' }}
                     >
                         <i className="bi bi-instagram"></i>
                     </button>
                     <button
                         type="button"
-                        className="btn btn-primary btn-lg btn-floating mx-2"
+                        className="btn btn-primary btn btn-floating mx-2"
                         style={{ backgroundColor: '#54456b' }}
                     >
                         <i className="bi bi-twitter-x"></i>

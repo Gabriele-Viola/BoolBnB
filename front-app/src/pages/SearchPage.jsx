@@ -8,6 +8,8 @@ export default function SearchPage() {
 	const [rooms, setRooms] = useState('');
 	const [beds, setBeds] = useState('');
 	const [location, setLocation] = useState('');
+	const [bathrooms, setBathrooms] = useState('');
+	const [mq, setMq] = useState('');
 
 
 	const handleSubmit = (e) => {
@@ -33,7 +35,7 @@ export default function SearchPage() {
 					<form onSubmit={handleSubmit} className="card p-4 shadow-sm">
 						<div className="mb-3">
 							<label htmlFor="city" className="form-label">
-								Città
+								Località
 							</label>
 							<input
 								type="text"
@@ -74,12 +76,40 @@ export default function SearchPage() {
 								onChange={(e) => setBeds(e.target.value)}
 							/>
 						</div>
+						<div className="mb-3">
+							<label htmlFor="minBathrooms" className="form-label">
+								Numero minimo di Bagni
+							</label>
+							<input
+								type="number"
+								id="minBathrooms"
+								className="form-control"
+								min="1"
+								placeholder="Es: 3"
+								value={bathrooms}
+								onChange={(e) => setBathrooms(e.target.value)}
+							/>
+						</div>
+						<div className="mb-3">
+							<label htmlFor="minmq" className="form-label">
+								Numero minimo di letti
+							</label>
+							<input
+								type="number"
+								id="minmq"
+								className="form-control"
+								min="1"
+								placeholder="Es: 3"
+								value={mq}
+								onChange={(e) => setMq(e.target.value)}
+							/>
+						</div>
 
 						<div className="d-flex justify-content-start">
 							<button
 								type="submit"
 								className="btn btn-primary px-4 py-2"
-								disabled={!beds && !rooms && !location} // Disabilita se tutti i campi sono vuoti
+								disabled={!beds && !rooms && !location && !mq && !bathrooms} // Disabilita se tutti i campi sono vuoti
 							>
 								Cerca
 							</button>

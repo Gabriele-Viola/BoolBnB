@@ -67,7 +67,7 @@ export default function ReviewsCard({ reviews, toggle }) {
                                         {review.date_review?.slice(0, 10)}
                                     </span>
                                 </div>
-                                {review.text_review?.length > 40 && (
+                                {review.text_review?.length > 60 && (
                                     <div className="position-absolute end-0 bottom-0 px-3 py-2">
                                         <i
                                             className={`bi ${isClicked

@@ -9,10 +9,12 @@ function encryptid(id) {
 
 function searchUrl(req, res) {
 
-    const queryData = req.query
+
     const location = req.query.location
     const beds = req.query.beds
     const rooms = req.query.rooms
+    const mq = req.query.mq
+    const bathrooms = req.query.batrooms
     const filters = []
     const params = []
 
@@ -29,7 +31,15 @@ function searchUrl(req, res) {
         filters.push('rooms>=?')
         params.push(rooms)
     }
-    const whereClause = filters.length > 0 ? `WHERE ${filters.join(' AND ')}` : ''
+    if (mq) {
+        filters.push('mq>=?')
+        params.push(mq)
+    }
+    if (bathrooms) {
+        filters.push('bathrooms>=?')
+        params.push(bathrooms)
+    }
+    const whereClause = filters.length > 0 ? `WHERE ${filters.join(' AND ')} order by \`like\` desc` : ''
     const sql = `SELECT * FROM boolbnb.properties ${whereClause}`
 
 
