@@ -18,14 +18,29 @@ export default function FinderPage() {
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [queryUpdated, setQueryUpdated] = useState(false)
 
 
     useEffect(() => {
-        setRooms(searchParams.get('rooms') || '');
-        setBeds(searchParams.get('beds') || '');
-        setBathrooms(searchParams.get('bathrooms') || '');
-        setMq(searchParams.get('mq') || '');
-        setDestination(searchParams.get('location') || '');
+        const newRooms = searchParams.get('rooms') || '';
+        const newBeds = searchParams.get('beds') || '';
+        const newBathrooms = searchParams.get('bathrooms') || '';
+        const newMq = searchParams.get('mq') || '';
+        const newDestination = searchParams.get('location') || '';
+
+        if (
+            newRooms !== rooms ||
+            newBeds !== beds ||
+            newBathrooms !== bathrooms ||
+            newMq !== mq ||
+            newDestination !== destination
+        ) {
+            setRooms(newRooms);
+            setBeds(newBeds);
+            setBathrooms(newBathrooms);
+            setMq(newMq);
+            setDestination(newDestination);
+        }
     }, [location.search]);
 
     useEffect(() => {
@@ -48,7 +63,7 @@ export default function FinderPage() {
                 setError(err.message);
                 setLoading(false);
             });
-    }, [searchParams]);
+    }, [location.search]);
 
     function handleSubmitResearch(e) {
         e.preventDefault()
@@ -95,10 +110,7 @@ export default function FinderPage() {
                                 className="form-control"
                                 placeholder="Inserisci la città..."
                                 value={destination}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    if (value !== destination) setDestination(value);
-                                }}
+                                onChange={(e) => setDestination(e.target.value)}
                             />
                         </div>
 
@@ -113,10 +125,7 @@ export default function FinderPage() {
                                 min="1"
                                 placeholder="Es: 2"
                                 value={rooms}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    if (value !== rooms) setRooms(value);
-                                }}
+                                onChange={(e) => setRooms(e.target.value)}
                             />
                         </div>
 
@@ -131,10 +140,8 @@ export default function FinderPage() {
                                 min="1"
                                 placeholder="Es: 3"
                                 value={beds}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    if (value !== beds) setBeds(value);
-                                }}
+                                onChange={(e) => setBeds(e.target.value)}
+
                             />
                         </div>
                         <div className="mb-3 col-2">
@@ -148,10 +155,7 @@ export default function FinderPage() {
                                 min="1"
                                 placeholder="Es: 1"
                                 value={bathrooms}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    if (value !== bathrooms) setBathrooms(value);
-                                }}
+                                onChange={(e) => setBathrooms(e.target.value)}
                             />
                         </div>
                         <div className="mb-3 col-2">
@@ -165,10 +169,7 @@ export default function FinderPage() {
                                 min="1"
                                 placeholder="Es: 1"
                                 value={mq}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    if (value !== mq) setMq(value);
-                                }}
+                                onChange={(e) => setMq(e.target.value)}
                             />
                         </div>
 
