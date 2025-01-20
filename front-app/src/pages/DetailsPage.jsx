@@ -190,7 +190,7 @@ export default function DetailsPage() {
 						setReview={setReview}
 
 						feedback={feedback}
-					/>
+					/>}
 
 				</div>
 			</div>
