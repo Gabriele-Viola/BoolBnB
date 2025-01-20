@@ -14,9 +14,17 @@ function searchUrl(req, res) {
     const beds = req.query.beds
     const rooms = req.query.rooms
     const mq = req.query.mq
-    const bathrooms = req.query.batrooms
+    const bathrooms = req.query.bathrooms
     const filters = []
     const params = []
+    console.log({
+        location: req.query.location,
+        beds: req.query.beds,
+        rooms: req.query.rooms,
+        mq: req.query.mq,
+        bathrooms: req.query.batrooms
+    });
+
 
 
     if (location) {
@@ -41,6 +49,8 @@ function searchUrl(req, res) {
     }
     const whereClause = filters.length > 0 ? `WHERE ${filters.join(' AND ')} order by \`like\` desc` : ''
     const sql = `SELECT * FROM boolbnb.properties ${whereClause}`
+    console.log(params);
+
 
 
 

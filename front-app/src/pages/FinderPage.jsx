@@ -5,7 +5,7 @@ import { useGlobalContext } from '../Context/GlobalContext';
 
 
 export default function FinderPage() {
-    const { fetchReviews } = useGlobalContext()
+    // const { handleLikeIncrement } = useGlobalContext()
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -48,14 +48,14 @@ export default function FinderPage() {
 
     return (
         <>
-            <section>
+            <section className="container">
                 <div className="container-fluid">
                     <Jumbotron title={'Spero tu abbia trovato ciò che cercavi'} />
                 </div>
                 <div className="container-fluid">
                     <h1 className={`text-${properties.length ? 'success' : 'danger'}`}>{properties.length} Risultati trovati </h1>
                     {properties.length > 0 ?
-                        <>
+                        <div >
                             {properties.map(property =>
 
 
@@ -65,7 +65,7 @@ export default function FinderPage() {
 
                                         <div className="col-12 col-md-12 col-lg-4">
                                             <img
-                                                src={property?.image ? `http://localhost:3000/uploads/${property?.image}` : 'https://placehold.co/300x250/EEE/31343C'}
+                                                src={`http://localhost:3000/uploads/${property.image}` || 'https://placehold.co/300x250/EEE/31343C'}
                                                 alt={property.name}
                                                 style={{ width: '100%', maxHeight: '270px' }}
                                                 className="object-fit-cover"
@@ -126,7 +126,7 @@ export default function FinderPage() {
                                 </div>
 
                             )}
-                        </> : (
+                        </div> : (
                             <Link to={'/search'} className='bg-danger btn text-light'><span>Mi spiace non abbiamo trovato nulla effettua una nuova ricerca</span> <i className="bi bi-emoji-frown-fill"></i></Link>
                         )}
                 </div>
