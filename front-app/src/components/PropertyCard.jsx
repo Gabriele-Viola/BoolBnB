@@ -14,6 +14,9 @@ export default function PropertyCard({ searchText }) {
 	}, [like])
 
 	// Aggiungi la logica di filtro
+	// Filtra le proprietà in base al testo di ricerca inserito
+	// Controlla se il nome o l'indirizzo della proprietà contiene il testo cercato (case insensitive)
+	// Restituisce un nuovo array con solo le proprietà che corrispondono ai criteri di ricerca
 	const filteredProperties = properties.filter((property) => {
 		return (
 			property.name.toLowerCase().includes(searchText.toLowerCase()) ||
