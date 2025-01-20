@@ -64,13 +64,10 @@ export default function AppHeader() {
 						{/* Mostra il nome dell'utente e il pulsante di logout se l'utente è loggato */}
 						{user !== 'Guest' ? (
 							<>
-								<li>
+								<li className="d-none d-sm-block">
 									<div className="text-white fs-6 me-1 ">
-
 										<span className="d-none d-md-inline ">USER: </span>
 										<span className='d-none d-sm-inline'>{user.user_name}</span>
-										<span className='d-sm-none'>{user.user_name.slice(0, 3)}</span>
-
 									</div>
 								</li>
 								<li>
