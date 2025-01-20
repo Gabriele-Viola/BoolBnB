@@ -1,7 +1,6 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../Context/GlobalContext' // Assicurati di avere il context
 
-
 export default function AppHeader() {
 	const { user, setUser, setLogged } = useGlobalContext() // Usa il context per recuperare l'utente loggato
 	const navigate = useNavigate() // Per fare il redirect
@@ -35,14 +34,11 @@ export default function AppHeader() {
 						</li>
 						<li>
 							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-none d-md-block">
-								Cerca
+								Ricerca avanzata
 							</NavLink>
 							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-md-none">
 								<i className="bi bi-search"></i>
 							</NavLink>
-
-
-
 						</li>
 						<li>
 							<NavLink to="/about" className="text-white text-decoration-none fs-6 d-none d-md-block">
@@ -66,11 +62,9 @@ export default function AppHeader() {
 							<>
 								<li>
 									<div className="text-white fs-6 me-1 ">
-
 										<span className="d-none d-md-inline ">USER: </span>
-										<span className='d-none d-sm-inline'>{user.user_name}</span>
-										<span className='d-sm-none'>{user.user_name.slice(0, 3)}</span>
-
+										<span className="d-none d-sm-inline">{user.user_name}</span>
+										<span className="d-sm-none">{user.user_name.slice(0, 3)}</span>
 									</div>
 								</li>
 								<li>
@@ -87,7 +81,9 @@ export default function AppHeader() {
 								<Link to="/login" className="btn btn-success btn-sm fs-6 d-none d-md-block">
 									Login
 								</Link>
-								<Link to="/login" className="bg-success text-decoration-none text-light py-1 px-2 rounded  fs-6 d-md-none text-center">
+								<Link
+									to="/login"
+									className="bg-success text-decoration-none text-light py-1 px-2 rounded  fs-6 d-md-none text-center">
 									<i className="bi bi-box-arrow-in-right"></i>
 								</Link>
 							</li>

@@ -7,10 +7,10 @@ import FormSendMessage from '../components/FormSendMessage'
 import Jumbotron from '../components/Jumbotron'
 import { useGlobalContext } from '../Context/GlobalContext'
 
-
 export default function DetailsPage() {
 	const { slug } = useParams()
-	const { reviews, setReviews, fetchReviews, fetchDataShow, property, services, loading, like, fetchData } = useGlobalContext()
+	const { reviews, setReviews, fetchReviews, fetchDataShow, property, services, loading, like, fetchData } =
+		useGlobalContext()
 	const [nameUser, setNameUser] = useState('')
 	const [nights, setNights] = useState('')
 	const [review, setReview] = useState('')
@@ -19,23 +19,17 @@ export default function DetailsPage() {
 	const [toName, setToName] = useState('') // Email destinatario
 	const [feedback, setFeedback] = useState('')
 
-	console.log(slug);
-
+	console.log(slug)
 
 	const urlShow = `http://localhost:3000/api/properties/${slug}`
 	const urlreviews = `http://localhost:3000/api/properties/${slug}/reviews`
-	console.log({ urlShow, urlreviews });
+	console.log({ urlShow, urlreviews })
 	useEffect(() => {
 		fetchReviews(urlreviews)
 		fetchDataShow(urlShow)
 	}, [slug, like])
 
-
-
-
 	useEffect(() => {
-
-
 		fetchDataShow(urlShow)
 	}, [slug])
 
@@ -98,14 +92,11 @@ export default function DetailsPage() {
 		return <div>Loading...</div>
 	}
 
-
 	const HandleSubReview = async (e) => {
 		e.preventDefault()
 
-
-		const userName = e.target.name.value;
-		const urlPostReview = `http://localhost:3000/api/${slug}/${userName}/add-review`;
-
+		const userName = e.target.name.value
+		const urlPostReview = `http://localhost:3000/api/${slug}/${userName}/add-review`
 
 		const formReview = {
 			name: userName,
@@ -143,7 +134,7 @@ export default function DetailsPage() {
 
 			setTimeout(() => {
 				setFeedback('')
-			}, 3000)
+			}, 300000)
 		} catch (err) {
 			console.error(err)
 			setFeedback("Errore nell'invio della recensione")
@@ -157,8 +148,6 @@ export default function DetailsPage() {
 		<div>
 			<div className="container position-relative">
 				<div className="my-4 align-items-center">
-
-
 					<Jumbotron title={property?.name} />
 
 					<div>
@@ -190,6 +179,7 @@ export default function DetailsPage() {
 						setNights={setNights}
 						review={review}
 						setReview={setReview}
+						feedback={feedback}
 					/>
 				</div>
 			</div>
