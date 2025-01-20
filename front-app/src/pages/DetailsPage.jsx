@@ -188,9 +188,8 @@ export default function DetailsPage() {
 						setNights={setNights}
 						review={review}
 						setReview={setReview}
-
 						feedback={feedback}
-					/>
+					/>}
 
 				</div>
 			</div>
