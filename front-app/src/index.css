@@ -17,7 +17,7 @@
 
 main {
     padding: 2rem 0;
-
+    background-color: #f5fcff;
     min-height: calc(100vh - 217px);
 }
 
@@ -30,4 +30,62 @@ main {
 
 .custom-form-add-properties {
     width: 20%;
+}
+
+header {
+
+    nav {
+        a {
+            text-decoration: none;
+            color: #afe3fa;
+            padding: 2px;
+            border-radius: 4px;
+            transition: .3s;
+
+            &:hover {
+                background-color: var(--bground-tags-hover);
+            }
+
+            &.active {
+                background-color: #afe3fa;
+                color: #29B6F6;
+                text-shadow: 1px 1px 5px var(--color-dark);
+            }
+        }
+    }
+}
+
+.jumbotron-bg-about {
+    background-image: url(./assets/abouus.jpeg);
+    background-size: cover;
+    background-position: 50% 40%;
+    background-repeat: no-repeat;
+}
+
+.jumbotron-bg-search {
+    background-image: url(./assets/search.jpeg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.jumbotron-bg-call {
+    background-image: url(./assets/call.jpeg);
+    background-size: cover;
+    background-position: 50% 25%;
+    background-repeat: no-repeat;
+}
+
+.jumbotron-bg-home {
+    background-image: url(./assets/home.jpeg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.jumbotron-bg-Dettails {
+    background-image: url(./assets/Dettails.jpeg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }

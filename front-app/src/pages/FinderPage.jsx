@@ -91,16 +91,32 @@ export default function FinderPage() {
     if (error) {
         return <p>Errore: {error}</p>;
     }
+    function handletoggleSearch() {
+
+        document.getElementById('form-search').classList.toggle('d-none');
+        document.getElementById('more').classList.toggle('d-none');
+        document.getElementById('less').classList.toggle('d-none');
+
+
+
+
+
+    }
 
     return (
         <>
             <section className="container">
                 <div className="container-fluid">
-                    <Jumbotron title={'Spero tu abbia trovato ciò che cercavi'} />
+                    <Jumbotron title={'Spero tu abbia trovato ciò che cercavi'} page='search' />
                 </div>
                 <div className="container-fluid">
-                    <form onSubmit={handleSubmitResearch} className="p-4 shadow-sm d-flex justify-content-between align-items-center">
-                        <div className="mb-3 col-2">
+                    <div className="d-flex justify-content-between d-md-block">
+                        <button className='btn btn-primary ' id='more' onClick={(e) => handletoggleSearch(e)}>Aggiorna <i className="bi bi-arrow-down-circle-fill"></i></button>
+                        <button className='btn btn-primary d-none' id='less' onClick={(e) => handletoggleSearch(e)}><i className="bi bi-arrow-up-circle-fill"></i> Chiudi</button>
+
+                    </div>
+                    <form onSubmit={handleSubmitResearch} id='form-search' className="p-4 shadow-sm d-md-flex justify-content-between align-items-center d-none d-md-block">
+                        <div className="mb-3 col-md-2">
                             <label htmlFor="city" className="form-label">
                                 Località
                             </label>
@@ -114,9 +130,9 @@ export default function FinderPage() {
                             />
                         </div>
 
-                        <div className="mb-3 col-2">
+                        <div className="mb-3 col-md-2">
                             <label htmlFor="minRooms" className="form-label">
-                                Numero minimo di stanze
+                                N. minimo di stanze
                             </label>
                             <input
                                 type="number"
@@ -129,9 +145,9 @@ export default function FinderPage() {
                             />
                         </div>
 
-                        <div className="mb-3 col-2">
+                        <div className="mb-3 col-md-2">
                             <label htmlFor="minBeds" className="form-label">
-                                Numero minimo di letti
+                                N. minimo di letti
                             </label>
                             <input
                                 type="number"
@@ -144,9 +160,9 @@ export default function FinderPage() {
 
                             />
                         </div>
-                        <div className="mb-3 col-2">
+                        <div className="mb-3 col-md-2">
                             <label htmlFor="minBathrooms" className="form-label">
-                                Numero minimo di Bagni
+                                N. minimo di Bagni
                             </label>
                             <input
                                 type="number"
@@ -158,9 +174,9 @@ export default function FinderPage() {
                                 onChange={(e) => setBathrooms(e.target.value)}
                             />
                         </div>
-                        <div className="mb-3 col-2">
+                        <div className="mb-3 col-md-2">
                             <label htmlFor="minmq" className="form-label">
-                                Numero minimo di Mq
+                                N. minimo di Mq
                             </label>
                             <input
                                 type="number"
@@ -181,6 +197,7 @@ export default function FinderPage() {
                             >
                                 Cerca
                             </button>
+
                         </div>
                     </form>
                     <h1 className={`text-${properties.length ? 'success' : 'danger'}`}>{properties.length} Risultati trovati </h1>
@@ -242,7 +259,7 @@ export default function FinderPage() {
                                                     </div>
                                                     <div className="col-6 pb-2">
                                                         <i className="bi bi-heart-fill"> </i>
-                                                        <span className='mb-2'> indice di gradimento: {property.like}
+                                                        <span className='mb-2'> Likes: {property.like}
                                                         </span>
                                                     </div>
                                                     {/* <div className="col-4">

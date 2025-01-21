@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import emailjs from '@emailjs/browser'
 import { useGlobalContext } from '../Context/GlobalContext'
 
@@ -12,9 +12,10 @@ export default function FormSendMessage({
 	fromName,
 	setFromName,
 	toName,
-	setToName
+	setToName,
 }) {
 	const { property } = useGlobalContext()
+	const [send, setSend] = useState('')
 	const form = useRef()
 
 	const handleSubmit = (e) => {
@@ -66,7 +67,8 @@ export default function FormSendMessage({
 				(result) => {
 					console.log('SUCCESS!', result.text)
 					console.log('Messaggio inviato con successo al destinatario!')
-					alert('Messaggio inviato con successo!')
+					setSend(true)
+					// alert('Messaggio inviato con successo!')
 				},
 				(error) => {
 					console.log('FAILED...', error.text)
@@ -102,70 +104,82 @@ export default function FormSendMessage({
 		<div
 			id="newMessage"
 			className="d-none vw-100 vh-100 d-flex flex-column justify-content-center align-items-center position-fixed top-0 start-0 bg-secondary bg-opacity-75">
-			<div className="mt-5 rounded w-50 p-4 shadow position-relative" style={{ backgroundColor: '#29B6F6' }}>
+			<button
+				className="text-light position-absolute end-0 top-0 m-4 fs-3 btn d-sm-none"
+				onClick={() => HandleinputToggle('newMessage', 'd-none')}>
+				<i className="bi bi-x-circle"></i>
+			</button>
+			<div className="mt-5 rounded col-10 p-4 shadow position-relative" style={{ backgroundColor: '#29B6F6' }}>
 				<button
-					className="text-light position-absolute end-0 top-0 m-4 fs-3 btn"
+					className="text-light position-absolute end-0 top-0 m-4 fs-3 btn d-none d-sm-block"
 					onClick={() => HandleinputToggle('newMessage', 'd-none')}>
 					<i className="bi bi-x-circle"></i>
 				</button>
-				<h3 className="mb-4 text-light">Invia un messaggio</h3>
-				<form ref={form} onSubmit={handleSubmit}>
-					<label htmlFor="from_name" className="form-label text-light">
-						Il tuo nome (mittente)
-					</label>
-					<input
-						type="text"
-						id="from_name"
-						name="from_name"
-						value={fromName}
-						onChange={(e) => setFromName(e.target.value)}
-						className="form-control mb-3"
-						placeholder="Inserisci il tuo nome"
-						required
-					/>
-					<label htmlFor="to_name" className="form-label text-light">
-						Email destinatario
-					</label>
-					<input
-						type="email"
-						id="to_name"
-						name="to_name"
-						value={toName}
-						readOnly
-						className="form-control mb-3"
-						placeholder="Inserisci l'email del destinatario"
-						required
-					/>
-					<label htmlFor="email" className="form-label text-light">
-						La tua email
-					</label>
-					<input
-						type="email"
-						id="email"
-						name="user_email"
-						value={emailUser}
-						onChange={(e) => setEmailUser(e.target.value)}
-						className="form-control mb-3"
-						placeholder="Inserisci il tuo indirizzo email"
-						required
-					/>
-					<label htmlFor="message" className="form-label text-light">
-						Messaggio:
-					</label>
-					<textarea
-						rows="5"
-						id="message"
-						name="message"
-						value={textUser}
-						onChange={(e) => setTextUser(e.target.value)}
-						className="form-control mb-3"
-						placeholder="Inserisci il tuo messaggio"
-						required
-					/>
-					<button className="btn btn-light" style={{ color: '#29B6F6' }} type="submit">
-						<i className="bi bi-send-fill"></i> Invia!
-					</button>
-				</form>
+				{!send ?
+					<>
+						<h3 className="mb-4 text-light">Invia un messaggio</h3>
+						<form ref={form} onSubmit={handleSubmit}>
+							<label htmlFor="from_name" className="form-label text-light">
+								Il tuo nome (mittente)
+							</label>
+							<input
+								type="text"
+								id="from_name"
+								name="from_name"
+								value={fromName}
+								onChange={(e) => setFromName(e.target.value)}
+								className="form-control mb-3"
+								placeholder="Nome"
+								required
+							/>
+							<label htmlFor="to_name" className="form-label text-light">
+								Email destinatario
+							</label>
+							<input
+								type="email"
+								id="to_name"
+								name="to_name"
+								value={toName}
+								readOnly
+								className="form-control mb-3"
+								placeholder="Inserisci l'email del destinatario"
+								required
+							/>
+							<label htmlFor="email" className="form-label text-light">
+								La tua email
+							</label>
+							<input
+								type="email"
+								id="email"
+								name="user_email"
+								value={emailUser}
+								onChange={(e) => setEmailUser(e.target.value)}
+								className="form-control mb-3"
+								placeholder="Email"
+								required
+							/>
+							<label htmlFor="message" className="form-label text-light">
+								Messaggio:
+							</label>
+							<textarea
+								rows="5"
+								id="message"
+								name="message"
+								value={textUser}
+								onChange={(e) => setTextUser(e.target.value)}
+								className="form-control mb-3"
+								placeholder="Inserisci il tuo messaggio"
+								required
+							/>
+							<button className="btn btn-light" style={{ color: '#29B6F6' }} type="submit">
+								<i className="bi bi-send-fill"></i> Invia!
+							</button>
+						</form>
+					</>
+					:
+					<h3 className='text-light'>Messaggio inviato con successo! <i className="bi bi-emoji-laughing-fill"></i></h3>
+				}
+
 			</div>
 		</div>
 	)

@@ -7,8 +7,6 @@ export default function PropertyCard({ searchText }) {
 	// Estrazione delle variabili dal contesto globale
 	const { error, loading, user, handleLikeIncrement, properties, fetchData, like } = useGlobalContext()
 
-	console.log('dettaglio:', like)
-
 	useEffect(() => {
 		fetchData()
 	}, [like])
@@ -30,8 +28,7 @@ export default function PropertyCard({ searchText }) {
 	// mostriamo un messaggio di errore se c'è un errore
 	if (error) return <p>Error: {error}</p>
 
-	console.log(user)
-	console.log(properties)
+
 
 	return (
 		<>
@@ -43,9 +40,8 @@ export default function PropertyCard({ searchText }) {
 						<div className="col-12 col-md-6 col-lg-4" key={property?.id}>
 							{/* Card della proprietà con bordo speciale per le proprietà dell'utente */}
 							<div
-								className={`card h-100 shadow ${
-									user.email === property.email_owners ? 'border-success border-thick' : ''
-								}`}>
+								className={`card h-100 shadow ${user.email === property.email_owners ? 'border-success border-thick' : ''
+									}`}>
 								<img
 									src={
 										property.image

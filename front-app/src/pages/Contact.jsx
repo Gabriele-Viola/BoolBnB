@@ -3,7 +3,7 @@ export default function Contact() {
 	return (
 		<>
 			<div className="container">
-				<Jumbotron title="Contattaci" className="mb-5" />
+				<Jumbotron title="Contattaci" className="mb-5" page='call' />
 				<div className="row">
 					<div className="ps-4 col-12">
 						<p className=" fw-bold">Hai domande o suggerimenti? Siamo qui per aiutarti!</p>

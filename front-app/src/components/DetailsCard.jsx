@@ -8,7 +8,6 @@ export default function DetailsCard({ property, services }) {
 	useEffect(() => {
 		fetchData()
 	}, [likes])
-	console.log(property.like)
 
 	return (
 		<>

@@ -14,45 +14,45 @@ export default function AppHeader() {
 	}
 
 	return (
-		<header className="text-white py-1 shadow-sm" style={{ backgroundColor: '#29B6F6' }}>
+		<header className=" py-1 " style={{ backgroundColor: '#29B6F6' }}>
 			<div className="container d-flex justify-content-between align-items-center">
 				<div className="d-flex align-items-center">
 					<NavLink to="/" className="text-white text-decoration-none">
-						<img className="logo" src="/logo.png" alt="Logo" />
+						<img className="logo mw-100" src="/logo.png" alt="Logo" />
 					</NavLink>
 				</div>
 
 				<nav className="d-flex">
 					<ul className="list-unstyled d-flex gap-4 mb-0">
 						<li>
-							<NavLink to="/" className="text-white text-decoration-none fs-6 d-none d-md-block">
+							<NavLink to="/" className=" text-decoration-none fs-6 d-none d-md-block">
 								Home
 							</NavLink>
-							<NavLink to="/" className="text-white text-decoration-none fs-6 d-md-none">
+							<NavLink to="/" className="text-decoration-none fs-6 d-md-none">
 								<i className="bi bi-house-door-fill"></i>
 							</NavLink>
 						</li>
 						<li>
-							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-none d-md-block">
+							<NavLink to="/search" className="text-decoration-none fs-6 d-none d-md-block">
 								Ricerca avanzata
 							</NavLink>
-							<NavLink to="/search" className="text-white text-decoration-none fs-6 d-md-none">
+							<NavLink to="/search" className="text-decoration-none fs-6 d-md-none">
 								<i className="bi bi-search"></i>
 							</NavLink>
 						</li>
 						<li>
-							<NavLink to="/about" className="text-white text-decoration-none fs-6 d-none d-md-block">
+							<NavLink to="/about" className="text-decoration-none fs-6 d-none d-md-block">
 								Chi Siamo
 							</NavLink>
-							<NavLink to="/about" className="text-white text-decoration-none fs-6 d-md-none">
+							<NavLink to="/about" className="text-decoration-none fs-6 d-md-none">
 								<i className="bi bi-people-fill"></i>
 							</NavLink>
 						</li>
 						<li>
-							<NavLink to="/contact" className="text-white text-decoration-none fs-6 d-none d-md-block">
+							<NavLink to="/contact" className="text-decoration-none fs-6 d-none d-md-block">
 								Contatti
 							</NavLink>
-							<NavLink to="/contact" className="text-white text-decoration-none fs-6 d-md-none">
+							<NavLink to="/contact" className="text-decoration-none fs-6 d-md-none">
 								<i className="bi bi-headset"></i>
 							</NavLink>
 						</li>
