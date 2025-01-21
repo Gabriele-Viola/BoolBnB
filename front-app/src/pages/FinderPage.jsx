@@ -111,7 +111,7 @@ export default function FinderPage() {
                 </div>
                 <div className="container-fluid">
                     <div className="d-flex justify-content-between d-md-block">
-                        <button className='btn btn-primary ' id='more' onClick={(e) => handletoggleSearch(e)}>Aggiorna <i className="bi bi-arrow-down-circle-fill"></i></button>
+                        <button className='btn btn-primary d-md-none' id='more' onClick={(e) => handletoggleSearch(e)}>Aggiorna <i className="bi bi-arrow-down-circle-fill"></i></button>
                         <button className='btn btn-primary d-none' id='less' onClick={(e) => handletoggleSearch(e)}><i className="bi bi-arrow-up-circle-fill"></i> Chiudi</button>
 
                     </div>
@@ -132,7 +132,7 @@ export default function FinderPage() {
 
                         <div className="mb-3 col-md-2">
                             <label htmlFor="minRooms" className="form-label">
-                                N. minimo di stanze
+                                Min. stanze
                             </label>
                             <input
                                 type="number"
@@ -147,7 +147,7 @@ export default function FinderPage() {
 
                         <div className="mb-3 col-md-2">
                             <label htmlFor="minBeds" className="form-label">
-                                N. minimo di letti
+                                Min. letti
                             </label>
                             <input
                                 type="number"
@@ -162,7 +162,7 @@ export default function FinderPage() {
                         </div>
                         <div className="mb-3 col-md-2">
                             <label htmlFor="minBathrooms" className="form-label">
-                                N. minimo di Bagni
+                                Min. Bagni
                             </label>
                             <input
                                 type="number"
@@ -176,7 +176,7 @@ export default function FinderPage() {
                         </div>
                         <div className="mb-3 col-md-2">
                             <label htmlFor="minmq" className="form-label">
-                                N. minimo di Mq
+                                Min. Mq
                             </label>
                             <input
                                 type="number"
