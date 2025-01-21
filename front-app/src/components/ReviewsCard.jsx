@@ -51,9 +51,11 @@ export default function ReviewsCard({ reviews, toggle }) {
                                 {review.text_review}
                             </div>
                             <div>
-                                <div className="position-relative">
-                                    <span className="text-muted">Notti: </span>
-                                    {review.nights}
+                                <div>
+                                    <span className="text-muted">
+                                        Data recensione:{" "}
+                                    </span>
+                                    <span>{review.date_review?.slice(0, 10)}</span>
                                 </div>
                                 <span className="text-muted">Lasciata da: </span>
                                 {review.name === "" || !review.name ? (
@@ -61,11 +63,9 @@ export default function ReviewsCard({ reviews, toggle }) {
                                 ) : (
                                     <span>{review.name}</span>
                                 )}
-                                <div>
-                                    <span className="text-muted">
-                                        Data recensione:{" "}
-                                        {review.date_review?.slice(0, 10)}
-                                    </span>
+                                <div className="position-relative">
+                                    <span className="text-muted">Notti: </span>
+                                    {review.nights}
                                 </div>
                                 {review.text_review?.length > 45 && (
                                     <div className="position-absolute end-0 bottom-0 px-3 py-2">

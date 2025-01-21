@@ -383,7 +383,7 @@ export default function AddPropertiesPage() {
 										<div className='col-12 col-md-2 mb-3'>
 
 											<label className="form-label" htmlFor="address">
-												Via / Viale...
+												Via...
 											</label>
 											<select className='form-control' name="a" id="a" value={address.a}
 												onChange={handleFormField}>
