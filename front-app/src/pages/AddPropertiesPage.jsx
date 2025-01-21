@@ -183,7 +183,7 @@ export default function AddPropertiesPage() {
 	return (
 		<>
 			{/* Layout principale della pagina */}
-			<Jumbotron title={'Aggiungi una nuova proprietà'} />
+			<Jumbotron title={'Aggiungi una nuova proprietà'} page='Dettails' />
 			<div className="container py-3">
 				{/* Sezione per i messaggi di feedback */}
 				{successMessage && <div className="alert alert-success">{successMessage}</div>}
