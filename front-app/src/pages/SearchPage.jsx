@@ -46,7 +46,7 @@ export default function SearchPage() {
 		<div className="container">
 			<div className="row justify-content-center">
 				<div className="col-md-8 col-lg-6">
-					<Jumbotron title="Cerca appartamenti" />
+					<Jumbotron title="Cerca appartamenti" page='search' />
 
 					<form onSubmit={handleSubmitSearch} className="card p-4 shadow-sm">
 						<div className="mb-3">

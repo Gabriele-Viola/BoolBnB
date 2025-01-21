@@ -8,14 +8,15 @@ export default function RegistrationPage() {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [type, setType] = useState("UI"); // Default is "UI"
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        const type = 'UP'
         const userData = { name, surname, userName, password, email, phone, type };
+        console.log(userData);
+
 
         fetch("http://localhost:3000/api/user/registration", {
             method: "POST",
@@ -42,7 +43,7 @@ export default function RegistrationPage() {
 
     return (
         <div className="d-flex justify-content-center">
-            <div className="w-25">
+            <div className="col-8 col-sm-6 col-lg-4 col-xl-3">
                 <h2 className="mb-4">Registrati</h2>
                 {error && <div className="bg-danger p-2 mb-2 text-light rounded text-center">{error}</div>}
                 <form onSubmit={handleSubmit}>
@@ -112,18 +113,7 @@ export default function RegistrationPage() {
                             required
                         />
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="type">Tipo</label>
-                        <select
-                            id="type"
-                            className="form-control"
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
-                        >
-                            <option value="UI">UI</option>
-                            <option value="UP">UP</option>
-                        </select>
-                    </div>
+
                     <div className="text-center">
                         <button type="submit" className="btn btn-primary">
                             Registrati

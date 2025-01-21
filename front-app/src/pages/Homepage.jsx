@@ -27,7 +27,7 @@ export default function Homepage() {
 					</div>
 				)}
 				{/* Componente Jumbotron che mostra il titolo e la barra di ricerca */}
-				<Jumbotron title={'Lista proprietà disponibili'} showSearch={true} onSearchChange={handleSearch} />
+				<Jumbotron title={'Lista proprietà disponibili'} showSearch={true} onSearchChange={handleSearch} page='home' />
 				{/* Componente PropertyCard che mostra la lista delle proprietà filtrate in base al testo di ricerca */}
 				<PropertyCard searchText={searchText} />
 			</div>

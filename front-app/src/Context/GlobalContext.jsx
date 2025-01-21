@@ -20,6 +20,8 @@ function GlobalContextProvider({ children }) {
     const [destination, setDestination] = useState('');
     const [bathrooms, setBathrooms] = useState('');
     const [mq, setMq] = useState('');
+    const [page, setPage] = useState('')
+    const [send, setSend] = useState('')
 
 
 
@@ -163,7 +165,9 @@ function GlobalContextProvider({ children }) {
         destination, setDestination,
         bathrooms, setBathrooms,
         mq, setMq,
-        beds, setBeds
+        beds, setBeds,
+        page, setPage,
+        send, setSend
     }
 
     return (
