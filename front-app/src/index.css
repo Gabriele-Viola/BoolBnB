@@ -37,17 +37,17 @@ header {
     nav {
         a {
             text-decoration: none;
-            color: #afe3fa;
+            color: #ffffff;
             padding: 2px;
             border-radius: 4px;
             transition: .3s;
 
             &:hover {
-                background-color: var(--bground-tags-hover);
+                background-color: #008dce;
             }
 
             &.active {
-                background-color: #afe3fa;
+                background-color: #ffffff;
                 color: #29B6F6;
                 text-shadow: 1px 1px 5px var(--color-dark);
             }
