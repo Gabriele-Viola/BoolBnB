@@ -4,6 +4,7 @@ const secretKey = process.env.CRYPTOKEY
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
+const { rejects } = require('assert')
 
 
 
@@ -108,8 +109,11 @@ function create(req, res) {
 		const imagePath = req.file ? req.file.filename : null
 		const sqlCheckSlug = `SELECT slug FROM properties WHERE slug LIKE ?`
 		const sql = `INSERT INTO properties (id_user, name, rooms, beds, bathrooms, mq, address, email_owners, \`like\`, image, slug) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0,? ,?)`
+		const sqlInsertService = `INSERT INTO properties_services (id_property, id_service) VALUES (?, ?)`
+		const sqlGetServiceId = `SELECT id FROM services WHERE name = ?`
+		console.log(req.body);
 
-		const { name, rooms, beds, bathrooms, mq, address, email_owners } = req.body
+		const { name, rooms, beds, bathrooms, mq, address, email_owners, services } = req.body
 		const slug = name.toLowerCase().replace(/\s+/g, '_')
 
 		if (!name || !rooms || !beds || !bathrooms || !mq || !address) {
@@ -154,12 +158,43 @@ function create(req, res) {
 							err: err
 						})
 					}
-					// Modifica qui: restituisci l'URL completo nella risposta
-					const fullImagePath = imagePath ? `http://localhost:3000/uploads/${imagePath}` : null
-					return res.status(201).json({
-						success: true,
-						imagePath: fullImagePath
+					const propertyId = result.insertId
+					const serviceArray = Array.isArray(services) ? services : JSON.parse(services) // Converte in array se necessario
+					const serviceIdPromises = serviceArray.map(serviceName => {
+						return new Promise((resolve, reject) => {
+							connection.query(sqlGetServiceId, [serviceName], (err, result) => {
+								if (err) reject(err)
+								else if (result.length > 0) resolve(result[0].id)
+								else reject(`Servizio ${serviceName} non trovato`)
+							})
+						})
 					})
+
+					Promise.all(serviceIdPromises)
+						.then((serviceIds) => {
+							const serviceInsertPromises = serviceIds.map(serviceId => {
+								return new Promise((resolve, reject) => {
+									connection.query(sqlInsertService, [propertyId, serviceId], (err) => {
+										if (err) reject(err)
+										else resolve()
+									})
+								})
+							})
+							return Promise.all(serviceInsertPromises)
+						})
+						.then(() => {
+							// Modifica qui: restituisci l'URL completo nella risposta
+							const fullImagePath = imagePath ? `http://localhost:3000/uploads/${imagePath}` : null
+							res.status(201).json({
+								success: true,
+								imagePath: fullImagePath
+
+							})
+						}).catch(error => {
+							res.status(500).json({
+								error: 'Errore nell\'inserimento dei servizi', details: error
+							})
+						})
 				}
 			)
 		})
