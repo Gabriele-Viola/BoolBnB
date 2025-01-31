@@ -2,12 +2,19 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGlobalContext } from '../Context/GlobalContext'
 import Jumbotron from '../components/Jumbotron'
+import { FaFan, FaKitchenSet, FaSquareParking, FaTv, FaWaterLadder, FaWifi } from "react-icons/fa6";
+import { BiSolidWasher, BiSolidHot } from "react-icons/bi";
 
 // Componente principale per l'aggiunta di nuove proprietà
 export default function AddPropertiesPage() {
 	// Estrazione dei parametri dall'URL e del contesto globale
 	const { owner } = useParams()
-	const { user, logged, setLogged } = useGlobalContext()
+	const { user, logged, setLogged, fetchServices, allServices } = useGlobalContext()
+	console.log(allServices);
+	function handleCheckboxChange(e) {
+		const { name, checked } = e.target
+		setServices(prev => checked ? [...prev, name] : prev.filter(service => service !== name))
+	}
 
 	// Verifica se l'utente è autorizzato a visualizzare la pagina
 	useEffect(() => {
@@ -29,7 +36,8 @@ export default function AddPropertiesPage() {
 		mq: 0,
 		address: '',
 		email_owners: '',
-		image: null
+		image: null,
+		services: []
 	}
 	const initialAddres = {
 		a: '',
@@ -47,6 +55,8 @@ export default function AddPropertiesPage() {
 	const [showCard, setShowCard] = useState(false) // Aggiungi questo nuovo stato per tracciare quando mostrare la card
 	const [savedData, setSavedData] = useState(null) // Aggiungi questo nuovo stato per i dati salvati
 	const [address, setAddress] = useState(initialAddres)
+	const [services, setServices] = useState([])
+
 
 	// Funzione per recuperare i dati delle proprietà dal server
 	function fetchData(url = 'http://localhost:3000/api/properties') {
@@ -61,6 +71,7 @@ export default function AddPropertiesPage() {
 	}
 	useEffect(() => {
 		fetchData()
+		fetchServices()
 	}, [])
 	useEffect(() => {
 		setFilteredProperties(properties)
@@ -73,20 +84,23 @@ export default function AddPropertiesPage() {
 		}
 		return `${address.a} ${address.b} ${address.c}, ${address.d}`;
 	}
-	// function handleAddres(e) {
-	// 	const { name, value } = e.target
-	// 	setAddress((prev) => ({
-	// 		...prev,
-	// 		[name]: value
-	// 	}))
-
-
-	// }
 
 	// Gestisce i cambiamenti nei campi del form
 	function handleFormField(e) {
-		const { name, value } = e.target
+		const { name, value, type, checked } = e.target
 
+		if (type === 'checkbox') {
+			setFormData(prev => ({
+				...prev, services: checked ? [...prev.services, name]
+					: prev.services.filter(service => service !== name)
+			}))
+
+		} else {
+			setFormData(prev => ({
+				...prev,
+				[name]: value
+			}))
+		}
 		if (name === 'image' && e.target.files.length > 0) {
 			const fileSelected = e.target.files[0]
 			setSelectedFile(fileSelected)
@@ -137,6 +151,10 @@ export default function AddPropertiesPage() {
 			formDataToSend.append('image', selectedFile)
 		}
 
+		if (services.length > 0) {
+			formDataToSend.append('services', JSON.stringify(services))
+		}
+
 		// Chiamata API per salvare i dati
 		fetch(`http://localhost:3000/api/properties/${owner}`, {
 			method: 'POST',
@@ -156,7 +174,8 @@ export default function AddPropertiesPage() {
 					address: formattedAddress,
 					email_owners: user.email,
 					like: 0,
-					image: response.imagePath // Usa l'URL dell'immagine restituito dal server
+					image: response.imagePath, // Usa l'URL dell'immagine restituito dal server
+					services: formData.services
 				})
 
 				setShowCard(true)
@@ -372,6 +391,28 @@ export default function AddPropertiesPage() {
 										/>
 									</div>
 
+
+								</div>
+								<div className='mb-2'>Servizi aggiuntivi:</div>
+								<div className="services">
+									{allServices.map(service => (
+										<div key={service.id} className="inputstyleservices">
+											<label className='serviceLabel' htmlFor={service.name}>{service.name == 'WiFi' ? <FaWifi /> :
+												service.name == 'Parcheggio' ? <FaSquareParking /> :
+													service.name == 'Piscina' ? <FaWaterLadder /> :
+														service.name == 'Aria Condizionata' ? <FaFan /> :
+															service.name == 'Cucina' ? <FaKitchenSet /> :
+																service.name == 'Lavatrice' ? <BiSolidWasher className='bg-red' /> :
+																	service.name == 'TV' ? <FaTv /> :
+																		service.name == 'Riscaldamento' ? <BiSolidHot /> : service.name
+
+
+											}
+												<input type="checkbox" className='tagcheck' name={service.name} id={service.name} value={service.name} onChange={handleCheckboxChange} checked={services.includes(service.name)} />
+
+											</label>
+										</div>
+									))}
 
 								</div>
 

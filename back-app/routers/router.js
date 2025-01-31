@@ -6,6 +6,7 @@ const { logIn, registration } = require('../controller/usersController')
 const { reviewsShow, reviewCreate } = require('../controller/reviewsController')
 const { sendMessage } = require('../controller/messagesController')
 const { searchUrl } = require('../controller/searchController')
+const { servicesController } = require('../controller/ServicesController')
 
 router.get('/properties', index)
 router.get('/properties/:slug', show)
@@ -26,5 +27,7 @@ router.get('/properties/:slug/reviews', reviewsShow)
 router.post('/:slug/:name/add-review', reviewCreate)
 
 router.get('/search', searchUrl)
+
+router.get('/services', servicesController)
 
 module.exports = router
