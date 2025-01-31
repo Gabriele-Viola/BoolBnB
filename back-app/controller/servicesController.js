@@ -8,7 +8,7 @@ function servicesController(req, res) {
             })
         }
         res.status(200).json({
-            dara: result,
+            data: result,
             count: result.length
         })
     })
