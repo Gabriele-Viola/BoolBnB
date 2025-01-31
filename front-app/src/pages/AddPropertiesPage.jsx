@@ -56,6 +56,19 @@ export default function AddPropertiesPage() {
 	const [savedData, setSavedData] = useState(null) // Aggiungi questo nuovo stato per i dati salvati
 	const [address, setAddress] = useState(initialAddres)
 	const [services, setServices] = useState([])
+	const [tooltip, setTooltip] = useState({ show: false, text: "", x: 0, y: 0 })
+
+	function showToolTip(e, text) {
+		setTooltip({
+			show: true,
+			text,
+			x: e.clientX + 10,
+			y: e.clientY + 10
+		})
+	}
+	function hideTooltip() {
+		setTooltip({ ...tooltip, show: false })
+	}
 
 
 	// Funzione per recuperare i dati delle proprietà dal server
@@ -397,22 +410,24 @@ export default function AddPropertiesPage() {
 								<div className="services">
 									{allServices.map(service => (
 										<div key={service.id} className="inputstyleservices">
-											<label className='serviceLabel' htmlFor={service.name}>{service.name == 'WiFi' ? <FaWifi /> :
-												service.name == 'Parcheggio' ? <FaSquareParking /> :
-													service.name == 'Piscina' ? <FaWaterLadder /> :
-														service.name == 'Aria Condizionata' ? <FaFan /> :
-															service.name == 'Cucina' ? <FaKitchenSet /> :
-																service.name == 'Lavatrice' ? <BiSolidWasher className='bg-red' /> :
-																	service.name == 'TV' ? <FaTv /> :
-																		service.name == 'Riscaldamento' ? <BiSolidHot /> : service.name
+											<label className='serviceLabel' htmlFor={service.name} onMouseEnter={(e) => showToolTip(e, service.name)}
+												onMouseLeave={hideTooltip}>{service.name == 'WiFi' ? <FaWifi /> :
+													service.name == 'Parcheggio' ? <FaSquareParking /> :
+														service.name == 'Piscina' ? <FaWaterLadder /> :
+															service.name == 'Aria Condizionata' ? <FaFan /> :
+																service.name == 'Cucina' ? <FaKitchenSet /> :
+																	service.name == 'Lavatrice' ? <BiSolidWasher className='bg-red' /> :
+																		service.name == 'TV' ? <FaTv /> :
+																			service.name == 'Riscaldamento' ? <BiSolidHot /> : service.name
 
 
-											}
+												}
 												<input type="checkbox" className='tagcheck' name={service.name} id={service.name} value={service.name} onChange={handleCheckboxChange} checked={services.includes(service.name)} />
 
 											</label>
 										</div>
 									))}
+									{tooltip.show && <div className='position-absolute bg-black bg-opacity-75 text-white text-sm px-2 py-1 rounded' style={{ top: tooltip.y, left: tooltip.x }} >{tooltip.text}</div>}
 
 								</div>
 
