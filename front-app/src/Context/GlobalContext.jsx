@@ -11,6 +11,7 @@ function GlobalContextProvider({ children }) {
     const [error, setError] = useState(null)
     const [logged, setLogged] = useState(false)
     const [services, setServices] = useState([])
+    const [allServices, setAllServices] = useState([])
     const [properties, setProperties] = useState([])
     const [reviews, setReviews] = useState([])
     const [property, setProperty] = useState({})
@@ -33,6 +34,7 @@ function GlobalContextProvider({ children }) {
     // const urlreviews = `http://localhost:3000/api/${id}/reviews`
 
     const urlIndex = 'http://localhost:3000/api/properties'
+    const urlIndexServices = 'http://localhost:3000/api/services'
 
 
 
@@ -86,6 +88,23 @@ function GlobalContextProvider({ children }) {
             setLoading(false)
         }
     }
+
+    async function fetchServices() {
+        try {
+            const response = await fetch(urlIndexServices)
+            if (!response.ok) {
+                throw new Error('Failed to fetch Services')
+            }
+            const data = await response.json()
+            setAllServices(data.data)
+
+
+        } catch (err) {
+            err.message
+        }
+
+    }
+
 
     async function fetchReviews(urlreviews) {
 
@@ -167,7 +186,9 @@ function GlobalContextProvider({ children }) {
         mq, setMq,
         beds, setBeds,
         page, setPage,
-        send, setSend
+        send, setSend,
+        fetchServices,
+        allServices, setAllServices
     }
 
     return (

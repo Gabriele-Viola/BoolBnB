@@ -1,7 +1,6 @@
 // Componente Jumbotron che mostra un banner con titolo, sottotitolo opzionale e barra di ricerca
 
 export default function Jumbotron({ title, subtitle, className = '', showSearch = false, onSearchChange, page }) {
-	console.log(page);
 
 	return (
 		// Container principale del banner con stile bootstrap
