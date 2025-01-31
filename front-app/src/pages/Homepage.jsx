@@ -21,7 +21,7 @@ export default function Homepage() {
 				{/* Contenitore per il pulsante "Aggiungi Proprietà" se l'utente è loggato */}
 				{user !== 'Guest' && user?.id && (
 					<div className="mb-3">
-						<Link to={`/add/properties/${user.id}`} className="btn btn-primary">
+						<Link to={`/add/properties`} className="btn btn-primary">
 							Aggiungi una nuova proprietà
 						</Link>
 					</div>

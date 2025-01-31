@@ -101,10 +101,6 @@ function create(req, res) {
 			})
 		}
 
-		const tokenOwner = req.params.owner
-		const owner = decrypt(tokenOwner)
-
-
 		// Modifica qui: salva solo il nome del file invece dell'URL completo
 		const imagePath = req.file ? req.file.filename : null
 		const sqlCheckSlug = `SELECT slug FROM properties WHERE slug LIKE ?`
@@ -113,7 +109,9 @@ function create(req, res) {
 		const sqlGetServiceId = `SELECT id FROM services WHERE name = ?`
 		console.log(req.body);
 
-		const { name, rooms, beds, bathrooms, mq, address, email_owners, services } = req.body
+		const { name, rooms, beds, bathrooms, mq, address, email_owners, services, tokenOwner } = req.body
+		const owner = decrypt(tokenOwner)
+
 		const slug = name.toLowerCase().replace(/\s+/g, '_')
 
 		if (!name || !rooms || !beds || !bathrooms || !mq || !address) {

@@ -13,7 +13,7 @@ router.get('/properties/:slug', show)
 
 
 
-router.post('/properties/:owner', create)  //search field named "image"
+router.post('/properties', create)  //search field named "image"
 
 
 router.put('/like/:slug', likeUpdate)
