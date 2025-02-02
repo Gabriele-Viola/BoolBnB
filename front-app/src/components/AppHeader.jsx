@@ -33,7 +33,7 @@ export default function AppHeader() {
 							</NavLink>
 						</li>
 						<li>
-							<NavLink to="/search" className="text-decoration-none fs-6 d-none d-md-block">
+							<NavLink to="/search?rooms=&beds=&bathrooms=&mq=&location=" className="text-decoration-none fs-6 d-none d-md-block">
 								Ricerca avanzata
 							</NavLink>
 							<NavLink to="/search" className="text-decoration-none fs-6 d-md-none">

@@ -138,7 +138,6 @@ function GlobalContextProvider({ children }) {
 
             if (response.ok) {
                 const data = await response.json()
-                console.log(data.likes);
                 setLike(data.likes)
 
                 // Ricarica tutti i dati dopo l'aggiornamento del like
