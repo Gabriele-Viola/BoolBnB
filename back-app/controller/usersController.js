@@ -1,5 +1,6 @@
 const connection = require('../db/connection')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 const secretKey = process.env.CRYPTOKEY
 
 function encryptid(id) {
@@ -20,8 +21,8 @@ function decrypt(id) {
 // method LogIn to check if the user is present in the db
 
 function logIn(req, res) {
-    const email = req.body.email
-    const password = req.body.password
+    const { email, password } = req.body
+
     // verify if the email and the password are present
     if (!email || !password)
         return res.status(400).json({
@@ -40,22 +41,30 @@ function logIn(req, res) {
             return res.status(404).json({
                 error: 'Nessun utente registrato con questa mail'
             })
-        //verify if the password is correct
-        if (result[0].password !== password)
-            return res.status(404).json({ error: 'Password errata' })
         const user = result[0]
-        // const id = encryptid(user.id)
-        const tokenId = encryptid(user.id)
-        const tokenPassword = encryptid(user.password)
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) return res.status(500).json({ error: err })
+            if (!isMatch && result[0].password !== password) {
 
+                return res.status(401).json({ error: 'Password errata' })
+            }
+            //verify if the password is correct
+            // if (result[0].password !== password)
+            //     return res.status(404).json({ error: 'Password errata' })
 
-        console.log(tokenId);
+            // const id = encryptid(user.id)
+            const tokenId = encryptid(user.id)
 
-        // return the user
-        res.status(200).json({
-            status: 'success',
-            success: true,
-            user: { ...user, id: tokenId, password: tokenPassword }
+            const prova = '######'
+
+            console.log(tokenId);
+
+            // return the user
+            res.status(200).json({
+                status: 'success',
+                success: true,
+                user: { ...user, id: tokenId, password: prova }
+            })
         })
     })
 }
@@ -122,16 +131,24 @@ function registration(req, res) {
                 error: 'Type must be UI or UP'
             })
 
-        connection.query(insertSql, [name, surname, userName, password, email, phone, type], (err, result) => {
-            if (err)
-                return res.status(500).json({
-                    error: 'something went wrong...'
+        bcrypt.hash(password, 10, (err, hashedPassword) => {
+            if (err) return res.status(500).json({ error: 'error hash password' })
+
+            connection.query(insertSql, [name, surname, userName, hashedPassword, email, phone, type], (err, result) => {
+                if (err)
+                    return res.status(500).json({
+                        error: 'something went wrong...'
+                    })
+                return res.status(201).json({
+                    status: 'success',
+                    success: true
                 })
-            return res.status(201).json({
-                status: 'success',
-                success: true
             })
         })
+
+
+
+
     })
 }
 
