@@ -15,17 +15,8 @@ export default function AddPropertiesPage() {
 		const { name, checked } = e.target
 		setServices(prev => checked ? [...prev, name] : prev.filter(service => service !== name))
 	}
+	console.log(logged);
 
-	// Verifica se l'utente è autorizzato a visualizzare la pagina
-	useEffect(() => {
-		if (owner && user.id) {
-			if (owner === user.id) {
-				setLogged(true)
-			} else {
-				setLogged(false)
-			}
-		}
-	}, [owner, user.id, setLogged])
 
 	// Oggetto che contiene i valori iniziali del form
 	const initialFormData = {

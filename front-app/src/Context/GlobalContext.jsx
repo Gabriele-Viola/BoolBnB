@@ -42,18 +42,14 @@ function GlobalContextProvider({ children }) {
     useEffect(() => {
         const user = localStorage.getItem('user')
 
-        const logIn = localStorage.getItem('logged')
+        const logged = localStorage.getItem('logged') === 'true'
 
 
         if (user) {
             setUser(user)
         }
 
-        if (logIn === 'true') {  // Verifica che logIn sia 'true' (memorizzato come stringa)
-            setLogged(true)
-        } else {
-            setLogged(false)
-        }
+        setLogged(logged)
 
         setLoading(false) // Una volta caricati i dati, settiamo loading a false
     }, [])
@@ -66,11 +62,11 @@ function GlobalContextProvider({ children }) {
             localStorage.removeItem('user')
         }
 
-        if (logged) {
-            localStorage.setItem('logged', 'true') // Memorizza 'true' come stringa
-        } else {
-            localStorage.removeItem('logged')
-        }
+
+        localStorage.setItem('logged', logged ? 'true' : 'false') // Memorizza 'true' come stringa
+
+        localStorage.removeItem('logged')
+
     }, [user, logged])
 
     async function fetchData() {
@@ -190,6 +186,10 @@ function GlobalContextProvider({ children }) {
         fetchServices,
         allServices, setAllServices
     }
+    console.log({
+        'is logged?': logged,
+        user: user.name
+    });
 
     return (
         <GlobalContext.Provider value={values}>

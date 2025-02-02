@@ -109,7 +109,7 @@ export default function FormSendMessage({
 				onClick={() => HandleinputToggle('newMessage', 'd-none')}>
 				<i className="bi bi-x-circle"></i>
 			</button>
-			<div className="mt-5 rounded col-10 p-4 shadow position-relative" style={{ backgroundColor: '#29B6F6' }}>
+			<div className="mt-5 rounded col-10 p-4 shadow position-relative col-10 col-sm-8 col-lg-6 col-xl-4" style={{ backgroundColor: '#29B6F6' }}>
 				<button
 					className="text-light position-absolute end-0 top-0 m-4 fs-3 btn d-none d-sm-block"
 					onClick={() => HandleinputToggle('newMessage', 'd-none')}>
@@ -117,10 +117,15 @@ export default function FormSendMessage({
 				</button>
 				{!send ?
 					<>
-						<h3 className="mb-4 text-light">Invia un messaggio</h3>
+						<div className='text-light'>
+							<h3 className="mb-4">Invia un messaggio a:</h3>
+							<div className='mb-2 fs-4'>{property.name}</div>
+							<div className='mb-2 fs-4'>in : {property.address}</div>
+
+						</div>
 						<form ref={form} onSubmit={handleSubmit}>
 							<label htmlFor="from_name" className="form-label text-light">
-								Il tuo nome (mittente)
+								Nome
 							</label>
 							<input
 								type="text"
@@ -132,21 +137,8 @@ export default function FormSendMessage({
 								placeholder="Nome"
 								required
 							/>
-							<label htmlFor="to_name" className="form-label text-light">
-								Email destinatario
-							</label>
-							<input
-								type="email"
-								id="to_name"
-								name="to_name"
-								value={toName}
-								readOnly
-								className="form-control mb-3"
-								placeholder="Inserisci l'email del destinatario"
-								required
-							/>
 							<label htmlFor="email" className="form-label text-light">
-								La tua email
+								Email
 							</label>
 							<input
 								type="email"
