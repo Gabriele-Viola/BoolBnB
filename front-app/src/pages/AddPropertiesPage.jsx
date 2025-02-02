@@ -7,25 +7,15 @@ import { BiSolidWasher, BiSolidHot } from "react-icons/bi";
 
 // Componente principale per l'aggiunta di nuove proprietà
 export default function AddPropertiesPage() {
-	// Estrazione dei parametri dall'URL e del contesto globale
-	const { owner } = useParams()
-	const { user, logged, setLogged, fetchServices, allServices } = useGlobalContext()
-	console.log(allServices);
+
+	const { user, logged, fetchServices, allServices } = useGlobalContext()
+
 	function handleCheckboxChange(e) {
 		const { name, checked } = e.target
 		setServices(prev => checked ? [...prev, name] : prev.filter(service => service !== name))
 	}
 
-	// Verifica se l'utente è autorizzato a visualizzare la pagina
-	useEffect(() => {
-		if (owner && user.id) {
-			if (owner === user.id) {
-				setLogged(true)
-			} else {
-				setLogged(false)
-			}
-		}
-	}, [owner, user.id, setLogged])
+
 
 	// Oggetto che contiene i valori iniziali del form
 	const initialFormData = {

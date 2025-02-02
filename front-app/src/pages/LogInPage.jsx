@@ -6,7 +6,7 @@ export default function LogInPage() {
     const [errorLog, setErrorLog] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { user, setUser } = useGlobalContext()
+    const { user, setUser, setLogged } = useGlobalContext()
     const navigate = useNavigate() // Aggiungi useNavigate per il redirect
     const urlLogIn = 'http://localhost:3000/api/user/logIn'
 
@@ -27,7 +27,9 @@ export default function LogInPage() {
             .then((res) => res.json())
             .then((data) => {
                 if (data?.user) {
+                    localStorage.setItem('logged', 'true')
                     setUser(data.user)
+                    setLogged(true)
                     setErrorLog(null)
 
                     // Dopo il login, fai il redirect alla homepage
