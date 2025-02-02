@@ -18,7 +18,6 @@ export default function FinderPage() {
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [queryUpdated, setQueryUpdated] = useState(false)
 
 
     useEffect(() => {
@@ -79,7 +78,7 @@ export default function FinderPage() {
 
         const currentSearch = location.search.substring(1); // Rimuove il "?" iniziale
         if (currentSearch !== queryParams) {
-            navigate(`/search/finder?${queryParams}`);
+            navigate(`/search?${queryParams}`);
         }
 
         // Naviga alla URL con i parametri

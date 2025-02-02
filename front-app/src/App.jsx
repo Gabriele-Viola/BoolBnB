@@ -9,7 +9,6 @@ import Contact from './pages/Contact.jsx'
 import { GlobalContextProvider } from './Context/GlobalContext.jsx'
 import LogInPage from './pages/LogInPage.jsx'
 import RegistrationPage from './pages/RegistrationPage.jsx'
-import SearchPage from './pages/SearchPage.jsx'
 import FinderPage from './pages/FinderPage.jsx'
 
 function App() {
@@ -22,8 +21,7 @@ function App() {
 							<Route index element={<Homepage />} />
 							<Route path="/properties/:slug" element={<DetailsPage />} />
 							<Route path="/add/properties" element={<AddPropertiesPage />} />
-							<Route path="/search" element={<SearchPage />} />
-							<Route path='/search/finder' element={<FinderPage />} />
+							<Route path="/search" element={<FinderPage />} />
 							<Route path="/about" element={<About />} />
 							<Route path="/contact" element={<Contact />} />
 							<Route path="/login" element={<LogInPage />} />
