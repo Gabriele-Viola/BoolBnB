@@ -186,10 +186,6 @@ function GlobalContextProvider({ children }) {
         fetchServices,
         allServices, setAllServices
     }
-    console.log({
-        'is logged?': logged,
-        user: user.name
-    });
 
     return (
         <GlobalContext.Provider value={values}>
